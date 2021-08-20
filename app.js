@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const db = require("./utils/Dbconnect");
-const authRoutes = require("./routes/auth.route");
+const authRoutes = require("./routes/login.route");
 
 (async () => {
   try {
