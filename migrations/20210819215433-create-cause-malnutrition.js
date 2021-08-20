@@ -10,8 +10,8 @@ module.exports = {
       // },
       id_cause_malnutrition: {
         allowNull: false,
-        type: Sequelize.STRING
         primaryKey: true,
+        type: Sequelize.STRING
       },
       atcd_mas: {
         type: Sequelize.BOOLEAN
