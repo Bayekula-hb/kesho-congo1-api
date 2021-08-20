@@ -10,7 +10,6 @@ module.exports = {
       // },
       id_famille: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.STRING
       },

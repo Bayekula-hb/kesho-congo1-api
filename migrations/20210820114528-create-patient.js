@@ -1,7 +1,7 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('patients', {
+    await queryInterface.createTable("patients", {
       // id: {
       //   allowNull: false,
       //   autoIncrement: true,
@@ -10,89 +10,88 @@ module.exports = {
       // },
       id_patient: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       nom_patient: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       postnom_patient: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       prenom_patient: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       sexe: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       age: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       provenance_patient: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       mode_arrive: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       poids_naissance: {
         allowNull: false,
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
       },
       fin_allaitement: {
         allowNull: false,
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       mois_fin_allaitement: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       diversification_aliment: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       constitution_aliment: {
         allowNull: false,
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       telephone: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       id_cause_malnutrition: {
         allowNull: false,
         type: Sequelize.STRING,
-        references:{
-          model:"cause_malnutrition",
-          key:"id_cause_malnutrition"
-        }
+        references: {
+          model: "cause_malnutritions",
+          key: "id_cause_malnutrition",
+        },
       },
       id_famille: {
         allowNull: false,
         type: Sequelize.STRING,
-        references:{
-          model:"famille",
-          key:"id_famille"
-        }
+        references: {
+          model: "familles",
+          key: "id_famille",
+        },
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('patients');
-  }
+    await queryInterface.dropTable("patients");
+  },
 };

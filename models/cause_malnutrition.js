@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id_cause_malnutrition: DataTypes.STRING,
       atcd_mas: DataTypes.BOOLEAN,
-      nbre_chute: DataTypes.NUMBER,
+      nbre_chute: DataTypes.INTEGER,
       mas_fratrie: DataTypes.BOOLEAN,
       terme_grossesse: DataTypes.STRING,
       sejour_neonat: DataTypes.BOOLEAN,

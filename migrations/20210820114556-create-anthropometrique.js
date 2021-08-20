@@ -10,7 +10,6 @@ module.exports = {
       // },
       id_anthro: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.STRING,
       },
@@ -42,7 +41,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
         reference:{
-          module:"patient",
+          module:"patients",
           key:"id_patient"
         }
       },
