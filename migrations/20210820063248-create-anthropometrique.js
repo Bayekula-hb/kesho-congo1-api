@@ -41,6 +41,10 @@ module.exports = {
       id_patient: {
         allowNull: false,
         type: Sequelize.STRING,
+        reference:{
+          module:"patient",
+          key:"id_patient"
+        }
       },
       createdAt: {
         allowNull: false,

@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.patient.hasMany(
+        models.anthropometrique
+      )
     }
   };
   patient.init({
@@ -33,6 +36,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'patient',
-  });
+  })
   return patient;
 };
