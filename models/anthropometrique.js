@@ -11,13 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.anthropometrique.belongsTo(
-        models.patient,{
-          foreignKey:{
-            allowNull:false
-          }
-        }
-      )
+      models.anthropometrique.belongsTo(models.patient, {
+        foreignKey: {
+          allowNull: false,
+        },
+      });
     }
   };
   anthropometrique.init({
