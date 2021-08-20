@@ -14,6 +14,20 @@ module.exports = (sequelize, DataTypes) => {
       models.patient.hasMany(
         models.anthropometrique
       )
+      models.patient.belongsTo(
+        models.famille,{
+          foreignKey:{
+            allowNull:false
+          }
+        }
+      )
+      models.patient.belongsTo(
+        models.anthropometrique,{
+          foreignKey:{
+            allowNull:false
+          }
+        }
+      )
     }
   };
   patient.init({

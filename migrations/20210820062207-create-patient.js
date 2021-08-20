@@ -68,11 +68,19 @@ module.exports = {
       },
       id_cause_malnutrition: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references:{
+          model:"cause_malnutrition",
+          key:"id_cause_malnutrition"
+        }
       },
       id_famille: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        references:{
+          model:"famille",
+          key:"id_famille"
+        }
       },
       createdAt: {
         allowNull: false,
