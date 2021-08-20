@@ -27,12 +27,9 @@ loginMiddleware.use((req, res, next) => {
       res.newPass = cleanPassword;
       res.newMail = cleanEmail;
       next();
-      // res.status(400).json({
-      //   message: `${cleanEmail} ${cleanPassword}`,
-      // });
     }
   }
-  // res.json({ message: `${email} , ${password}` });
 });
+
 loginMiddleware.use("/", login);
 module.exports = loginMiddleware;
