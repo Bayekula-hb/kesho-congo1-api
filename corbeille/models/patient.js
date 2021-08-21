@@ -24,6 +24,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   patient.init(
     {
+      id_patient: DataTypes.STRING,
       nom_patient: DataTypes.STRING,
       postnom_patient: DataTypes.STRING,
       prenom_patient: DataTypes.STRING,
@@ -37,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
       diversification_aliment: DataTypes.INTEGER,
       constitution_aliment: DataTypes.TEXT,
       telephone: DataTypes.STRING,
-      id_cause_malnutrition: DataTypes.INTEGER,
-      id_famille: DataTypes.INTEGER,
+      id_cause_malnutrition: DataTypes.STRING,
+      id_famille: DataTypes.STRING,
     },
     {
       sequelize,

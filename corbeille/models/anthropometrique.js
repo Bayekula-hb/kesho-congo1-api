@@ -1,5 +1,7 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class anthropometrique extends Model {
     /**
@@ -15,21 +17,19 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-  }
-  anthropometrique.init(
-    {
-      peri_cranien: DataTypes.FLOAT,
-      peri_brachial: DataTypes.FLOAT,
-      poids: DataTypes.FLOAT,
-      taille: DataTypes.FLOAT,
-      type_malnutrition: DataTypes.STRING,
-      date_examen: DataTypes.DATE,
-      id_patient: DataTypes.STRING,
-    },
-    {
-      sequelize,
-      modelName: "anthropometrique",
-    }
-  );
+  };
+  anthropometrique.init({
+    id_anthro: DataTypes.STRING,
+    peri_cranien: DataTypes.FLOAT,
+    peri_brachial: DataTypes.FLOAT,
+    poids: DataTypes.FLOAT,
+    taille: DataTypes.FLOAT,
+    type_malnutrition: DataTypes.STRING,
+    date_examen: DataTypes.DATE,
+    id_patient: DataTypes.STRING
+  }, {
+    sequelize,
+    modelName: 'anthropometrique',
+  });
   return anthropometrique;
 };

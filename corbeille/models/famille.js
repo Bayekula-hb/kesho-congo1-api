@@ -14,6 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   famille.init(
     {
+      id_famille: DataTypes.STRING,
       taille_famille: DataTypes.INTEGER,
       vivre_deux_parent: DataTypes.BOOLEAN,
       mere_enceinte: DataTypes.STRING,

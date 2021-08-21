@@ -1,110 +1,110 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('familles', {
-      // id: {
-      //   allowNull: false,
-      //   autoIncrement: true,
-      //   primaryKey: true,
-      //   type: Sequelize.INTEGER
-      // },
-      id_famille: {
+    await queryInterface.createTable("familles", {
+      id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER,
       },
       taille_famille: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
       },
       vivre_deux_parent: {
-        type: Sequelize.BOOLEAN
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
       },
       mere_enceinte: {
-        type: Sequelize.STRING
+        allowNull: false,
+        type: Sequelize.STRING,
       },
       mere_en_vie: {
-        type: Sequelize.BOOLEAN
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
       },
       pere_en_vie: {
-        type: Sequelize.BOOLEAN
+        allowNull: false,
+        type: Sequelize.BOOLEAN,
       },
       profession_mere: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       profession_chef_menage: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       age_mere: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       scolarite_mere: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       contraception_mere: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       contraception_moyens: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       niveau_socioeconomique: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       statut_marital: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       nbr_femme_pere: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       tribu: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       religion: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       posseder_radio_tele: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       nbr_repas: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       consommation_boisson: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       atb: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       liste_atb: {
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       tbc_chez_parents: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       tbc_chez: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       tbc_gueris: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       duree_traitement_tbc: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       tbc_declarer_finie: {
-        type: Sequelize.BOOLEAN
+        type: Sequelize.BOOLEAN,
       },
       nom_tuteur: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('familles');
-  }
+    await queryInterface.dropTable("familles");
+  },
 };

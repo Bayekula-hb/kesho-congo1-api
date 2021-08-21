@@ -9,11 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+
       models.cause_malnutrition.hasMany(models.patient);
     }
   }
   cause_malnutrition.init(
     {
+      id_cause_malnutrition: DataTypes.STRING,
       atcd_mas: DataTypes.BOOLEAN,
       nbre_chute: DataTypes.INTEGER,
       mas_fratrie: DataTypes.BOOLEAN,

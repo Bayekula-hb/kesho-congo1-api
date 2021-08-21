@@ -2,11 +2,10 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("cause_malnutritions", {
-      id: {
+      id_cause_malnutrition: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       atcd_mas: {
         type: Sequelize.BOOLEAN,
@@ -15,6 +14,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       mas_fratrie: {
+        allowNull: false,
         type: Sequelize.BOOLEAN,
       },
       terme_grossesse: {
@@ -27,6 +27,7 @@ module.exports = {
         type: Sequelize.FLOAT,
       },
       lieu_accouchement: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       asphyxie_perinatal: {
