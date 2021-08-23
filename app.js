@@ -1,9 +1,13 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const db = require("./utils/Dbconnect");
+const db = require("./databases/index");
 const authRoute = require("./routes/login.route");
 const registerRoute = require("./routes/register.route");
+
+require("dotenv").config();
+app.use(express.json());
+
 
 (async () => {
   try {
@@ -13,7 +17,7 @@ const registerRoute = require("./routes/register.route");
     console.error("Unable to connect to the database:", error);
   }
 })();
-app.use(express.json());
+
 app.get("/", (req, res) => {
   res.json({ message: "Votre requête a bien été reçue !" });
 });

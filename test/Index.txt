@@ -1,0 +1,27 @@
+TEXT POUR TEST CLIENT
+
+//Cause malnutrition
+
+{
+    "atcd_mas":"1",
+    "nbre_chute":"23",
+      "mas_fratie":"1",
+      "terme_grossesse":"oui",
+      "sejour_neonat":"0",
+      "eig":"1.5",
+      "lieu_accouchement":"kinshasa",
+      "asphyxie_perinatal":"1",
+      "dpm":"oui",
+      "caliendrier_vaccinal":"1",
+      "rang_fratrie":"123",
+      "taille_fratrie":"1254",
+      "atcd_rougeole_fratrie":"1",
+      "vaccination_rougeole":"1",
+      "terrain_vih":"1",
+      "tbc":"1",
+      "atcd_du_tbc_dans_fratrie":"1",
+      "hospitalisation_recente":"0",
+      "diagnostique_hospitalisation":"frf",
+      "cocktail_atb":"1",
+      "duree_prise_atb":""
+}
