@@ -14,8 +14,6 @@ userRegisterMiddleware.use((req, res, next) => {
     typePostnom = typeof postnom_user,
     typePrenom = typeof prenom_user,
     typeIsadmin = typeof is_admin;
-
-  // res.status(200).json({ message: `${email} - ${is_admin} - ${password}` });
   if (
     typeEmail != "string" &&
     typePass != "string" &&
@@ -56,9 +54,6 @@ userRegisterMiddleware.use((req, res, next) => {
       next();
     }
   }
-
-  // res.status(200).json({ message: "nice register user B22222" });
-  next();
 });
 
 userRegisterMiddleware.use("/", registerUser);

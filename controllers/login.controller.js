@@ -8,6 +8,9 @@ module.exports = {
       password = res.newPass;
 
     const userWithEmail = await user.findOne({ where: { email } });
+    if (!userWithEmail) {
+      return res.status(400).json({ message: "L'utlisateur n'existe pas" });
+    }
     const isPasswordValid = await compare(password, userWithEmail.password);
 
     if (!userWithEmail && !isPasswordValid) {
@@ -23,7 +26,13 @@ module.exports = {
         { id: userWithEmail.id, email: userWithEmail.email },
         process.env.JWT_SECRET
       );
-      res.status(200).json({ message: "Welcome Back!", token: jwtToken });
+      res
+        .status(200)
+        .json({
+          message: "Welcome Back!",
+          token: jwtToken,
+          name: `${userWithEmail.nom_user} ${userWithEmail.postnom_user}`,
+        });
     }
   },
 };
