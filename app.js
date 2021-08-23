@@ -4,6 +4,7 @@ const cors = require("cors");
 const db = require("./utils/Dbconnect");
 const authRoute = require("./routes/login.route");
 const registerRoute = require("./routes/register.route");
+const userRoute = require("./routes/user.route");
 
 (async () => {
   try {
@@ -13,6 +14,7 @@ const registerRoute = require("./routes/register.route");
     console.error("Unable to connect to the database:", error);
   }
 })();
+
 app.use(express.json());
 app.get("/", (req, res) => {
   res.json({ message: "Votre requête a bien été reçue !" });
@@ -20,5 +22,6 @@ app.get("/", (req, res) => {
 
 app.use("/auth", authRoute);
 app.use("/register", registerRoute);
+app.use("/user", userRoute);
 
 module.exports = app;
