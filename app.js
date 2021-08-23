@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const db = require("./utils/Dbconnect");
-const authRoutes = require("./routes/login.route");
+const authRoute = require("./routes/login.route");
+const registerRoute = require("./routes/register.route");
 
 (async () => {
   try {
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Votre requête a bien été reçue !" });
 });
 
-app.use("/auth", authRoutes);
+app.use("/auth", authRoute);
+app.use("/register", registerRoute);
 
 module.exports = app;
