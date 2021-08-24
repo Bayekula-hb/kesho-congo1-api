@@ -17,6 +17,7 @@ getAllUserMiddleware.use(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    console.log(id)
     if (id) {
       res.id = id;
       next();

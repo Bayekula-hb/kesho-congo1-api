@@ -29,7 +29,13 @@ module.exports = {
         "image_user",
       ],
     });
-    return res.status(200).json(userOne);
+    if (userOne) {
+      return res.status(200).json(userOne);
+    }else{
+      return res.status(400).json({
+        message: `Le personnel ayant l'identifiant ${id} est introuvable`,
+      });
+    }
   },
   registerUser: async (req, res) => {
     const {
