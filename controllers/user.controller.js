@@ -34,4 +34,21 @@ module.exports = {
         .json({ error: "Cannot register user at the moment!" });
     }
   },
+  deleteUser: async (req, res) => {
+    const { id } = res;
+    const userFind = await user.findOne({ where: { id } });
+    if (!userFind) {
+      return res.status(400).json({
+        message: `Le personnel ayant l'identifiant ${id} est introuvable`,
+      });
+    }
+    const userDelete = await user.destroy({
+      where: {
+        id,
+      },
+    });
+    return res.status(200).json({
+      message: `${userFind.dataValues.nom_user} ${userFind.dataValues.postnom_user} est suprimé avec succès`,
+    });
+  },
 };
