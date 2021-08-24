@@ -1,5 +1,7 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const {
+  Model
+} = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class patient extends Model {
     /**
@@ -10,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.patient.hasMany(models.anthropometrique);
+      models.patient.hasMany(models.consulter_par);
       models.patient.belongsTo(models.famille, {
         foreignKey: {
           allowNull: false,
@@ -21,29 +24,24 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-  }
-  patient.init(
-    {
-      nom_patient: DataTypes.STRING,
-      postnom_patient: DataTypes.STRING,
-      prenom_patient: DataTypes.STRING,
-      sexe: DataTypes.STRING,
-      age: DataTypes.INTEGER,
-      provenance_patient: DataTypes.STRING,
-      mode_arrive: DataTypes.STRING,
-      poids_naissance: DataTypes.FLOAT,
-      fin_allaitement: DataTypes.BOOLEAN,
-      mois_fin_allaitement: DataTypes.INTEGER,
-      diversification_aliment: DataTypes.INTEGER,
-      constitution_aliment: DataTypes.TEXT,
-      telephone: DataTypes.STRING,
-      id_cause_malnutrition: DataTypes.INTEGER,
-      id_famille: DataTypes.INTEGER,
-    },
-    {
-      sequelize,
-      modelName: "patient",
-    }
-  );
+  };
+  patient.init({
+    nom_patient: DataTypes.STRING,
+    postnom_patient: DataTypes.STRING,
+    prenom_patient: DataTypes.STRING,
+    sexe_patient: DataTypes.STRING,
+    date_naissance_patient: DataTypes.DATEONLY,
+    adresse_patient: DataTypes.TEXT,
+    provenance_patient: DataTypes.STRING,
+    mode_arrive: DataTypes.STRING,
+    poids_naissance: DataTypes.FLOAT,
+    image_patient: DataTypes.TEXT,
+    telephone: DataTypes.STRING,
+    id_cause_malnutrition: DataTypes.INTEGER,
+    id_famille: DataTypes.INTEGER
+  }, {
+    sequelize,
+    modelName: 'patient',
+  });
   return patient;
 };

@@ -1,7 +1,8 @@
 {
+  
   "development": {
     "username": "root",
-    "password": null,
+    "password": "",
     "database": "kesho",
     "host": "localhost",
     "dialect": "mysql"

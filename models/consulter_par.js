@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class anthropometrique extends Model {
+  class consulter_par extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -11,24 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.anthropometrique.belongsTo(models.patient, {
+      models.consulter_par.belongsTo(models.patient, {
         foreignKey: {
           allowNull: false,
         },
       });
     }
   };
-  anthropometrique.init({
-    peri_cranien: DataTypes.FLOAT,
-    peri_brachial: DataTypes.FLOAT,
-    poids: DataTypes.FLOAT,
-    taille: DataTypes.FLOAT,
-    type_malnutrition: DataTypes.STRING,
-    date_examen: DataTypes.DATEONLY,
-    id_patient: DataTypes.INTEGER
+  consulter_par.init({
+    id_user: DataTypes.INTEGER,
+    id_patient: DataTypes.INTEGER,
+    date_consultation: DataTypes.DATEONLY
   }, {
     sequelize,
-    modelName: 'anthropometrique',
+    modelName: 'consulter_par',
   });
-  return anthropometrique;
+  return consulter_par;
 };
