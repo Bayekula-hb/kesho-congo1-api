@@ -11,6 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.consulter_par.belongsTo(models.patient, {
+        foreignKey: {
+          allowNull: false,
+        },
+      });
     }
   };
   consulter_par.init({

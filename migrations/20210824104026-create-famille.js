@@ -9,96 +9,127 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       taille_menage: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       vivre_deux_parents: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       nom_tuteur: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       date_naissance_tuteur: {
+        allowNull: true,
         type: Sequelize.DATEONLY
       },
       mere_enceinte: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       pere_en_vie: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       mere_en_vie: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       age_mere: {
+        allowNull: true,
         type: Sequelize.INTEGER
       },
       profession_mere: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       profession_chef_menage: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       scolarite_mere: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       contraception_mere: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       type_contraception: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       contraception_naturelle: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       contraception_moderne: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       niveau_socioeconomique: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       status_marital: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       type_status_marital: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       nbre_femme_pere: {
+        allowNull: true,
         type: Sequelize.INTEGER
       },
       tribu: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       religion: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       posseder_radio_tele: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       nbre_repas: {
+        allowNull: false,
         type: Sequelize.INTEGER
       },
       consommation_poisson: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       atb: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       liste_atb: {
+        allowNull: true,
         type: Sequelize.TEXT
       },
       tbc_parents: {
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       tbc_chez: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       tbc_gueris: {
+        allowNull: true,
         type: Sequelize.BOOLEAN
       },
       duree_traitement_tbc: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       tbc_declarer_finie: {
+        allowNull: true,
         type: Sequelize.BOOLEAN
       },
       createdAt: {

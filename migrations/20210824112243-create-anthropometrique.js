@@ -9,25 +9,36 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       peri_cranien: {
+        allowNull: false,
         type: Sequelize.FLOAT
       },
       peri_brachial: {
+        allowNull: false,
         type: Sequelize.FLOAT
       },
       poids: {
+        allowNull: false,
         type: Sequelize.FLOAT
       },
       taille: {
+        allowNull: false,
         type: Sequelize.FLOAT
       },
       type_malnutrition: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       date_examen: {
+        allowNull: false,
         type: Sequelize.DATEONLY
       },
       id_patient: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "patients",
+          key: "id",
+        },
       },
       createdAt: {
         allowNull: false,

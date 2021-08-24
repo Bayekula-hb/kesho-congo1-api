@@ -9,43 +9,64 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       nom_patient: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       postnom_patient: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       prenom_patient: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       sexe_patient: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       date_naissance_patient: {
+        allowNull: false,
         type: Sequelize.DATEONLY
       },
       adresse_patient: {
+        allowNull: false,
         type: Sequelize.TEXT
       },
       provenance_patient: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       mode_arrive: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       poids_naissance: {
+        allowNull: false,
         type: Sequelize.FLOAT
       },
       image_patient: {
+        allowNull: true,
         type: Sequelize.TEXT
       },
       telephone: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       id_cause_malnutrition: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "cause_malnutritions",
+          key: "id",
+        },
       },
       id_famille: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "familles",
+          key: "id",
+        },
       },
       createdAt: {
         allowNull: false,

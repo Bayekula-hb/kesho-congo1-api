@@ -11,6 +11,18 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      models.patient.hasMany(models.anthropometrique);
+      models.patient.hasMany(models.consulter_par);
+      models.patient.belongsTo(models.famille, {
+        foreignKey: {
+          allowNull: false,
+        },
+      });
+      models.patient.belongsTo(models.cause_malnutrition, {
+        foreignKey: {
+          allowNull: false,
+        },
+      });
     }
   };
   patient.init({

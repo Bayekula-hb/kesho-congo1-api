@@ -9,12 +9,23 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       id_user: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "users",
+          key: "id",
+        },
       },
       id_patient: {
-        type: Sequelize.INTEGER
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "patients",
+          key: "id",
+        },
       },
       date_consultation: {
+        allowNull: false,
         type: Sequelize.DATEONLY
       },
       createdAt: {
