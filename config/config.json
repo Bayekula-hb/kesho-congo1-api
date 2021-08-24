@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": null,
-    "database": "kesho",
-    "host": "localhost",
+    "password": "",
+    "database": "Kesho-Congo",
+    "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {

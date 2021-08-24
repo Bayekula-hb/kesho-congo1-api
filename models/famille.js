@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
       religion: DataTypes.STRING,
       posseder_radio_tele: DataTypes.BOOLEAN,
       nbr_repas: DataTypes.INTEGER,
-      consommation_boisson: DataTypes.BOOLEAN,
+      consommation_poisson: DataTypes.BOOLEAN,
       atb: DataTypes.BOOLEAN,
       liste_atb: DataTypes.TEXT,
       tbc_chez_parents: DataTypes.BOOLEAN,
