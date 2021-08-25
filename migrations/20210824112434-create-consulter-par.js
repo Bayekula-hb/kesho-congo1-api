@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('consulter_pars', {
+    await queryInterface.createTable("consulter_pars", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       id_user: {
         allowNull: false,
@@ -26,19 +26,20 @@ module.exports = {
       },
       date_consultation: {
         allowNull: false,
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
+        defaultValue: Sequelize.NOW,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('consulter_pars');
-  }
+    await queryInterface.dropTable("consulter_pars");
+  },
 };

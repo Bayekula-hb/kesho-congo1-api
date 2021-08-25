@@ -31,8 +31,8 @@ patientRegisterMiddleware.use(
     body("poids").notEmpty().withMessage("Cannot be empty"),
     body("taille").notEmpty().withMessage("Cannot be empty"),
     body("type_malnutrition").notEmpty().withMessage("Cannot be empty"),
-    body("date_examen").notEmpty().withMessage("Cannot be empty"),
-    body("id_patient").notEmpty().withMessage("Cannot be empty"),
+    // body("date_examen").notEmpty().withMessage("Cannot be empty"),
+    // body("id_patient").notEmpty().withMessage("Cannot be empty"),
     body("nom_patient").notEmpty().withMessage("Cannot be empty"),
     body("postnom_patient").notEmpty().withMessage("Cannot be empty"),
     body("prenom_patient").notEmpty().withMessage("Cannot be empty"),
@@ -44,8 +44,8 @@ patientRegisterMiddleware.use(
     body("mois_fin_allaitement").notEmpty().withMessage("Cannot be empty"),
     body("diversification_aliment").notEmpty().withMessage("Cannot be empty"),
     body("telephone").notEmpty().withMessage("Cannot be empty"),
-    body("id_cause_malnutrition").notEmpty().withMessage("Cannot be empty"),
-    body("id_famille").notEmpty().withMessage("Cannot be empty"),
+    // body("id_cause_malnutrition").notEmpty().withMessage("Cannot be empty"),
+    body("adresse_patient").notEmpty().withMessage("Cannot be empty"),
     body("taille_famille").notEmpty().withMessage("Cannot be empty"),
     body("vivre_deux_parent").notEmpty().withMessage("Cannot be empty"),
     body("mere_enceinte").notEmpty().withMessage("Cannot be empty"),
@@ -59,11 +59,11 @@ patientRegisterMiddleware.use(
     body("contraception_moyens").notEmpty().withMessage("Cannot be empty"),
     body("niveau_socioeconomique").notEmpty().withMessage("Cannot be empty"),
     body("statut_marital").notEmpty().withMessage("Cannot be empty"),
-    body("nbr_femme_pere").notEmpty().withMessage("Cannot be empty"),
+    body("nbre_femme_pere").notEmpty().withMessage("Cannot be empty"),
     body("tribu").notEmpty().withMessage("Cannot be empty"),
     body("religion").notEmpty().withMessage("Cannot be empty"),
     body("posseder_radio_tele").notEmpty().withMessage("Cannot be empty"),
-    body("nbr_repas").notEmpty().withMessage("Cannot be empty"),
+    body("nbre_repas").notEmpty().withMessage("Cannot be empty"),
     body("consommation_poisson").notEmpty().withMessage("Cannot be empty"),
     body("atb").notEmpty().withMessage("Cannot be empty"),
     body("liste_atb").notEmpty().withMessage("Cannot be empty"),
@@ -73,8 +73,7 @@ patientRegisterMiddleware.use(
     body("duree_traitement_tbc").notEmpty().withMessage("Cannot be empty"),
     body("tbc_declarer_finie").notEmpty().withMessage("Cannot be empty"),
     body("nom_tuteur").notEmpty().withMessage("Cannot be empty"),
-  
-
+    body("id_user").notEmpty().withMessage("Cannot be empty"),
   ],
   async (req, res, next) => {
     // Cause malnutrition
@@ -109,7 +108,6 @@ patientRegisterMiddleware.use(
       poids,
       taille,
       type_malnutrition,
-      date_examen,
       id_patient,
     } = req.body;
 
@@ -147,11 +145,11 @@ patientRegisterMiddleware.use(
       contraception_moyens,
       niveau_socioeconomique,
       statut_marital,
-      nbr_femme_pere,
+      nbre_femme_pere,
       tribu,
       religion,
       posseder_radio_tele,
-      nbr_repas,
+      nbre_repas,
       consommation_poisson,
       atb,
       liste_atb,
@@ -167,6 +165,7 @@ patientRegisterMiddleware.use(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+    res
     next();
   }
 );

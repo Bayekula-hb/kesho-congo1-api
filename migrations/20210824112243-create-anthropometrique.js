@@ -30,7 +30,8 @@ module.exports = {
       },
       date_examen: {
         allowNull: false,
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
+        defaultValue : Sequelize.NOW,
       },
       id_patient: {
         allowNull: false,
