@@ -1,6 +1,6 @@
 const express = require("express");
 const patientRegisterMiddleware = require("./patientRegister/patientRegister.middleware");
-const userRegisterMiddleware = require("./userRegister/userRegister.middleware");
+const userRegisterMiddleware = require("./user/userRegister.middleware");
 
 const registerMiddleware = express();
 
