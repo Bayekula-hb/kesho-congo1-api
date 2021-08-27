@@ -1,32 +1,32 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const { param, query, body, validationResult } = require("express-validator");
-const { getAllUser, getUserById } = require("../../controllers/user.controller");
+const {
+  getAllUser,
+  getUserById,
+} = require("../../controllers/user.controller");
 
-const getAllUserMiddleware = express();
+const getUserMiddleware = express();
 
-getAllUserMiddleware.use(
+getUserMiddleware.use(
   [
-    param("id").isEmpty().withMessage("paramètre manquant")
-    // .matches(/\d/)
-    // .withMessage("paramètre non valide"),
+    param("id")
+      .isEmpty()
+      .withMessage("paramètre manquant")
+      // .matches(/\d/)
+      // .withMessage("paramètre non valide"),
   ],
   (req, res, next) => {
     let { id } = req.query;
-    const errors = validationResult(req);
+
+    const errors = validationResult(req);    
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    console.log(id)
-    if (id) {
-      res.id = id;
-      next();
-      getAllUserMiddleware.use("/", getUserById);
-    } else {
-      next();
-      getAllUserMiddleware.use("/", getAllUser);
-    }
+    res.id = id;
+    next();
   }
 );
 
-module.exports = getAllUserMiddleware;
+getUserMiddleware.use("/", getUserById);
+module.exports = getUserMiddleware;
