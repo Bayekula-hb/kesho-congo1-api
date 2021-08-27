@@ -33,7 +33,7 @@ module.exports = {
         type: Sequelize.DATEONLY,
         defaultValue : Sequelize.NOW,
       },
-      id_patient: {
+      patientId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {

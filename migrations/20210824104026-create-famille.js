@@ -72,11 +72,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      status_marital: {
+      statut_marital: {
         allowNull: false,
         type: Sequelize.STRING
       },
-      type_status_marital: {
+      type_statut_marital: {
         allowNull: false,
         type: Sequelize.STRING
       },

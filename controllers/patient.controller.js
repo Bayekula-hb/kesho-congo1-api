@@ -4,6 +4,7 @@ const {
   famille,
   anthropometrique,
   consulter_par,
+  user
 } = require("../models");
 
 module.exports = {
@@ -11,13 +12,14 @@ module.exports = {
     const {
       atcd_mas,
       nbre_chute,
+      mas_fratie,
       terme_grossesse,
       sejour_neonat,
       eig,
       lieu_accouchement,
       asphyxie_perinatal,
       dpm,
-      calendrier_vaccinal,
+      caliendrier_vaccinal,
       rang_fratrie,
       taille_fratrie,
       atcd_rougeole_fratrie,
@@ -30,26 +32,25 @@ module.exports = {
       cocktail_atb,
       duree_prise_atb,
       peri_cranien,
-      peri_brachail,
+      peri_brachial,
       poids,
       taille,
       type_malnutrition,
+      date_examen,
+      type_contraception,
+      contraception_naturelle,
       nom_patient,
       postnom_patient,
       prenom_patient,
       sexe_patient,
       age_patient,
       provenance_patient,
-      adresse_patient,
       mode_arrive,
-      taille_menage,
       poids_naissance,
       fin_allaitement,
       mois_fin_allaitement,
       diversification_aliment,
       telephone,
-      type_status_marital,
-      status_marital,
       taille_famille,
       vivre_deux_parents,
       mere_enceinte,
@@ -59,12 +60,11 @@ module.exports = {
       profession_chef_menage,
       age_mere,
       scolarite_mere,
-      type_contraception,
       contraception_mere,
-      contraception_naturelle,
       contraception_moderne,
       niveau_socioeconomique,
-      nbre_femme_pere,
+      statut_marital,
+      nbr_femme_pere,
       tribu,
       religion,
       posseder_radio_tele,
@@ -77,18 +77,23 @@ module.exports = {
       tbc_gueris,
       duree_traitement_tbc,
       tbc_declarer_finie,
+      type_statut_marital,
       nom_tuteur,
-      id_user,
+      nbre_femme_pere,
+      taille_menage,
+      adresse_patient,
+      date_naissance_patient,
       mas_fratrie,
       cause_dpm,
+      calendrier_vaccinal,
       vaccin_non_recu,
       produit_plante,
       duree_produit_plante,
-      date_naissance_patient,
+      id_user,
     } = req.body;
 
     //Famille refactor insert
-    const newFamille = new famille({
+    const newFamille = await famille.create({
       taille_famille,
       vivre_deux_parents,
       mere_enceinte,
@@ -103,8 +108,8 @@ module.exports = {
       contraception_naturelle,
       contraception_moderne,
       niveau_socioeconomique,
-      type_status_marital,
-      status_marital,
+      type_statut_marital,
+      statut_marital,
       nbre_femme_pere,
       tribu,
       religion,
@@ -121,15 +126,10 @@ module.exports = {
       nom_tuteur,
       taille_menage,
     });
-    const savedFamille = await newFamille.save();
-    console.log("savedFamille.id : ", savedFamille.id);
-    // if (!savedFamille) {
-    //   return res.status(500).json({ error: "Cannot register famille" });
-    // }
-    const id_famille = savedFamille.dataValues.id;
+    const id_famille = await newFamille.id;
 
     //Cause_malnutrition
-    const newCause_malnutrition = new cause_malnutrition({
+    const newCause_malnutrition = await cause_malnutrition.create({
       atcd_mas,
       nbre_chute,
       terme_grossesse,
@@ -156,16 +156,10 @@ module.exports = {
       produit_plante,
       duree_produit_plante,
     });
-    const savedCause_malnutrition = await newCause_malnutrition.save();
-    if (!savedCause_malnutrition) {
-      return res
-        .status(500)
-        .json({ error: "Cannot register cause malnutrition" });
-    }
-    const id_cause_malnutrition = savedCause_malnutrition.dataValues.id;
+    const id_cause_malnutrition = await newCause_malnutrition.id;
 
     //Patient
-    const newPatient = new patient({
+    const newPatient = await patient.create({
       nom_patient,
       postnom_patient,
       prenom_patient,
@@ -183,60 +177,26 @@ module.exports = {
       id_famille,
       date_naissance_patient,
     });
-    const savedPatient = await newPatient.save();
-    console.log(savedPatient.id);
+    const patientId = newPatient.id;
 
-    const ConsulterPar = await consulter_par.create({
-      id_patient: savedPatient.id,
-      id_user: id_user,
+    const newAnthropometrique = await anthropometrique.create({
+      peri_cranien,
+      peri_brachial,
+      poids,
+      taille,
+      type_malnutrition,
+      date_examen,
+      patientId,
     });
-    console.log("consulter par : ", ConsulterPar.id);
-    // if (!savedPatient) {
-    //   return res.status(500).json({ error: "Cannot register patient" });
-    // }
-    // let id_patient = savedPatient.dataValues.id;
-    // console.log(savedPatient);
-    // const id = id_patient;
-    // const date_examen = Date.now();
-    // const date_consultation = Date.now();
 
-    // const currentPatientInsert = await patient.findOne({
-    //   where: { id },
-    //   attributes: ["id", "nom_patient", "postnom_patient", "prenom_patient"],
-    // });
-    // if (!currentPatientInsert) {
-    //   return res
-    //     .status(500)
-    //     .json({ message: "Erreur le patient n'existe pas " });
-    // }
-    // id_patient = currentPatientInsert.id;
-    // const newConsulter_par = new consulter_par({
-    //   id_user,
-    //   id_patient:id_patient,
-    //   date_consultation,
-    // });
-    //   const savedConsulter_par = await newConsulter_par.save();
-    //   if (!savedConsulter_par) {
-    //     return res.status(5500).json({ error: "Cannot register consultation" });
-    //   }
-    //   const newAnthropometrique = new anthropometrique({
-    //     peri_cranien,
-    //     peri_brachail,
-    //     poids,
-    //     taille,
-    //     type_malnutrition,
-    //     date_examen,
-    //     id_patient: id_patient,
-    //   });
-    //   const savedAnthropometrique = await newAnthropometrique.save();
-    //   if (!savedAnthropometrique) {
-    //     return res
-    //       .status(5500)
-    //       .json({ error: "Cannot register anthropometrique" });
-    //   }
+    // const findUser = await user.findOne({ where :{}})
+    const ConsulterPar = await consulter_par.create({
+      patientId,
+      userId: id_user,
+    });
 
-    //   return res
-    //     .status(200)
-    //     .json({ message: "Enregistrement effectuer avec succès" });
+    return res
+      .status(200)
+      .json({ message: "Enregistrement effectuer avec succès" });
   },
 };
