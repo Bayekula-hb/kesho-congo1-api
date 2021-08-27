@@ -24,11 +24,6 @@ module.exports = {
           key: "id",
         },
       },
-      date_consultation: {
-        allowNull: false,
-        type: Sequelize.DATEONLY,
-        defaultValue: Sequelize.NOW,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

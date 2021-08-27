@@ -25,7 +25,7 @@ module.exports = {
         type: Sequelize.DATEONLY
       },
       mere_enceinte: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       pere_en_vie: {
@@ -53,19 +53,19 @@ module.exports = {
         type: Sequelize.STRING
       },
       contraception_mere: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.BOOLEAN
       },
       type_contraception: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       contraception_naturelle: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       contraception_moderne: {
-        allowNull: false,
+        allowNull: true,
         type: Sequelize.STRING
       },
       niveau_socioeconomique: {

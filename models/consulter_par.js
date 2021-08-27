@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class consulter_par extends Model {
     /**
@@ -16,15 +14,22 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       });
+      models.consulter_par.belongsTo(models.user, {
+        foreignKey: {
+          allowNull: false,
+        },
+      });
     }
-  };
-  consulter_par.init({
-    id_user: DataTypes.INTEGER,
-    id_patient: DataTypes.INTEGER,
-    date_consultation: DataTypes.DATEONLY
-  }, {
-    sequelize,
-    modelName: 'consulter_par',
-  });
+  }
+  consulter_par.init(
+    {
+      id_user: DataTypes.INTEGER,
+      id_patient: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "consulter_par",
+    }
+  );
   return consulter_par;
 };
