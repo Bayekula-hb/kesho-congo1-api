@@ -4,7 +4,7 @@ const {
   famille,
   anthropometrique,
   consulter_par,
-  user
+  user,
 } = require("../models");
 
 module.exports = {
@@ -189,14 +189,17 @@ module.exports = {
       patientId,
     });
 
-    // const findUser = await user.findOne({ where :{}})
-    const ConsulterPar = await consulter_par.create({
-      patientId,
-      userId: id_user,
-    });
-
-    return res
-      .status(200)
-      .json({ message: "Enregistrement effectuer avec succès" });
+    const findUser = await user.findOne({ where: { id: id_user } });
+    if (findUser) {
+      const ConsulterPar = await consulter_par.create({
+        patientId,
+        userId: id_user,
+      });
+      return res
+        .status(200)
+        .json({ message: "Enregistrement effectuer avec succès" });
+    } else {
+      res.status(400).json({ errpr: "L'utilisateur non trouvé" });
+    }
   },
 };
