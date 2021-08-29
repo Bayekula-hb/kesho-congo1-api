@@ -54,13 +54,19 @@ module.exports = {
     if (!findPatient) {
       res.status(400).json({ error: "Le patient non trouvé" });
     } else {
-      const anthropometriqueOnePatient = await anthropometrique.findAll({
-        where: { patientId },
-      });
+      const anthropometriqueOnePatient = await anthropometrique.findAndCountAll(
+        {
+          where: { patientId },
+          order: [["id", "DESC"]],
+          limit: 2,
+        }
+      );
       const consultant = await consulter_par.findAll({
         where: { patientId },
+        order: [["id", "DESC"]],
+        limit: 2,
       });
-      res.status(200).json({anthropometriqueOnePatient, consultant});
+      res.status(200).json({ anthropometriqueOnePatient, consultant });
     }
   },
 };

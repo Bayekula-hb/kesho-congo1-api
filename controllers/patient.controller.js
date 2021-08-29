@@ -148,7 +148,7 @@ module.exports = {
       mode_arrive,
       poids_naissance,
       telephone,
-      familleId:id_famille,
+      familleId: id_famille,
       date_naissance_patient,
     });
     const patientId = newPatient.id;
@@ -187,7 +187,7 @@ module.exports = {
       diversification_aliment,
       constitution_aliment,
       age_fin_allaitement,
-      allaitement_6mois
+      allaitement_6mois,
     });
 
     const newAnthropometrique = await anthropometrique.create({
@@ -211,6 +211,47 @@ module.exports = {
         .json({ message: "Enregistrement effectuer avec succès" });
     } else {
       res.status(400).json({ errpr: "L'utilisateur non trouvé" });
+    }
+  },
+  getPatient: async (req, res) => {
+    const { patientId } = res;
+    const patientFind = await patient.findOne({
+      where: { id: patientId },
+    });
+    const anthropometriqueFind = await anthropometrique.findAll({
+      where: { patientId },
+      order: [["id", "DESC"]],
+      limit: 1,
+    });
+    const consultant = await consulter_par.findAll({
+      where: { patientId },
+      order: [["id", "DESC"]],
+      limit: 1,
+    });
+    if (patientFind) {
+      res.status(200).json({patientFind, anthropometriqueFind, consultant});
+    } else {
+      res.status(400).json({ error: "patient inexistant" });
+    }
+  },
+  getAllPatient: async (req, res) => {
+    const patients = await patient.findAll({
+      attributes: [
+        "id",
+        "nom_patient",
+        "postnom_patient",
+        "prenom_patient",
+        "sexe_patient",
+        "date_naissance_patient",
+        "adresse_patient",
+        "provenance_patient",
+        "telephone",
+      ],
+    });
+    if (patients) {
+      res.status(200).json(patients);
+    } else {
+      res.status(500).json({ error: "service non disponible" });
     }
   },
 };
