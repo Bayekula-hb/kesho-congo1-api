@@ -44,6 +44,7 @@ patientRegisterMiddleware.use(
     body("mois_fin_allaitement").notEmpty().withMessage("Cannot be empty"),
     body("diversification_aliment").notEmpty().withMessage("Cannot be empty"),
     body("telephone").notEmpty().withMessage("Cannot be empty"),
+    body("image_patient").notEmpty().withMessage("Cannot be empty"),
     body("contraception_naturelle").notEmpty().withMessage("Cannot be empty"),
     body("adresse_patient").notEmpty().withMessage("Cannot be empty"),
     body("type_contraception").notEmpty().withMessage("Cannot be empty").matches(/\D/).withMessage("pas de chiffres"),
@@ -80,6 +81,10 @@ patientRegisterMiddleware.use(
     body("vaccin_non_recu").notEmpty().withMessage("Cannot be empty"),
     body("duree_produit_plante").notEmpty().withMessage("Cannot be empty"),
     body("date_naissance_patient").notEmpty().withMessage("Cannot be empty"),
+    body("date_naissance_tuteur").notEmpty().withMessage("Cannot be empty"),
+    body("allaitement_6mois").notEmpty().withMessage("Cannot be empty"),
+    body("age_fin_allaitement").notEmpty().withMessage("Cannot be empty"),
+    body("traitement_nutri").notEmpty().withMessage("Cannot be empty"),
   ],
   async (req, res, next) => {
     // Cause malnutrition

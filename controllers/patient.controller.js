@@ -13,6 +13,7 @@ module.exports = {
       atcd_mas,
       nbre_chute,
       mas_fratie,
+      date_naissance_tuteur,
       terme_grossesse,
       sejour_neonat,
       eig,
@@ -90,6 +91,11 @@ module.exports = {
       produit_plante,
       duree_produit_plante,
       id_user,
+      image_patient,
+      traitement_nutri,
+      constitution_aliment,
+      age_fin_allaitement,
+      allaitement_6mois,
     } = req.body;
 
     //Famille refactor insert
@@ -125,8 +131,27 @@ module.exports = {
       tbc_declarer_finie,
       nom_tuteur,
       taille_menage,
+      date_naissance_tuteur,
     });
     const id_famille = await newFamille.id;
+
+    //Patient
+    const newPatient = await patient.create({
+      nom_patient,
+      postnom_patient,
+      prenom_patient,
+      sexe_patient,
+      age_patient,
+      provenance_patient,
+      image_patient,
+      adresse_patient,
+      mode_arrive,
+      poids_naissance,
+      telephone,
+      familleId:id_famille,
+      date_naissance_patient,
+    });
+    const patientId = newPatient.id;
 
     //Cause_malnutrition
     const newCause_malnutrition = await cause_malnutrition.create({
@@ -155,29 +180,15 @@ module.exports = {
       vaccin_non_recu,
       produit_plante,
       duree_produit_plante,
-    });
-    const id_cause_malnutrition = await newCause_malnutrition.id;
-
-    //Patient
-    const newPatient = await patient.create({
-      nom_patient,
-      postnom_patient,
-      prenom_patient,
-      sexe_patient,
-      age_patient,
-      provenance_patient,
-      adresse_patient,
-      mode_arrive,
-      poids_naissance,
+      patientId,
       fin_allaitement,
       mois_fin_allaitement,
+      traitement_nutri,
       diversification_aliment,
-      telephone,
-      id_cause_malnutrition,
-      id_famille,
-      date_naissance_patient,
+      constitution_aliment,
+      age_fin_allaitement,
+      allaitement_6mois
     });
-    const patientId = newPatient.id;
 
     const newAnthropometrique = await anthropometrique.create({
       peri_cranien,

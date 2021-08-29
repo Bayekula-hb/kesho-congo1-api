@@ -1,66 +1,58 @@
-'use strict';
+"use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('patients', {
+    await queryInterface.createTable("patients", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       nom_patient: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       postnom_patient: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       prenom_patient: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       sexe_patient: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       date_naissance_patient: {
         allowNull: false,
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
       },
       adresse_patient: {
         allowNull: false,
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       provenance_patient: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       mode_arrive: {
         allowNull: false,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       poids_naissance: {
         allowNull: false,
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
       },
       image_patient: {
         allowNull: true,
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
       },
       telephone: {
         allowNull: true,
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      id_cause_malnutrition: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        references: {
-          model: "cause_malnutritions",
-          key: "id",
-        },
-      },
-      id_famille: {
+      familleId: {
         allowNull: false,
         type: Sequelize.INTEGER,
         references: {
@@ -70,15 +62,15 @@ module.exports = {
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('patients');
-  }
+    await queryInterface.dropTable("patients");
+  },
 };

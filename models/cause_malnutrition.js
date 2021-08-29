@@ -11,7 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.cause_malnutrition.hasMany(models.patient);
+      models.cause_malnutrition.belongsTo(models.patient, {
+        foreignKey: {
+          allowNull: false,
+        },
+      });
     }
   };
   cause_malnutrition.init({
@@ -37,14 +41,15 @@ module.exports = (sequelize, DataTypes) => {
     tbc: DataTypes.BOOLEAN,
     atcd_du_tbc_dans_fratrie: DataTypes.BOOLEAN,
     hospitalisation_recente: DataTypes.BOOLEAN,
-    diagnostic_hospitalisation: DataTypes.TEXT,
+    diagnostique_hospitalisation: DataTypes.TEXT,
     produit_plante: DataTypes.BOOLEAN,
     duree_produit_plante: DataTypes.INTEGER,
     cocktail_atb: DataTypes.BOOLEAN,
     duree_prise_atb: DataTypes.INTEGER,
     traitement_nutri: DataTypes.STRING,
     diversification_aliment: DataTypes.INTEGER,
-    constitution_aliment: DataTypes.TEXT
+    constitution_aliment: DataTypes.TEXT,
+    patientId : DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'cause_malnutrition',

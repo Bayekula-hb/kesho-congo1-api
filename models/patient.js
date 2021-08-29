@@ -12,17 +12,18 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       models.patient.hasMany(models.anthropometrique);
-      models.patient.hasMany(models.consulter_par);
+      models.patient.belongsToMany(models.user, { through: "consulter_par" });
+      models.patient.hasMany(models.cause_malnutrition);
       models.patient.belongsTo(models.famille, {
         foreignKey: {
           allowNull: false,
         },
       });
-      models.patient.belongsTo(models.cause_malnutrition, {
-        foreignKey: {
-          allowNull: false,
-        },
-      });
+      // models.patient.belongsTo(models.cause_malnutrition, {
+      //   foreignKey: {
+      //     allowNull: false,
+      //   },
+      // });
     }
   };
   patient.init({
@@ -37,8 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     poids_naissance: DataTypes.FLOAT,
     image_patient: DataTypes.TEXT,
     telephone: DataTypes.STRING,
-    id_cause_malnutrition: DataTypes.INTEGER,
-    id_famille: DataTypes.INTEGER
+    familleId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'patient',

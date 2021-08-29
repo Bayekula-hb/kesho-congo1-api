@@ -91,7 +91,7 @@ module.exports = {
       hospitalisation_recente: {
         type: Sequelize.BOOLEAN,
       },
-      diagnostic_hospitalisation: {
+      diagnostique_hospitalisation: {
         allowNull: true,
         type: Sequelize.TEXT,
       },
@@ -122,6 +122,14 @@ module.exports = {
       constitution_aliment: {
         allowNull: true,
         type: Sequelize.TEXT,
+      },
+      patientId: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+        references: {
+          model: "patients",
+          key: "id",
+        },
       },
       createdAt: {
         allowNull: false,
