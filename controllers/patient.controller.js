@@ -215,21 +215,28 @@ module.exports = {
   },
   getPatient: async (req, res) => {
     const { patientId } = res;
-    const patientFind = await patient.findOne({
+    const Patient = await patient.findOne({
       where: { id: patientId },
     });
-    const anthropometriqueFind = await anthropometrique.findAll({
+    const id_famillePatient = Patient.familleId;
+    const Anthropometrique = await anthropometrique.findAll({
       where: { patientId },
       order: [["id", "DESC"]],
       limit: 1,
+    });
+    const Famille = await famille.findOne({
+      where: { id:id_famillePatient},
+      attributes:[
+        "nom_tuteur"
+      ]
     });
     const consultant = await consulter_par.findAll({
       where: { patientId },
       order: [["id", "DESC"]],
       limit: 1,
     });
-    if (patientFind) {
-      res.status(200).json({patientFind, anthropometriqueFind, consultant});
+    if (Patient) {
+      res.status(200).json({Patient, Anthropometrique, consultant, Famille});
     } else {
       res.status(400).json({ error: "patient inexistant" });
     }

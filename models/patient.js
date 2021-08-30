@@ -19,11 +19,6 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       });
-      // models.patient.belongsTo(models.cause_malnutrition, {
-      //   foreignKey: {
-      //     allowNull: false,
-      //   },
-      // });
     }
   };
   patient.init({

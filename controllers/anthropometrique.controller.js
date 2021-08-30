@@ -58,15 +58,16 @@ module.exports = {
         {
           where: { patientId },
           order: [["id", "DESC"]],
-          limit: 2,
+          limit: 3,
         }
       );
+      
       const consultant = await consulter_par.findAll({
         where: { patientId },
         order: [["id", "DESC"]],
-        limit: 2,
+        limit: 3,
       });
       res.status(200).json({ anthropometriqueOnePatient, consultant });
     }
   },
-};
+}; 
