@@ -230,13 +230,23 @@ module.exports = {
         "nom_tuteur"
       ]
     });
-    const consultant = await consulter_par.findAll({
+    const consultant = await consulter_par.findOne({
       where: { patientId },
       order: [["id", "DESC"]],
       limit: 1,
     });
+    const dataConsultation = await consultant.createdAt;
+    const {userId} = await consultant;
+    const name_consultant = await user.findOne({
+      where: { id:userId},
+      attributes:[
+        "nom_user",
+        "postnom_user",
+        "prenom_user"
+      ]
+    })
     if (Patient) {
-      res.status(200).json({Patient, Anthropometrique, consultant, Famille});
+      res.status(200).json({Patient, Anthropometrique, Famille, name_consultant, dataConsultation});
     } else {
       res.status(400).json({ error: "patient inexistant" });
     }
