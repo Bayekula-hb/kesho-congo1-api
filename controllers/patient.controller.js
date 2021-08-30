@@ -215,6 +215,7 @@ module.exports = {
       res.status(400).json({ errpr: "L'utilisateur non trouvé" });
     }
   },
+  
   getPatient: async (req, res) => {
     const { patientId } = res;
     const Patient = await patient.findOne({
