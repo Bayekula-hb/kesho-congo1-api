@@ -5,7 +5,9 @@ const {
   anthropometrique,
   consulter_par,
   user,
+  sequelize,
 } = require("../models");
+const { QueryTypes } = require("sequelize");
 
 module.exports = {
   registerPatient: async (req, res, next) => {
@@ -217,42 +219,6 @@ module.exports = {
     const { patientId } = res;
     const Patient = await patient.findOne({
       where: { id: patientId },
-    });
-    const id_famillePatient = Patient.familleId;
-    const Anthropometrique = await anthropometrique.findAll({
-      where: { patientId },
-      order: [["id", "DESC"]],
-      limit: 1,
-    });
-    const Famille = await famille.findOne({
-      where: { id:id_famillePatient},
-      attributes:[
-        "nom_tuteur"
-      ]
-    });
-    const consultant = await consulter_par.findOne({
-      where: { patientId },
-      order: [["id", "DESC"]],
-      limit: 1,
-    });
-    const dataConsultation = await consultant.createdAt;
-    const {userId} = await consultant;
-    const name_consultant = await user.findOne({
-      where: { id:userId},
-      attributes:[
-        "nom_user",
-        "postnom_user",
-        "prenom_user"
-      ]
-    })
-    if (Patient) {
-      res.status(200).json({Patient, Anthropometrique, Famille, name_consultant, dataConsultation});
-    } else {
-      res.status(400).json({ error: "patient inexistant" });
-    }
-  },
-  getAllPatient: async (req, res) => {
-    const patients = await patient.findAll({
       attributes: [
         "id",
         "nom_patient",
@@ -262,11 +228,81 @@ module.exports = {
         "date_naissance_patient",
         "adresse_patient",
         "provenance_patient",
+        "mode_arrive",
         "telephone",
+        "familleId",
       ],
     });
+    const id_famillePatient = Patient.familleId;
+    const Anthropometrique = await anthropometrique.findAll({
+      where: { patientId },
+      order: [["id", "DESC"]],
+      limit: 3,
+      attributes: [
+        "peri_cranien",
+        "peri_brachial",
+        "poids",
+        "taille",
+        "type_malnutrition",
+        "date_examen",
+      ],
+    });
+    const Famille = await famille.findOne({
+      where: { id: id_famillePatient },
+      attributes: ["nom_tuteur"],
+    });
+    const consultant = await consulter_par.findOne({
+      where: { patientId },
+      order: [["id", "DESC"]],
+      limit: 1,
+    });
+    const date_consultation = await consultant.createdAt;
+    const { userId } = await consultant;
+    const name_consultant = await user.findOne({
+      where: { id: userId },
+      attributes: ["nom_user", "postnom_user", "prenom_user"],
+    });
+    if (Patient) {
+      res.status(200).json({
+        Patient,
+        Anthropometrique,
+        Famille,
+        name_consultant,
+        date_consultation,
+      });
+    } else {
+      res.status(400).json({ error: "patient inexistant" });
+    }
+  },
+  getAllPatient: async (req, res) => {
+    // const patients = await patient.findAll({
+    //   attributes: [
+    //     "id",
+    //     "nom_patient",
+    //     "postnom_patient",
+    //     "prenom_patient",
+    //     "sexe_patient",
+    //     "date_naissance_patient",
+    //     "adresse_patient",
+    //     "provenance_patient",
+    //     "telephone",
+    //   ],
+    // });
+    // const consultant = await consulter_par.findAll({
+    //   // where: { patientId:patients.id },
+    //   // order: [["id", "DESC"]],
+    //   group:["consulter_par.patientId"]
+    //   // limit: 1,
+    // });
+
+    const patients = await sequelize.query(
+      "SELECT patients.id, nom_patient, prenom_patient, date_naissance_patient, sexe_patient, type_malnutrition, userId, date_examen, nom_user, postnom_user FROM ((patients INNER JOIN consulter_pars on patients.id = patientId) INNER JOIN anthropometriques on patients.id = anthropometriques.patientId INNER JOIN users on consulter_pars.userId = users.id) ",
+      {
+        type: QueryTypes.SELECT,
+      }
+    );
     if (patients) {
-      res.status(200).json(patients);
+      res.status(200).json({ patients });
     } else {
       res.status(500).json({ error: "service non disponible" });
     }
