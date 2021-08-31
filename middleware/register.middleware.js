@@ -11,5 +11,3 @@ registerMiddleware.post("/user",passport.authenticate("jwt", { session: false })
 registerMiddleware.post("/patient", passport.authenticate("jwt", { session: false }), patientRegisterMiddleware);
 
 module.exports = registerMiddleware;
-
-// eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJrZXZpbmFybWFjaGVAZ21haWwuY29tIiwiaWF0IjoxNjMwNDIwMDY1fQ.BcqZPxzgfPUY29HPM9WkgWt3StfF1gPsQMV4MGloueY
