@@ -298,14 +298,30 @@ module.exports = {
     //   // limit: 1,
     // });
 
-    const patients = await sequelize.query(
-      "SELECT patients.id, nom_patient, prenom_patient, date_naissance_patient, sexe_patient, type_malnutrition, userId, date_examen, nom_user, postnom_user FROM ((patients INNER JOIN consulter_pars on patients.id = patientId) INNER JOIN anthropometriques on patients.id = anthropometriques.patientId INNER JOIN users on consulter_pars.userId = users.id) ",
-      {
-        type: QueryTypes.SELECT,
-      }
-    );
-    if (patients) {
-      res.status(200).json({ patients });
+    // const patients = await sequelize.query(
+    //   "SELECT patients.id, nom_patient, prenom_patient, date_naissance_patient, sexe_patient, type_malnutrition, userId, date_examen, nom_user, postnom_user FROM ((patients INNER JOIN consulter_pars on patients.id = patientId) INNER JOIN anthropometriques on patients.id = anthropometriques.patientId INNER JOIN users on consulter_pars.userId = users.id) ",
+    //   {
+    //     type: QueryTypes.SELECT,
+    //   }
+    // );
+    const Patients = await sequelize.query(
+      `select C2.patientId, nom_patient, postnom_patient, date_naissance_patient, C2.date_consultation, type_malnutrition,nom_user as nom_consultant, postnom_user  as postnom_consultant  from consulter_pars as C 
+      inner join (
+      select id, userId, patientId, max(createdAt) as date_consultation
+      from consulter_pars 
+      group by patientId) as C2
+      on C.patientId = C2.patientId and C.createdAt = C2.date_consultation
+      inner join patients
+      on C2.patientId = patients.id
+      inner join familles
+      on patients.familleId = familles.id
+      inner join users
+      on C2.userId = users.id
+      inner join anthropometriques
+      on C2.patientId = anthropometriques.id`,
+      {type : QueryTypes.SELECT,})
+    if (Patients) {
+      res.status(200).json({ Patients });
     } else {
       res.status(500).json({ error: "service non disponible" });
     }
