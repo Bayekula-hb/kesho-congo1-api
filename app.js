@@ -11,6 +11,7 @@ const patientRoute = require("./routes/patient.route");
 const getPatientMiddleware = require("./middleware/patient/patient.getall.middleware");
 const deletePatient = require("./middleware/patient/patient.destroy");
 const { getAllPatient } = require("./controllers/patient.controller");
+const routeReporting = require("./routes/reporting")
 const passport = require("passport");
 
 const corsOptions = {
@@ -62,5 +63,8 @@ app.use(
   getAllPatient
 );
 
+//Route Reporting
+
+app.use("/reporting", routeReporting);
 
 module.exports = app;
