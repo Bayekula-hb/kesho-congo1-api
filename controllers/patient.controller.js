@@ -8,6 +8,7 @@ const {
   sequelize,
 } = require("../models");
 const { QueryTypes } = require("sequelize");
+const { compareSync } = require("bcrypt");
 
 module.exports = {
   registerPatient: async (req, res, next) => {
@@ -308,6 +309,24 @@ module.exports = {
       res.status(200).json({ patients });
     } else {
       res.status(500).json({ error: "service non disponible" });
+    }
+  },
+
+  deletePatient: async (req, res) => {
+    const { id } = res;
+    const patientFind = await patient.findOne({ where: { id } });
+    if (!patientFind) {
+      res.status(400).json({
+        error: `Le patient ayant l'identifiant ${id} est introuvable`,
+      });
+    }
+    const patientDelete = await patient.destroy({ where: { id } });
+    if (patientDelete) {
+      res
+        .status(200)
+        .json({
+          message: `Le patient ${patient.dataValues.prenom_patient} ${patient.dataValues.nom_patient} a été supprimé`,
+        });
     }
   },
 };
