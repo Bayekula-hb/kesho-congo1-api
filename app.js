@@ -9,7 +9,8 @@ const getUserMiddleware = require("./middleware/user/user.get.middleware");
 const anthropometriqueRoute = require("./routes/anthropometrique.route");
 const patientRoute = require("./routes/patient.route");
 const getPatientMiddleware = require("./middleware/patient/patient.getall.middleware");
-const { getAllPatient } = require("./controllers/patient.controller");
+const deletePatient = require("./middleware/patient/patient.destroy")
+const { getAllPatient} = require("./controllers/patient.controller");
 const passport = require("passport");
 
 const corsOptions = {
@@ -60,5 +61,11 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   getAllPatient
 );
+app.use(
+  "/patientDelete",
+  passport.authenticate("jwt", { session: false }),
+  deletePatient
+);
+
 
 module.exports = app;

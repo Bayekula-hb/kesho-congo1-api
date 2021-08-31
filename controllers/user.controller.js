@@ -31,7 +31,7 @@ module.exports = {
     });
     if (userOne) {
       return res.status(200).json(userOne);
-    }else{
+    } else {
       return res.status(400).json({
         message: `Le personnel ayant l'identifiant ${id} est introuvable`,
       });
