@@ -6,7 +6,7 @@ const patientDestroyMiddleware = express();
 patientDestroyMiddleware.use([
   query("id")
     .notEmpty()
-    .withMessage("id is required")
+    .withMessage("id of patient is required")
     .matches(/\d/)
     .withMessage("must contain a number")],
     (req, res, next) => {

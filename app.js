@@ -61,11 +61,6 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   getAllPatient
 );
-app.use(
-  "/patientDelete",
-  passport.authenticate("jwt", { session: false }),
-  deletePatient
-);
 
 
 module.exports = app;

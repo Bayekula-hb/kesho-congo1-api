@@ -279,32 +279,6 @@ module.exports = {
     }
   },
   getAllPatient: async (req, res) => {
-    // const patients = await patient.findAll({
-    //   attributes: [
-    //     "id",
-    //     "nom_patient",
-    //     "postnom_patient",
-    //     "prenom_patient",
-    //     "sexe_patient",
-    //     "date_naissance_patient",
-    //     "adresse_patient",
-    //     "provenance_patient",
-    //     "telephone",
-    //   ],
-    // });
-    // const consultant = await consulter_par.findAll({
-    //   // where: { patientId:patients.id },
-    //   // order: [["id", "DESC"]],
-    //   group:["consulter_par.patientId"]
-    //   // limit: 1,
-    // });
-
-    // const patients = await sequelize.query(
-    //   "SELECT patients.id, nom_patient, prenom_patient, date_naissance_patient, sexe_patient, type_malnutrition, userId, date_examen, nom_user, postnom_user FROM ((patients INNER JOIN consulter_pars on patients.id = patientId) INNER JOIN anthropometriques on patients.id = anthropometriques.patientId INNER JOIN users on consulter_pars.userId = users.id) ",
-    //   {
-    //     type: QueryTypes.SELECT,
-    //   }
-    // );
     const Patients = await sequelize.query(
       `select C2.patientId, nom_patient, postnom_patient, date_naissance_patient, C2.date_consultation, type_malnutrition,nom_user as nom_consultant, postnom_user  as postnom_consultant  from consulter_pars as C 
       inner join (
@@ -320,7 +294,8 @@ module.exports = {
       on C2.userId = users.id
       inner join anthropometriques
       on C2.patientId = anthropometriques.id`,
-      {type : QueryTypes.SELECT,})
+      { type: QueryTypes.SELECT }
+    );
     if (Patients) {
       res.status(200).json({ Patients });
     } else {
@@ -336,13 +311,21 @@ module.exports = {
         error: `Le patient ayant l'identifiant ${id} est introuvable`,
       });
     }
-    const patientDelete = await patient.destroy({ where: { id } });
+    const patientDelete = await sequelize.query(
+      `
+      ALTER TABLE patients
+      ADD CONSTRAINT patients_ibfk_1 FOREIGN KEY (id) 
+      REFERENCES consulter_pars (patientId)
+      REFERENCES anthropometriques (patientId)
+      REFERENCES cause_malnutritions (patientId)`,
+      { type: QueryTypes.DELETE }
+    );
     if (patientDelete) {
-      res
-        .status(200)
-        .json({
-          message: `Le patient ${patient.dataValues.prenom_patient} ${patient.dataValues.nom_patient} a été supprimé`,
-        });
+      res.status(200).json({
+        message: `Le patient ${patient.dataValues.prenom_patient} ${patient.dataValues.nom_patient} a été supprimé`,
+      });
+    } else {
+      res.status(400).json({ error: `${error} ${patientDelete}` });
     }
   },
 };
