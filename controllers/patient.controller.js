@@ -306,26 +306,26 @@ module.exports = {
   deletePatient: async (req, res) => {
     const { id } = res;
     const patientFind = await patient.findOne({ where: { id } });
-    if (!patientFind) {
-      res.status(400).json({
-        error: `Le patient ayant l'identifiant ${id} est introuvable`,
-      });
+    if (patientFind) {
+      const patientDelete = await sequelize.query(
+        `
+      DELETE FROM (
+        SELECT * FROM patients join anthropometriques using(id)
+        WHERE patientId = ${id}
+      )
+      `,
+        { type: QueryTypes.DELETE }
+      );
+      if (patientDelete) {
+        res.status(200).json({
+          message: `Le patient ${patient.dataValues.prenom_patient} ${patient.dataValues.nom_patient} a été supprimé`,
+        });
+      } else {
+        res.status(400).json({ error: `${error} ${patientDelete}` });
+      }
     }
-    const patientDelete = await sequelize.query(
-      `
-      ALTER TABLE patients
-      ADD CONSTRAINT patients_ibfk_1 FOREIGN KEY (id) 
-      REFERENCES consulter_pars (patientId)
-      REFERENCES anthropometriques (patientId)
-      REFERENCES cause_malnutritions (patientId)`,
-      { type: QueryTypes.DELETE }
-    );
-    if (patientDelete) {
-      res.status(200).json({
-        message: `Le patient ${patient.dataValues.prenom_patient} ${patient.dataValues.nom_patient} a été supprimé`,
-      });
-    } else {
-      res.status(400).json({ error: `${error} ${patientDelete}` });
-    }
+    res.status(400).json({
+      error: `Le patient ayant l'identifiant ${id} est introuvable`,
+    });
   },
 };
