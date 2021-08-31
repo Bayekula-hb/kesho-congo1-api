@@ -8,8 +8,6 @@ const getUserMiddleware = express();
 getUserMiddleware.use(
   [
     param("id").isEmpty().withMessage("paramètre manquant"),
-    // .matches(/\d/)
-    // .withMessage("paramètre non valide"),
   ],
   (req, res, next) => {
     let { id } = req.query;
