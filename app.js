@@ -42,11 +42,7 @@ app.use(function (req, res, next) {
 });
 
 app.use("/auth", authRoute);
-app.use(
-  "/register",
-  passport.authenticate("jwt", { session: false }),
-  registerRoute
-);
+app.use("/register", registerRoute);
 app.get(
   "/user",
   passport.authenticate("jwt", { session: false }),
