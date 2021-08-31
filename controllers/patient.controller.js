@@ -215,7 +215,7 @@ module.exports = {
       res.status(400).json({ errpr: "L'utilisateur non trouvé" });
     }
   },
-  
+
   getPatient: async (req, res) => {
     const { patientId } = res;
     const Patient = await patient.findOne({
@@ -234,36 +234,40 @@ module.exports = {
         "familleId",
       ],
     });
-    const id_famillePatient = Patient.familleId;
-    const Anthropometrique = await anthropometrique.findAll({
-      where: { patientId },
-      order: [["id", "DESC"]],
-      limit: 3,
-      attributes: [
-        "peri_cranien",
-        "peri_brachial",
-        "poids",
-        "taille",
-        "type_malnutrition",
-        "date_examen",
-      ],
-    });
-    const Famille = await famille.findOne({
-      where: { id: id_famillePatient },
-      attributes: ["nom_tuteur"],
-    });
-    const consultant = await consulter_par.findOne({
-      where: { patientId },
-      order: [["id", "DESC"]],
-      limit: 1,
-    });
-    const date_consultation = await consultant.createdAt;
-    const { userId } = await consultant;
-    const name_consultant = await user.findOne({
-      where: { id: userId },
-      attributes: ["nom_user", "postnom_user", "prenom_user"],
-    });
-    if (Patient) {
+    if (!Patient) {
+      res
+        .status(400)
+        .json({ error: `Le patient ayant l'identifiant ${patientId} pas` });
+    } else {
+      const id_famillePatient = Patient.familleId;
+      const Anthropometrique = await anthropometrique.findAll({
+        where: { patientId },
+        order: [["id", "DESC"]],
+        limit: 3,
+        attributes: [
+          "peri_cranien",
+          "peri_brachial",
+          "poids",
+          "taille",
+          "type_malnutrition",
+          "date_examen",
+        ],
+      });
+      const Famille = await famille.findOne({
+        where: { id: id_famillePatient },
+        attributes: ["nom_tuteur"],
+      });
+      const consultant = await consulter_par.findOne({
+        where: { patientId },
+        order: [["id", "DESC"]],
+        limit: 1,
+      });
+      const date_consultation = await consultant.createdAt;
+      const { userId } = await consultant;
+      const name_consultant = await user.findOne({
+        where: { id: userId },
+        attributes: ["nom_user", "postnom_user", "prenom_user"],
+      });
       res.status(200).json({
         Patient,
         Anthropometrique,
@@ -271,8 +275,6 @@ module.exports = {
         name_consultant,
         date_consultation,
       });
-    } else {
-      res.status(400).json({ error: "patient inexistant" });
     }
   },
   getAllPatient: async (req, res) => {
