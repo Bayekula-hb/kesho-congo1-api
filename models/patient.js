@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class patient extends Model {
     /**
@@ -11,32 +9,48 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.patient.hasMany(models.anthropometrique);
-      models.patient.belongsToMany(models.user, { through: "consulter_par" });
-      models.patient.hasMany(models.cause_malnutrition);
+      models.patient.hasMany(models.anthropometrique, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
+      models.patient.belongsToMany(
+        models.user,
+        { through: "consulter_par" },
+        {
+          onDelete: "CASCADE",
+          onUpdate: "CASCADE",
+        }
+      );
+      models.patient.hasMany(models.cause_malnutrition, {
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
       models.patient.belongsTo(models.famille, {
         foreignKey: {
           allowNull: false,
         },
       });
     }
-  };
-  patient.init({
-    nom_patient: DataTypes.STRING,
-    postnom_patient: DataTypes.STRING,
-    prenom_patient: DataTypes.STRING,
-    sexe_patient: DataTypes.STRING,
-    date_naissance_patient: DataTypes.DATEONLY,
-    adresse_patient: DataTypes.TEXT,
-    provenance_patient: DataTypes.STRING,
-    mode_arrive: DataTypes.STRING,
-    poids_naissance: DataTypes.FLOAT,
-    image_patient: DataTypes.TEXT,
-    telephone: DataTypes.STRING,
-    familleId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'patient',
-  });
+  }
+  patient.init(
+    {
+      nom_patient: DataTypes.STRING,
+      postnom_patient: DataTypes.STRING,
+      prenom_patient: DataTypes.STRING,
+      sexe_patient: DataTypes.STRING,
+      date_naissance_patient: DataTypes.DATEONLY,
+      adresse_patient: DataTypes.TEXT,
+      provenance_patient: DataTypes.STRING,
+      mode_arrive: DataTypes.STRING,
+      poids_naissance: DataTypes.FLOAT,
+      image_patient: DataTypes.TEXT,
+      telephone: DataTypes.STRING,
+      familleId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: "patient",
+    }
+  );
   return patient;
 };

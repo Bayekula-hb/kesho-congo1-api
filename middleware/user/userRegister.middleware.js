@@ -42,7 +42,7 @@ userRegisterMiddleware.use(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
+    
     res.password = bcrypt.hashSync(password, 10);
     res.email = email;
     res.nom_user = nom_user;

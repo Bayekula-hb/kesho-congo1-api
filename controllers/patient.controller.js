@@ -238,11 +238,9 @@ module.exports = {
           ],
         });
         if (!Patient) {
-          res
-            .status(400)
-            .json({
-              error: `Le patient ayant l'identifiant ${patientId} est introuvable`,
-            });
+          res.status(400).json({
+            error: `Le patient ayant l'identifiant ${patientId} est introuvable`,
+          });
         } else {
           const id_famillePatient = Patient.familleId;
           const Anthropometrique = await anthropometrique.findAll({
@@ -318,22 +316,10 @@ module.exports = {
         const { id } = res;
         const patientFind = await patient.findOne({ where: { id } });
         if (patientFind) {
-          const patientDelete = await sequelize.query(
-            `
-            DELETE FROM (
-              SELECT * FROM patients join anthropometriques using(id)
-              WHERE patientId = ${id}
-            )
-            `,
-            { type: QueryTypes.DELETE }
-          );
-          if (patientDelete) {
+          patientFind.destroy();
             res.status(200).json({
-              message: `Le patient ${patient.dataValues.prenom_patient} ${patient.dataValues.nom_patient} a été supprimé`,
-            });
-          } else {
-            res.status(400).json({ error: `${error} ${patientDelete}` });
-          }
+              message: `Le patient  a été supprimé`,
+            })
         }
         res.status(400).json({
           error: `Le patient ayant l'identifiant ${id} est introuvable`,

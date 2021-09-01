@@ -7,9 +7,13 @@ const user = require("../models/user");
 
 const registerMiddleware = express();
 
+// registerMiddleware.post(
+//   "/user",
+//   passport.authenticate("jwt", { session: false }),
+//   userRegisterMiddleware
+// );
 registerMiddleware.post(
   "/user",
-  passport.authenticate("jwt", { session: false }),
   userRegisterMiddleware
 );
 registerMiddleware.post(

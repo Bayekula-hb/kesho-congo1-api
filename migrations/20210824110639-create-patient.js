@@ -59,6 +59,8 @@ module.exports = {
           model: "familles",
           key: "id",
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       createdAt: {
         allowNull: false,

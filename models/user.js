@@ -8,7 +8,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      models.user.belongsToMany(models.patient, { through: "consulter_par" });
+      models.user.belongsToMany(
+        models.patient,
+        { through: "consulter_par" },
+        {
+          onDelete: "CASCADE",
+          onUpdate: "CASCADE",
+        }
+      );
     }
   }
   user.init(

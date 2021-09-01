@@ -35,30 +35,32 @@ module.exports = {
     }
   },
   registerUser: async (req, res, next) => {
-    if (req.user.is_admin !== true)
-      return res.status(400).send("Access denied. You are not an admin.");
-    try {
-      const alreadyExistsUser = await user.findOne({
-        where: { email: req.body.email },
-      });
-      if (!alreadyExistsUser) {
-        const userCreate = await user.create(req.body);
-        return res.status(200).json({ message: "Thanks for registering" });
-      } else {
+    console.log("res.user.is_admin : ", req )
+    // if (res.user.is_admin !== true) {
+      try {
+        const alreadyExistsUser = await user.findOne({
+          where: { email: req.body.email },
+        });
+        if (!alreadyExistsUser) {
+          const userCreate = await user.create(res);
+          return res.status(200).json({ message: "Thanks for registering" });
+        } else {
+          return res
+            .status(400)
+            .json({ message: "User with email already exists!" });
+        }
+      } catch (error) {
         return res
-          .status(400)
-          .json({ message: "User with email already exists!" });
+          .status(500)
+          .json({ error: `Cannot register user at the moment! : ${error}` });
       }
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ error: `Cannot register user at the moment! : ${error}` });
-    }
+    // } else {
+    //   return res.status(400).send("Access denied. You are not an admin.");
+    // }
   },
-
   deleteUser: async (req, res) => {
     if (req.user.is_admin !== true)
-    return res.status(400).send("Access denied. You are not an admin.");
+      return res.status(400).send("Access denied. You are not an admin.");
     try {
       const result = await sequelize.transaction(async (t) => {
         const { id } = res;
@@ -84,31 +86,8 @@ module.exports = {
         error: `${error}`,
       });
     }
-
-    //
-
-    // if (req.user.is_admin !== true)
-    //   return res.status(400).send("Access denied. You are not an admin.");
-    // try {
-    //   const alreadyExistsUser = await user.findOne({
-    //     where: { email: req.body.email },
-    //   });
-    //   if (!alreadyExistsUser) {
-    //     const userCreate = await user.create(req.body);
-    //     return res.status(200).json({ message: "Thanks for registering" });
-    //   } else {
-    //     return res
-    //       .status(400)
-    //       .json({ message: "User with email already exists!" });
-    //   }
-    // } catch (error) {
-    //   return res
-    //     .status(500)
-    //     .json({ error: `Cannot register user at the moment! : ${error}` });
-    // }
   },
   updateUser: async (req, res) => {
-    console.log(req.user.is_admin)
     if (req.user.is_admin === true)
       return res
         .status(400)

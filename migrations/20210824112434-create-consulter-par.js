@@ -15,6 +15,8 @@ module.exports = {
           model: "users",
           key: "id",
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       patientId: {
         allowNull: false,
@@ -23,6 +25,8 @@ module.exports = {
           model: "patients",
           key: "id",
         },
+        onDelete: 'CASCADE',
+        onUpdate: 'CASCADE',
       },
       createdAt: {
         allowNull: false,
