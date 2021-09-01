@@ -117,3 +117,12 @@ json:
       "image_user":"www.google.com",
       "statut":"Doctor"
 }
+
+
+DELETE one user with Token required :
+
+route : /users?id=3 
+
+DELETE one patient with Token required :
+
+route : /users?id=3 

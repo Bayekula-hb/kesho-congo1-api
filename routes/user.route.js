@@ -1,7 +1,7 @@
 const { getAllUser } = require("../controllers/user.controller");
 const userDestroyMiddleware = require("../middleware/user/user.destroy.middleware");
 const userUpdateMiddleware = require("../middleware/user/user.update.middleware");
-const passport = require("passport");
+
 
 const router = require("express").Router();
 
