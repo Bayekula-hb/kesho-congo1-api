@@ -11,7 +11,7 @@ const patientRoute = require("./routes/patient.route");
 const getPatientMiddleware = require("./middleware/patient/patient.getall.middleware");
 const deletePatient = require("./middleware/patient/patient.destroy");
 const { getAllPatient } = require("./controllers/patient.controller");
-const routeReporting = require("./routes/reporting")
+const routeReporting = require("./routes/reporting");
 const passport = require("passport");
 
 const corsOptions = {
@@ -43,7 +43,11 @@ app.use(function (req, res, next) {
 });
 
 app.use("/auth", authRoute);
-app.use("/register", registerRoute);
+app.use(
+  "/register",
+  passport.authenticate("jwt", { session: false }),
+  registerRoute
+);
 app.get(
   "/user",
   passport.authenticate("jwt", { session: false }),

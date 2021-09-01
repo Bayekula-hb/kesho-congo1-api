@@ -34,9 +34,8 @@ module.exports = {
       });
     }
   },
-  registerUser: async (req, res, next) => {
-    console.log("res.user.is_admin : ", req )
-    // if (res.user.is_admin !== true) {
+  registerUser: async (req, res) => {
+    if (req.user.is_admin == true) {
       try {
         const alreadyExistsUser = await user.findOne({
           where: { email: req.body.email },
@@ -54,9 +53,9 @@ module.exports = {
           .status(500)
           .json({ error: `Cannot register user at the moment! : ${error}` });
       }
-    // } else {
-    //   return res.status(400).send("Access denied. You are not an admin.");
-    // }
+    } else {
+      return res.status(400).send("Access denied. You are not an admin.");
+    }
   },
   deleteUser: async (req, res) => {
     if (req.user.is_admin !== true)
