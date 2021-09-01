@@ -38,12 +38,8 @@ module.exports = {
     }
   },
   registerUser: async (req, res, next) => {
-    const token = req.header("Authorization");
-    console.log(token);
-    console.log(req.user.is_admin);
-
     if (req.user.is_admin !== true)
-      res.status(400).send("Access denied. You are not an admin.");
+     return res.status(400).send("Access denied. You are not an admin.");
     try {
     
       const alreadyExistsUser = await user.findOne({ where: { email: req.body.email }});
