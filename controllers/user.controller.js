@@ -57,6 +57,8 @@ module.exports = {
   },
 
   deleteUser: async (req, res) => {
+    if (req.user.is_admin !== true)
+    return res.status(400).send("Access denied. You are not an admin.");
     try {
       const result = await sequelize.transaction(async (t) => {
         const { id } = res;
@@ -69,7 +71,7 @@ module.exports = {
             },
           });
           return res.status(200).json({
-            message: `${userFind.dataValues.nom_user} ${userFind.dataValues.postnom_user} est suprimé avec succès`,
+            message: `${userFind.dataValues.nom_user} ${userFind.dataValues.postnom_user} est supprimé avec succès`,
           });
         } else {
           return res.status(400).json({
@@ -82,6 +84,28 @@ module.exports = {
         error: `${error}`,
       });
     }
+
+    //
+
+    // if (req.user.is_admin !== true)
+    //   return res.status(400).send("Access denied. You are not an admin.");
+    // try {
+    //   const alreadyExistsUser = await user.findOne({
+    //     where: { email: req.body.email },
+    //   });
+    //   if (!alreadyExistsUser) {
+    //     const userCreate = await user.create(req.body);
+    //     return res.status(200).json({ message: "Thanks for registering" });
+    //   } else {
+    //     return res
+    //       .status(400)
+    //       .json({ message: "User with email already exists!" });
+    //   }
+    // } catch (error) {
+    //   return res
+    //     .status(500)
+    //     .json({ error: `Cannot register user at the moment! : ${error}` });
+    // }
   },
   updateUser: async (req, res) => {
     console.log(req.user.is_admin)
@@ -116,26 +140,5 @@ module.exports = {
         message: `Impossible de mettre à jour ce personnel ${userFind.dataValues.nom_user} ${userFind.dataValues.postnom_user} ${Error}`,
       });
     }
-
-    //
-    //   if (req.user.is_admin !== true)
-    //   return res.status(400).send("Access denied. You are not an admin.");
-    // try {
-    //   const alreadyExistsUser = await user.findOne({
-    //     where: { email: req.body.email },
-    //   });
-    //   if (!alreadyExistsUser) {
-    //     const userCreate = await user.create(req.body);
-    //     return res.status(200).json({ message: "Thanks for registering" });
-    //   } else {
-    //     return res
-    //       .status(400)
-    //       .json({ message: "User with email already exists!" });
-    //   }
-    // } catch (error) {
-    //   return res
-    //     .status(500)
-    //     .json({ error: `Cannot register user at the moment! : ${error}` });
-    // }
   },
 };
