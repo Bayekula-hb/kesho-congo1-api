@@ -1,6 +1,6 @@
 const express = require("express");
 const patientRegisterMiddleware = require("./patient/patient.register.middleware");
-const userRegisterMiddleware = require("./user/userRegister.middleware");
+const userRegisterMiddleware = require("./user/user.register.middleware");
 const passport = require("passport");
 const { verify } = require("jsonwebtoken");
 const user = require("../models/user");
