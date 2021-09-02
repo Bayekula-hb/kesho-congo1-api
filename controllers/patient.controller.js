@@ -487,20 +487,30 @@ module.exports = {
     try {
       const result = await sequelize.transaction(async (t) => {
         const Patients = await sequelize.query(
-          `select C2.patientId, nom_patient, postnom_patient, date_naissance_patient, C2.date_consultation, type_malnutrition,nom_user as nom_consultant, postnom_user  as postnom_consultant  from consulter_pars as C 
-            inner join (
-            select id, userId, patientId, max(createdAt) as date_consultation
-            from consulter_pars 
-            group by patientId) as C2
-            on C.patientId = C2.patientId and C.createdAt = C2.date_consultation
-            inner join patients
-            on C2.patientId = patients.id
-            inner join familles
-            on patients.familleId = familles.id
-            inner join users
-            on C2.userId = users.id
-            inner join anthropometriques
-            on C2.patientId = anthropometriques.id`,
+          `select Pa.id, nom_patient, postnom_patient, Anthr.type_malnutrition, Date_Consultation, nom_user as nom_consultant, postnom_user as postnom_consultant  from
+          patients as Pa
+          inner join (
+            SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+            FROM anthropometriques
+            WHERE createdAt IN (
+              SELECT MAX(createdAt)
+              FROM anthropometriques
+              GROUP BY patientId
+            )
+          ) as Anthr
+          on Anthr.patientId = Pa.id
+          inner join (
+          SELECT id, patientId, userId
+          FROM consulter_pars
+          WHERE createdAt IN (
+              SELECT MAX(createdAt)
+              FROM consulter_pars
+              GROUP BY patientId
+          )
+          ) as Cons
+          on Anthr.patientId = Cons.patientId 
+          inner join users
+          on Cons.userId = users.id`,
           { type: QueryTypes.SELECT }
         );
         res.status(200).json({ Patients });
