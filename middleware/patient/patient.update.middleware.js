@@ -1,14 +1,14 @@
 const express = require("express");
-const { query, body, validationResult } = require("express-validator");
+const { param, body, validationResult } = require("express-validator");
 const { updatePatient } = require("../../controllers/patient.controller");
 
 const updatePatientMiddleware = express();
 
 updatePatientMiddleware.use(
   [
-    query("id").isEmpty().withMessage("paramètre manquant")
-    .matches(/\d/)
-    .withMessage("paramètre non valide"),
+    param("patientId").isEmpty().withMessage("paramètre manquant"),
+    // .matches(/\d/)
+    // .withMessage("paramètre non valide"),
     body("atcd_mas").notEmpty().withMessage("Cannot be empty"),
     body("nbre_chute").notEmpty().withMessage("Cannot be empty"),
     body("cause_dpm").notEmpty().withMessage("Cannot be empty"),
@@ -77,7 +77,6 @@ updatePatientMiddleware.use(
     body("duree_traitement_tbc").notEmpty().withMessage("Cannot be empty"),
     body("tbc_declarer_finie").notEmpty().withMessage("Cannot be empty"),
     body("nom_tuteur").notEmpty().withMessage("Cannot be empty"),
-    body("id_user").notEmpty().withMessage("Cannot be empty"),
     body("taille_menage").notEmpty().withMessage("Cannot be empty"),
     body("tbc_parents").notEmpty().withMessage("Cannot be empty"),
     body("calendrier_vaccinal").notEmpty().withMessage("Cannot be empty"),
@@ -91,12 +90,12 @@ updatePatientMiddleware.use(
   ],
   async (req, res, next) => {
     
-    let { id } = req.query;
+    const { patientId } = req.query;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(400).json({ error: errors.array() });
     }
-    res.patientId = id;
+    res.id = patientId;
     next();
   }
 );

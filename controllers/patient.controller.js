@@ -285,199 +285,202 @@ module.exports = {
     }
   },
   updatePatient: async (req, res) => {
-    if (req.user.is_admin !== true)
+    if (req.user.is_admin === true) {
+      const id = res.id;
+      const patientFind = await patient.findOne({ where: { id } });
+      try {
+        const result = await sequelize.transaction(async (t) => {
+          const {
+            atcd_mas,
+            nbre_chute,
+            date_naissance_tuteur,
+            terme_grossesse,
+            sejour_neonat,
+            eig,
+            lieu_accouchement,
+            asphyxie_perinatal,
+            dpm,
+            rang_fratrie,
+            taille_fratrie,
+            atcd_rougeole_fratrie,
+            vaccination_rougeole,
+            terrain_vih,
+            tbc,
+            atcd_du_tbc_dans_fratrie,
+            hospitalisation_recente,
+            diagnostique_hospitalisation,
+            cocktail_atb,
+            duree_prise_atb,
+            nom_patient,
+            postnom_patient,
+            prenom_patient,
+            sexe_patient,
+            age_patient,
+            provenance_patient,
+            mode_arrive,
+            poids_naissance,
+            fin_allaitement,
+            mois_fin_allaitement,
+            diversification_aliment,
+            telephone,
+            taille_famille,
+            vivre_deux_parents,
+            mere_enceinte,
+            mere_en_vie,
+            pere_en_vie,
+            profession_mere,
+            profession_chef_menage,
+            age_mere,
+            scolarite_mere,
+            type_contraception,
+            contraception_naturelle,
+            contraception_mere,
+            contraception_moderne,
+            niveau_socioeconomique,
+            statut_marital,
+            tribu,
+            religion,
+            posseder_radio_tele,
+            nbre_repas,
+            consommation_poisson,
+            atb,
+            liste_atb,
+            tbc_parents,
+            tbc_chez,
+            tbc_gueris,
+            duree_traitement_tbc,
+            tbc_declarer_finie,
+            type_statut_marital,
+            nom_tuteur,
+            nbre_femme_pere,
+            taille_menage,
+            adresse_patient,
+            date_naissance_patient,
+            mas_fratrie,
+            cause_dpm,
+            calendrier_vaccinal,
+          } = req.body;
+          if (patientFind) {
+            const familleId = await patientFind.familleId;
+            const cause_malnutritionId = await cause_malnutrition.findOne({
+              where: {
+                patientId: id,
+              },
+              attributes: ["id"],
+            });
+            
+            await patient.update(
+              {
+                nom_patient,
+                postnom_patient,
+                prenom_patient,
+                sexe_patient,
+                age_patient,
+                provenance_patient,
+                mode_arrive,
+                poids_naissance,
+                fin_allaitement,
+                adresse_patient,
+                date_naissance_patient,
+                mois_fin_allaitement,
+                diversification_aliment,
+                telephone,
+              },
+              {
+                where: {
+                  id,
+                },
+              }
+            );
+            await famille.update(
+              {
+                type_statut_marital,
+                tbc_parents,
+                taille_menage,
+                taille_famille,
+                vivre_deux_parents,
+                mere_enceinte,
+                mere_en_vie,
+                pere_en_vie,
+                profession_mere,
+                profession_chef_menage,
+                age_mere,
+                scolarite_mere,
+                type_contraception,
+                contraception_naturelle,
+                contraception_mere,
+                contraception_moderne,
+                niveau_socioeconomique,
+                statut_marital,
+                nbre_femme_pere,
+                tribu,
+                religion,
+                posseder_radio_tele,
+                nbre_repas,
+                consommation_poisson,
+                atb,
+                liste_atb,
+                tbc_chez,
+                tbc_gueris,
+                duree_traitement_tbc,
+                tbc_declarer_finie,
+                nom_tuteur,
+                date_naissance_tuteur,
+              },
+              {
+                where: {
+                  id: familleId,
+                },
+              }
+            );
+
+            await cause_malnutrition.update(
+              {
+                atcd_mas,
+                nbre_chute,
+                mas_fratrie,
+                terme_grossesse,
+                sejour_neonat,
+                eig,
+                lieu_accouchement,
+                asphyxie_perinatal,
+                cause_dpm,
+                dpm,
+                calendrier_vaccinal,
+                rang_fratrie,
+                taille_fratrie,
+                atcd_rougeole_fratrie,
+                vaccination_rougeole,
+                terrain_vih,
+                tbc,
+                atcd_du_tbc_dans_fratrie,
+                hospitalisation_recente,
+                diagnostique_hospitalisation,
+                cocktail_atb,
+                duree_prise_atb,
+                mas_fratrie,
+              },
+              { where: { id: cause_malnutritionId.id } }
+            );
+
+            return res.status(200).json({
+              message: `Mise à jour effectuée avec succès`,
+            });
+          } else {
+            return res.status(400).json({
+              message: `Le personnel ayant l'identifiant ${id} est introuvable`,
+            });
+          }
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: `Impossible de mettre à jour ce patient ${patientFind.nom_user} ${patientFind.postnom_user} ${error}`,
+        });
+      }
+    } else {
       return res
-        .status(400)
-        .send("Access denied. You are an admin you can't update a user.");
-    try {
-      const result = await sequelize.transaction(async (t) => {
-        const {
-          atcd_mas,
-          nbre_chute,
-          date_naissance_tuteur,
-          terme_grossesse,
-          sejour_neonat,
-          eig,
-          lieu_accouchement,
-          asphyxie_perinatal,
-          dpm,
-          rang_fratrie,
-          taille_fratrie,
-          atcd_rougeole_fratrie,
-          vaccination_rougeole,
-          terrain_vih,
-          tbc,
-          atcd_du_tbc_dans_fratrie,
-          hospitalisation_recente,
-          diagnostique_hospitalisation,
-          cocktail_atb,
-          duree_prise_atb,
-          nom_patient,
-          postnom_patient,
-          prenom_patient,
-          sexe_patient,
-          age_patient,
-          provenance_patient,
-          mode_arrive,
-          poids_naissance,
-          fin_allaitement,
-          mois_fin_allaitement,
-          diversification_aliment,
-          telephone,
-          taille_famille,
-          vivre_deux_parents,
-          mere_enceinte,
-          mere_en_vie,
-          pere_en_vie,
-          profession_mere,
-          profession_chef_menage,
-          age_mere,
-          scolarite_mere,
-          type_contraception,
-          contraception_naturelle,
-          contraception_mere,
-          contraception_moderne,
-          niveau_socioeconomique,
-          statut_marital,
-          tribu,
-          religion,
-          posseder_radio_tele,
-          nbre_repas,
-          consommation_poisson,
-          atb,
-          liste_atb,
-          tbc_parents,
-          tbc_chez,
-          tbc_gueris,
-          duree_traitement_tbc,
-          tbc_declarer_finie,
-          type_statut_marital,
-          nom_tuteur,
-          nbre_femme_pere,
-          taille_menage,
-          adresse_patient,
-          date_naissance_patient,
-          mas_fratrie,
-          cause_dpm,
-        } = req.body;
-        const { id } = res.patientId;
-        const patientFind = await patient.findOne({ where: { id } });
-        if (patientFind) {
-          const familleId = await patientFind.familleId;
-          const cause_malnutritionId = await cause_malnutrition.findOne({
-            where: {
-              patientId: id,
-            },
-            attributes: ["id"],
-          });
-          await patient.update(
-            {
-              nom_patient,
-              postnom_patient,
-              prenom_patient,
-              sexe_patient,
-              age_patient,
-              provenance_patient,
-              mode_arrive,
-              poids_naissance,
-              fin_allaitement,
-              adresse_patient,
-              date_naissance_patient,
-              mois_fin_allaitement,
-              diversification_aliment,
-              telephone,
-            },
-            {
-              where: {
-                id,
-              },
-            }
-          );
-          await famille.update(
-            {
-              type_statut_marital,
-              tbc_parents,
-              taille_menage,
-              taille_famille,
-              vivre_deux_parents,
-              mere_enceinte,
-              mere_en_vie,
-              pere_en_vie,
-              profession_mere,
-              profession_chef_menage,
-              age_mere,
-              scolarite_mere,
-              type_contraception,
-              contraception_naturelle,
-              contraception_mere,
-              contraception_moderne,
-              niveau_socioeconomique,
-              statut_marital,
-              nbre_femme_pere,
-              tribu,
-              religion,
-              posseder_radio_tele,
-              nbre_repas,
-              consommation_poisson,
-              atb,
-              liste_atb,
-              tbc_chez_parents,
-              tbc_chez,
-              tbc_gueris,
-              duree_traitement_tbc,
-              tbc_declarer_finie,
-              nom_tuteur,
-              date_naissance_tuteur,
-            },
-            {
-              where: {
-                id: familleId,
-              },
-            }
-          );
-
-          await cause_malnutrition.update(
-            {
-              atcd_mas,
-              nbre_chute,
-              mas_fratie,
-              terme_grossesse,
-              sejour_neonat,
-              eig,
-              lieu_accouchement,
-              asphyxie_perinatal,
-              cause_dpm,
-              dpm,
-              caliendrier_vaccinal,
-              rang_fratrie,
-              taille_fratrie,
-              atcd_rougeole_fratrie,
-              vaccination_rougeole,
-              terrain_vih,
-              tbc,
-              atcd_du_tbc_dans_fratrie,
-              hospitalisation_recente,
-              diagnostique_hospitalisation,
-              cocktail_atb,
-              duree_prise_atb,
-              mas_fratrie,
-            },
-            { where: { id: cause_malnutritionId } }
-          );
-
-          return res.status(200).json({
-            message: `Mise à jour effectuée avec succès`,
-          });
-        } else {
-          return res.status(400).json({
-            message: `Le personnel ayant l'identifiant ${id} est introuvable`,
-          });
-        }
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: `Impossible de mettre à jour ce patient ${patientFind.dataValues.nom_user} ${patientFind.dataValues.postnom_user} ${Error}`,
-      });
+      .status(400)
+      .send("Access denied. You are an admin you can't update a user.");
     }
   },
   getAllPatient: async (req, res) => {
