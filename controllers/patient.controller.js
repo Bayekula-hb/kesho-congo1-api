@@ -284,6 +284,183 @@ module.exports = {
       res.status(400).json({ error: `${error}` });
     }
   },
+  updatePatient: async (req, res) => {
+    if (req.user.is_admin !== true)
+      return res
+        .status(400)
+        .send("Access denied. You are an admin you can't update a user.");
+    try {
+      const result = await sequelize.transaction(async (t) => {
+        const {
+          atcd_mas,
+          nbre_chute,
+          date_naissance_tuteur,
+          terme_grossesse,
+          sejour_neonat,
+          eig,
+          lieu_accouchement,
+          asphyxie_perinatal,
+          dpm,
+          rang_fratrie,
+          taille_fratrie,
+          atcd_rougeole_fratrie,
+          vaccination_rougeole,
+          terrain_vih,
+          tbc,
+          atcd_du_tbc_dans_fratrie,
+          hospitalisation_recente,
+          diagnostique_hospitalisation,
+          cocktail_atb,
+          duree_prise_atb,
+          peri_cranien,
+          peri_brachial,
+          poids,
+          taille,
+          type_malnutrition,
+          date_examen,
+          type_contraception,
+          contraception_naturelle,
+          nom_patient,
+          postnom_patient,
+          prenom_patient,
+          sexe_patient,
+          age_patient,
+          provenance_patient,
+          mode_arrive,
+          poids_naissance,
+          fin_allaitement,
+          mois_fin_allaitement,
+          diversification_aliment,
+          telephone,
+          taille_famille,
+          vivre_deux_parents,
+          mere_enceinte,
+          mere_en_vie,
+          pere_en_vie,
+          profession_mere,
+          profession_chef_menage,
+          age_mere,
+          scolarite_mere,
+          contraception_mere,
+          contraception_moderne,
+          niveau_socioeconomique,
+          statut_marital,
+          tribu,
+          religion,
+          posseder_radio_tele,
+          nbre_repas,
+          consommation_poisson,
+          atb,
+          liste_atb,
+          tbc_parents,
+          tbc_chez,
+          tbc_gueris,
+          duree_traitement_tbc,
+          tbc_declarer_finie,
+          type_statut_marital,
+          nom_tuteur,
+          nbre_femme_pere,
+          taille_menage,
+          adresse_patient,
+          date_naissance_patient,
+          mas_fratrie,
+          cause_dpm,
+          calendrier_vaccinal,
+          vaccin_non_recu,
+          produit_plante,
+          duree_produit_plante,
+          id_user,
+          image_patient,
+          traitement_nutri,
+          constitution_aliment,
+          age_fin_allaitement,
+          allaitement_6mois,
+        } = req.body;
+        const { id } = res.patientId;
+        const patientFind = await patient.findOne({ where: { id } });
+        if (patientFind) {
+          const familleId = await patientFind.familleId;
+          const cause_malnutritionId = await cause_malnutrition.findOne({
+            where: {
+              patientId: id,
+            },
+          });
+          const patientUpdate = await patient.update(
+            {
+              nom_patient,
+              postnom_patient,
+              prenom_patient,
+              sexe_patient,
+              age_patient,
+              provenance_patient,
+              mode_arrive,
+              poids_naissance,
+              fin_allaitement,
+              mois_fin_allaitement,
+              diversification_aliment,
+              telephone,
+            },
+            {
+              where: {
+                id,
+              },
+            }
+          );
+          const familleUpdate = await famille.update(
+            {
+              taille_famille,
+              vivre_deux_parents,
+              mere_enceinte,
+              mere_en_vie,
+              pere_en_vie,
+              profession_mere,
+              profession_chef_menage,
+              age_mere,
+              scolarite_mere,
+              contraception_mere,
+              contraception_moderne,
+              niveau_socioeconomique,
+              statut_marital,
+              nbre_femme_pere,
+              tribu,
+              religion,
+              posseder_radio_tele,
+              nbre_repas,
+              consommation_poisson,
+              atb,
+              liste_atb,
+              tbc_chez_parents,
+              tbc_chez,
+              tbc_gueris,
+              duree_traitement_tbc,
+              tbc_declarer_finie,
+              nom_tuteur,
+            },
+            {
+              where: {
+                id: familleId,
+              },
+            }
+          );
+
+          await cause_malnutrition.update({
+            where: { id },
+          });
+          return res.status(200).json({
+            message: `Mise à jour effectuée avec succès`,
+          });
+        } else {
+          return res.status(400).json({
+            message: `Le personnel ayant l'identifiant ${id} est introuvable`,
+          });
+        }
+      });
+    } catch (error) {
+      return res.status(400).json({
+        message: `Impossible de mettre à jour ce personnel ${patientFind.dataValues.nom_user} ${patientFind.dataValues.postnom_user} ${Error}`,
+      });
+    }
+  },
   getAllPatient: async (req, res) => {
     try {
       const result = await sequelize.transaction(async (t) => {
@@ -317,9 +494,9 @@ module.exports = {
         const patientFind = await patient.findOne({ where: { id } });
         if (patientFind) {
           patientFind.destroy();
-            res.status(200).json({
-              message: `Le patient  a été supprimé`,
-            })
+          res.status(200).json({
+            message: `Le patient  a été supprimé`,
+          });
         }
         res.status(400).json({
           error: `Le patient ayant l'identifiant ${id} est introuvable`,
