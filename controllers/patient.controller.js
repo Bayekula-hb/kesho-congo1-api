@@ -312,14 +312,6 @@ module.exports = {
           diagnostique_hospitalisation,
           cocktail_atb,
           duree_prise_atb,
-          peri_cranien,
-          peri_brachial,
-          poids,
-          taille,
-          type_malnutrition,
-          date_examen,
-          type_contraception,
-          contraception_naturelle,
           nom_patient,
           postnom_patient,
           prenom_patient,
@@ -341,6 +333,8 @@ module.exports = {
           profession_chef_menage,
           age_mere,
           scolarite_mere,
+          type_contraception,
+          contraception_naturelle,
           contraception_mere,
           contraception_moderne,
           niveau_socioeconomique,
@@ -365,16 +359,6 @@ module.exports = {
           date_naissance_patient,
           mas_fratrie,
           cause_dpm,
-          calendrier_vaccinal,
-          vaccin_non_recu,
-          produit_plante,
-          duree_produit_plante,
-          id_user,
-          image_patient,
-          traitement_nutri,
-          constitution_aliment,
-          age_fin_allaitement,
-          allaitement_6mois,
         } = req.body;
         const { id } = res.patientId;
         const patientFind = await patient.findOne({ where: { id } });
@@ -384,8 +368,9 @@ module.exports = {
             where: {
               patientId: id,
             },
+            attributes: ["id"],
           });
-          const patientUpdate = await patient.update(
+          await patient.update(
             {
               nom_patient,
               postnom_patient,
@@ -396,6 +381,8 @@ module.exports = {
               mode_arrive,
               poids_naissance,
               fin_allaitement,
+              adresse_patient,
+              date_naissance_patient,
               mois_fin_allaitement,
               diversification_aliment,
               telephone,
@@ -406,8 +393,11 @@ module.exports = {
               },
             }
           );
-          const familleUpdate = await famille.update(
+          await famille.update(
             {
+              type_statut_marital,
+              tbc_parents,
+              taille_menage,
               taille_famille,
               vivre_deux_parents,
               mere_enceinte,
@@ -417,6 +407,8 @@ module.exports = {
               profession_chef_menage,
               age_mere,
               scolarite_mere,
+              type_contraception,
+              contraception_naturelle,
               contraception_mere,
               contraception_moderne,
               niveau_socioeconomique,
@@ -435,6 +427,7 @@ module.exports = {
               duree_traitement_tbc,
               tbc_declarer_finie,
               nom_tuteur,
+              date_naissance_tuteur,
             },
             {
               where: {
@@ -443,9 +436,35 @@ module.exports = {
             }
           );
 
-          await cause_malnutrition.update({
-            where: { id },
-          });
+          await cause_malnutrition.update(
+            {
+              atcd_mas,
+              nbre_chute,
+              mas_fratie,
+              terme_grossesse,
+              sejour_neonat,
+              eig,
+              lieu_accouchement,
+              asphyxie_perinatal,
+              cause_dpm,
+              dpm,
+              caliendrier_vaccinal,
+              rang_fratrie,
+              taille_fratrie,
+              atcd_rougeole_fratrie,
+              vaccination_rougeole,
+              terrain_vih,
+              tbc,
+              atcd_du_tbc_dans_fratrie,
+              hospitalisation_recente,
+              diagnostique_hospitalisation,
+              cocktail_atb,
+              duree_prise_atb,
+              mas_fratrie,
+            },
+            { where: { id: cause_malnutritionId } }
+          );
+
           return res.status(200).json({
             message: `Mise à jour effectuée avec succès`,
           });
@@ -456,8 +475,8 @@ module.exports = {
         }
       });
     } catch (error) {
-      return res.status(400).json({
-        message: `Impossible de mettre à jour ce personnel ${patientFind.dataValues.nom_user} ${patientFind.dataValues.postnom_user} ${Error}`,
+      return res.status(500).json({
+        message: `Impossible de mettre à jour ce patient ${patientFind.dataValues.nom_user} ${patientFind.dataValues.postnom_user} ${Error}`,
       });
     }
   },
