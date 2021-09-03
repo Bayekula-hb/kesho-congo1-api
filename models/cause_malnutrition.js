@@ -15,9 +15,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-    toJSON(){
-      return {...this.get(), id:undefined}
-    }
   }
   cause_malnutrition.init(
     {

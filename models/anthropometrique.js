@@ -17,9 +17,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-    toJSON(){
-      return {...this.get(), id:undefined}
-    }
   };
   anthropometrique.init({
     id_anthropometrique : {

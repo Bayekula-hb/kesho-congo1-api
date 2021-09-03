@@ -53,7 +53,8 @@ module.exports = {
           .status(500)
           .json({ error: `Cannot register user at the moment! : ${error}` });
       }
-    } else {
+    }
+    else {
       return res.status(400).send("Access denied. You are not an admin.");
     }
   },

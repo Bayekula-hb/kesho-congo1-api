@@ -31,13 +31,10 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-    toJSON(){
-      return {...this.get(), id:undefined}
-    }
   }
   patient.init(
     {
-      id_patient:{
+      id_patient: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
@@ -55,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      paranoid:true,
+      paranoid: true,
       modelName: "patient",
     }
   );

@@ -20,13 +20,10 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
-    toJSON(){
-      return {...this.get(), id:undefined}
-    }
   }
   consulter_par.init(
     {
-      id_consulter_par : {
+      id_consulter_par: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
@@ -35,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      paranoid:true,
+      paranoid: true,
       modelName: "consulter_par",
     }
   );

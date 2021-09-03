@@ -14,13 +14,10 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
     }
-    toJSON(){
-      return {...this.get(), id:undefined}
-    }
   }
   famille.init(
     {
-      id_famille : {
+      id_famille: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
       },
@@ -58,7 +55,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      paranoid:true,
+      paranoid: true,
       modelName: "famille",
     }
   );
