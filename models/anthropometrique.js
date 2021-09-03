@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     patientId: DataTypes.INTEGER
   }, {
     sequelize,
+    paranoid:true,
     modelName: 'anthropometrique',
   });
   return anthropometrique;
