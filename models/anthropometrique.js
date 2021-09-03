@@ -22,7 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   anthropometrique.init({
-    id_anthropometrique : DataTypes.UUID,
+    id_anthropometrique : {
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+    },
     peri_cranien: DataTypes.FLOAT,
     peri_brachial: DataTypes.FLOAT,
     poids: DataTypes.FLOAT,

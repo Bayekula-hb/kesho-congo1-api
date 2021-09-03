@@ -6,7 +6,7 @@ module.exports = {
       if (req.user.is_admin !== true)
         return res.status(401).send("Access denied. You are not an admin.");
 
-      const userFindAll = await user.findAll(req.body);
+      const userFindAll = await user.findAll();
       return res.status(200).send(userFindAll);
     } catch (error) {
       return res.status(400).send(error);
@@ -15,15 +15,15 @@ module.exports = {
   getUserById: async (req, res) => {
     const { id } = res;
     const userOne = await user.findOne({
-      where: { id },
+      where: { id_user: id },
       attributes: [
-        "id",
+        "id_user",
         "nom_user",
         "postnom_user",
         "prenom_user",
         "email",
         "statut",
-        "image_user",
+        "sexe_user",
       ],
     });
     if (userOne) {
@@ -63,12 +63,12 @@ module.exports = {
     try {
       const result = await sequelize.transaction(async (t) => {
         const { id } = res;
-        const userFind = await user.findOne({ where: { id } });
+        const userFind = await user.findOne({ where: { id_user: id } });
 
         if (userFind) {
           const userDelete = await user.destroy({
             where: {
-              id,
+              id_user: id,
             },
           });
           return res.status(200).json({
@@ -87,25 +87,25 @@ module.exports = {
     }
   },
   updateUser: async (req, res) => {
-    if (req.user.is_admin === true)
+    if (req.user.is_admin === true && req.user.id_user !== res.id)
       return res
         .status(400)
         .send("Access denied. You are an admin you can't update a user.");
     try {
       const result = await sequelize.transaction(async (t) => {
         const { id, nom_user, postnom_user, prenom_user, password } = res;
-        const userFind = await user.findOne({ where: { id } });
+        const userFind = await user.findOne({ where: { id_user: id } });
         if (userFind) {
           const userUpdate = await user.update(
             { nom_user, postnom_user, prenom_user, password },
             {
               where: {
-                id,
+                id_user: id,
               },
             }
           );
           return res.status(200).json({
-            message: `Mise à jour effectuée avec succès`,
+            message: `Mise à jour effectuée avec succès ${userUpdate}`,
           });
         } else {
           return res.status(400).json({

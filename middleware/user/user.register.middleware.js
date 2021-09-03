@@ -15,11 +15,7 @@ userRegisterMiddleware.use(
       .withMessage("Cannot be empty")
       .isLength({ min: 5 })
       .withMessage("must be at least 5 chars long"),
-    body("image_user")
-      .notEmpty()
-      .withMessage("Cannot be empty")
-      .isURL()
-      .withMessage("this url is not valid"),
+    body("sexe_user").notEmpty().withMessage("Cannot be empty"),
     body("statut")
       .notEmpty()
       .withMessage("Cannot be empty")
@@ -31,7 +27,7 @@ userRegisterMiddleware.use(
       nom_user,
       postnom_user,
       prenom_user,
-      image_user,
+      sexe_user,
       email,
       is_admin,
       password,
@@ -41,14 +37,14 @@ userRegisterMiddleware.use(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    
+
     res.password = bcrypt.hashSync(password, 10);
     res.email = email;
     res.nom_user = nom_user;
     res.postnom_user = postnom_user;
     res.prenom_user = prenom_user;
     res.is_admin = is_admin;
-    res.image_user = image_user;
+    res.sexe_user = sexe_user;
     res.statut = statut;
     next();
   }

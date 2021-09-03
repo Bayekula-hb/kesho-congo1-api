@@ -10,7 +10,7 @@ module.exports = {
       },
       id_causemalnutrition: {
         type: Sequelize.UUID,
-        defaultValue: UUIDV4,
+        defaultValue: Sequelize.UUIDV4,
       },
       atcd_mas: {
         allowNull: false,
@@ -143,6 +143,10 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deletedAt: {
+        allowNull: true,
         type: Sequelize.DATE,
       },
     });

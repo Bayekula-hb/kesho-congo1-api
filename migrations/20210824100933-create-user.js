@@ -1,4 +1,5 @@
 "use strict";
+const UUIDV4 = require("uuid")
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable("users", {
@@ -10,7 +11,7 @@ module.exports = {
       },
       id_user: {
         type: Sequelize.UUID,
-        defaultValue: UUIDV4,
+        defaultValue: Sequelize.UUIDV4,
       },
       nom_user: {
         allowNull: false,
@@ -50,6 +51,10 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deletedAt: {
+        allowNull: true,
         type: Sequelize.DATE,
       },
     });

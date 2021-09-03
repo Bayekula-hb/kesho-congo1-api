@@ -37,7 +37,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   patient.init(
     {
-      id_patient:DataTypes.UUID,
+      id_patient:{
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       nom_patient: DataTypes.STRING,
       postnom_patient: DataTypes.STRING,
       prenom_patient: DataTypes.STRING,

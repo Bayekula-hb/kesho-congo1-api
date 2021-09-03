@@ -20,7 +20,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   famille.init(
     {
-      id_famille : DataTypes.UUID,
+      id_famille : {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       taille_menage: DataTypes.INTEGER,
       vivre_deux_parents: DataTypes.BOOLEAN,
       nom_tuteur: DataTypes.STRING,

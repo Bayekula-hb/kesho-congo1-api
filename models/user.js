@@ -17,13 +17,16 @@ module.exports = (sequelize, DataTypes) => {
         }
       );
     }
-    toJSON(){
-      return {...this.get(), id:undefined}
+    toJSON() {
+      return { ...this.get(), id: undefined };
     }
   }
   user.init(
     {
-      id_user: DataTypes.UUID,
+      id_user: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+      },
       nom_user: DataTypes.STRING,
       postnom_user: DataTypes.STRING,
       prenom_user: DataTypes.STRING,
