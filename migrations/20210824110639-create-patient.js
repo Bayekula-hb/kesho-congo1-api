@@ -48,10 +48,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.FLOAT,
       },
-      image_patient: {
-        allowNull: true,
-        type: Sequelize.TEXT,
-      },
       telephone: {
         allowNull: true,
         type: Sequelize.STRING,
@@ -63,8 +59,8 @@ module.exports = {
           model: "familles",
           key: "id",
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       createdAt: {
         allowNull: false,

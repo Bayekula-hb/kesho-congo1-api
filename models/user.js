@@ -20,19 +20,19 @@ module.exports = (sequelize, DataTypes) => {
   }
   user.init(
     {
-      id_user : DataTypes.UUID,
+      id_user: DataTypes.UUID,
       nom_user: DataTypes.STRING,
       postnom_user: DataTypes.STRING,
       prenom_user: DataTypes.STRING,
       email: DataTypes.STRING,
-      image_user: DataTypes.STRING,
+      sexe_user: DataTypes.STRING,
       password: DataTypes.TEXT,
       is_admin: DataTypes.BOOLEAN,
       statut: DataTypes.STRING,
     },
     {
       sequelize,
-      paranoid:true,
+      paranoid: true,
       modelName: "user",
     }
   );

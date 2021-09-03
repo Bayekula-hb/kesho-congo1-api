@@ -44,7 +44,6 @@ module.exports = (sequelize, DataTypes) => {
       provenance_patient: DataTypes.STRING,
       mode_arrive: DataTypes.STRING,
       poids_naissance: DataTypes.FLOAT,
-      image_patient: DataTypes.TEXT,
       telephone: DataTypes.STRING,
       familleId: DataTypes.INTEGER,
     },
