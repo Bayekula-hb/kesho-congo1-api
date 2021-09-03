@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      id_patient: {
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
+      },
       nom_patient: {
         allowNull: false,
         type: Sequelize.STRING,
@@ -26,7 +30,7 @@ module.exports = {
       },
       date_naissance_patient: {
         allowNull: false,
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
       },
       adresse_patient: {
         allowNull: false,

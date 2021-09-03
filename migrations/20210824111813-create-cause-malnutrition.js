@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      id_causemalnutrition: {
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
+      },
       atcd_mas: {
         allowNull: false,
         type: Sequelize.BOOLEAN,

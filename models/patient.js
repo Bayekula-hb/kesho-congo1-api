@@ -1,5 +1,5 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model, UUIDV4 } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class patient extends Model {
     /**
@@ -34,11 +34,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   patient.init(
     {
+      id_patient:DataTypes.UUID,
       nom_patient: DataTypes.STRING,
       postnom_patient: DataTypes.STRING,
       prenom_patient: DataTypes.STRING,
       sexe_patient: DataTypes.STRING,
-      date_naissance_patient: DataTypes.DATEONLY,
+      date_naissance_patient: DataTypes.DATE,
       adresse_patient: DataTypes.TEXT,
       provenance_patient: DataTypes.STRING,
       mode_arrive: DataTypes.STRING,

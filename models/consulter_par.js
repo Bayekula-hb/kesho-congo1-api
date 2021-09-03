@@ -23,6 +23,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   consulter_par.init(
     {
+      id_consulter_par : DataTypes.UUID,
       userId: DataTypes.INTEGER,
       patientId: DataTypes.INTEGER,
     },

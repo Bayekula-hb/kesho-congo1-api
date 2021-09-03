@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      id_famille: {
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
+      },
       taille_menage: {
         allowNull: false,
         type: Sequelize.INTEGER

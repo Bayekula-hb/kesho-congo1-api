@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      id_anthropometrique: {
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
+      },
       peri_cranien: {
         allowNull: false,
         type: Sequelize.FLOAT

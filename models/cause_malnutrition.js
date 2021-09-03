@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   cause_malnutrition.init({
+    id_causemalnutrition : DataTypes.UUID,
     atcd_mas: DataTypes.BOOLEAN,
     nbre_chute: DataTypes.INTEGER,
     mas_fratrie: DataTypes.BOOLEAN,

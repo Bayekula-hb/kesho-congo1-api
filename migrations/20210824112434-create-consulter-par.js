@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      id_consulter_par: {
+        type: DataTypes.UUID,
+        defaultValue: UUIDV4,
+      },
       userId: {
         allowNull: false,
         type: Sequelize.INTEGER,
