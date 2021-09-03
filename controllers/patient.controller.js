@@ -98,7 +98,7 @@ module.exports = {
         age_fin_allaitement,
         allaitement_6mois,
       } = req.body;
-
+      const userId = req.user.id;
       //Famille refactor insert
       const newFamille = await famille.create({
         taille_famille,
@@ -155,7 +155,7 @@ module.exports = {
       const patientId = newPatient.id;
 
       //Cause_malnutrition
-      const newCause_malnutrition = await cause_malnutrition.create({
+      await cause_malnutrition.create({
         atcd_mas,
         nbre_chute,
         terme_grossesse,
@@ -191,7 +191,7 @@ module.exports = {
         allaitement_6mois,
       });
 
-      const newAnthropometrique = await anthropometrique.create({
+      await anthropometrique.create({
         peri_cranien,
         peri_brachial,
         poids,
@@ -201,18 +201,13 @@ module.exports = {
         patientId,
       });
 
-      const findUser = await user.findOne({ where: { id: id_user } });
-      if (findUser) {
-        const ConsulterPar = await consulter_par.create({
-          patientId,
-          userId: id_user,
-        });
-        return res
-          .status(200)
-          .json({ message: "Enregistrement effectuer avec succès" });
-      } else {
-        res.status(400).json({ errpr: "L'utilisateur non trouvé" });
-      }
+      await consulter_par.create({
+        patientId,
+        userId,
+      });
+      return res
+        .status(200)
+        .json({ message: "Enregistrement effectuer avec succès" });
     } catch (error) {
       res.status(400).json({ error: ` ${error}` });
     }
@@ -287,7 +282,7 @@ module.exports = {
   updatePatient: async (req, res) => {
     if (req.user.is_admin === true) {
       const id = res.id;
-      const patientFind = await patient.findOne({ where: { id } });
+      const patientFind = await patient.findOne({ where: { id_patient: id } });
       try {
         const result = await sequelize.transaction(async (t) => {
           const {
@@ -361,14 +356,15 @@ module.exports = {
             calendrier_vaccinal,
           } = req.body;
           if (patientFind) {
+            const patientId = await patientFind.id;
             const familleId = await patientFind.familleId;
             const cause_malnutritionId = await cause_malnutrition.findOne({
               where: {
-                patientId: id,
+                patientId,
               },
               attributes: ["id"],
             });
-            
+
             await patient.update(
               {
                 nom_patient,
@@ -388,7 +384,7 @@ module.exports = {
               },
               {
                 where: {
-                  id,
+                  id_patient: id,
                 },
               }
             );
@@ -479,15 +475,15 @@ module.exports = {
       }
     } else {
       return res
-      .status(400)
-      .send("Access denied. You are an admin you can't update a user.");
+        .status(400)
+        .send("Access denied. You are an admin you can't update a user.");
     }
   },
   getAllPatient: async (req, res) => {
     try {
       const result = await sequelize.transaction(async (t) => {
         const Patients = await sequelize.query(
-          `select Pa.id, nom_patient, postnom_patient, Anthr.type_malnutrition, Date_Consultation, nom_user as nom_consultant, postnom_user as postnom_consultant  from
+          `select Pa.id_patient, nom_patient, postnom_patient, Anthr.type_malnutrition, Date_Consultation, nom_user as nom_consultant, postnom_user as postnom_consultant  from
           patients as Pa
           inner join (
             SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation

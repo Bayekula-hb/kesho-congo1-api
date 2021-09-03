@@ -74,7 +74,6 @@ patientRegisterMiddleware.use(
     body("duree_traitement_tbc").notEmpty().withMessage("Cannot be empty"),
     body("tbc_declarer_finie").notEmpty().withMessage("Cannot be empty"),
     body("nom_tuteur").notEmpty().withMessage("Cannot be empty"),
-    body("id_user").notEmpty().withMessage("Cannot be empty"),
     body("taille_menage").notEmpty().withMessage("Cannot be empty"),
     body("tbc_parents").notEmpty().withMessage("Cannot be empty"),
     body("calendrier_vaccinal").notEmpty().withMessage("Cannot be empty"),
@@ -177,7 +176,6 @@ patientRegisterMiddleware.use(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    res
     next();
   }
 );
