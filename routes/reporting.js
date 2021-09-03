@@ -1,8 +1,9 @@
-// const getAllReporting = require("../")
+const { getReporting } = require("../controllers/reporting.controller");
+
 const router = require("express").Router();
 
 
-router.get("/");
+router.get("/", getReporting);
 
 
 module.exports = router;
