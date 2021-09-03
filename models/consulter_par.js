@@ -20,6 +20,9 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
     }
+    toJSON(){
+      return {...this.get(), id:undefined}
+    }
   }
   consulter_par.init(
     {

@@ -14,6 +14,9 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
       });
     }
+    toJSON(){
+      return {...this.get(), id:undefined}
+    }
   }
   famille.init(
     {
