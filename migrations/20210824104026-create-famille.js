@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       id_famille: {
-        type: DataTypes.UUID,
+        type: Sequelize.UUID,
         defaultValue: UUIDV4,
       },
       taille_menage: {

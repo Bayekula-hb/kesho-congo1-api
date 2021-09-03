@@ -9,7 +9,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       id_causemalnutrition: {
-        type: DataTypes.UUID,
+        type: Sequelize.UUID,
         defaultValue: UUIDV4,
       },
       atcd_mas: {
