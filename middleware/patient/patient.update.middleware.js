@@ -6,7 +6,7 @@ const updatePatientMiddleware = express();
 
 updatePatientMiddleware.use(
   [
-    param("patientId").isEmpty().withMessage("paramètre manquant"),
+    param("id_patient").isEmpty().withMessage("paramètre manquant"),
     // .matches(/\d/)
     // .withMessage("paramètre non valide"),
     body("atcd_mas").notEmpty().withMessage("Cannot be empty"),
@@ -90,12 +90,12 @@ updatePatientMiddleware.use(
   ],
   async (req, res, next) => {
     
-    const { patientId } = req.query;
+    const { id_patient } = req.query;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ error: errors.array() });
     }
-    res.id = patientId;
+    res.id_patient = id_patient;
     next();
   }
 );

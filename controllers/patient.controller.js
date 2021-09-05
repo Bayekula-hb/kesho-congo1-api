@@ -283,8 +283,8 @@ module.exports = {
   },
   updatePatient: async (req, res) => {
     if (req.user.is_admin === true) {
-      const id = res.id;
-      const patientFind = await patient.findOne({ where: { id_patient: id } });
+      const id_patient = res.id_patient;
+      const patientFind = await patient.findOne({ where: { id_patient} });
       try {
         const result = await sequelize.transaction(async (t) => {
           const {
@@ -386,7 +386,7 @@ module.exports = {
               },
               {
                 where: {
-                  id_patient: id,
+                  id_patient,
                 },
               }
             );
@@ -518,11 +518,13 @@ module.exports = {
     }
   },
   deletePatient: async (req, res) => {
+    if (req.user.is_admin !== true)
+      return res.status(400).send("Access denied. You are not an admin.");
     try {
       const result = await sequelize.transaction(async (t) => {
-        const { id } = res;
+        const { id_patient } = res;
         const patientFind = await patient.findOne({
-          where: { id_patient: id },
+          where: { id_patient},
         });
         if (patientFind) {
           patientFind.destroy({
@@ -533,7 +535,7 @@ module.exports = {
           });
         }
         res.status(400).json({
-          error: `Le patient ayant l'identifiant ${id} est introuvable`,
+          error: `Le patient ayant l'identifiant ${id_patient} est introuvable`,
         });
       });
     } catch (error) {

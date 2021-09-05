@@ -6,20 +6,20 @@ const userDestroyMiddleware = express();
 
 userDestroyMiddleware.use(
   [
-    query("id")
+    query("id_user")
       .notEmpty()
       .withMessage("Cannot be empty")
       .matches(/\d/)
       .withMessage("must contain a number"),
   ],
   (req, res, next) => {
-    let { id } = req.query;
+    let { id_user } = req.query;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    res.id = id;
+    res.id_user = id_user;
     next();
   }
 );

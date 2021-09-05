@@ -23,9 +23,9 @@ module.exports = {
     }
   },
   getUserById: async (req, res) => {
-    const { id } = res;
+    const { id_user } = res;
     const userOne = await user.findOne({
-      where: { id_user: id },
+      where: { id_user},
       attributes: [
         "id_user",
         "nom_user",
@@ -41,7 +41,7 @@ module.exports = {
       return res.status(200).json(userOne);
     } else {
       return res.status(401).json({
-        message: `Le personnel ayant l'identifiant ${id} est introuvable`,
+        message: `Le personnel ayant l'identifiant ${id_user} est introuvable`,
       });
     }
   },
@@ -73,13 +73,13 @@ module.exports = {
       return res.status(400).send("Access denied. You are not an admin.");
     try {
       const result = await sequelize.transaction(async (t) => {
-        const { id } = res;
-        const userFind = await user.findOne({ where: { id_user: id } });
+        const { id_user } = res;
+        const userFind = await user.findOne({ where: { id_user} });
 
         if (userFind) {
           const userDelete = await user.destroy({
             where: {
-              id_user: id,
+              id_user,
             },
             force:true
           });
@@ -88,7 +88,7 @@ module.exports = {
           });
         } else {
           return res.status(400).json({
-            message: `Le personnel ayant l'identifiant ${id} est introuvable`,
+            message: `Le personnel ayant l'identifiant ${id_user} est introuvable`,
           });
         }
       });
@@ -100,22 +100,22 @@ module.exports = {
   },
   updateUser: async (req, res) => {
     if (
-      (req.user.is_admin === true && req.user.id_user !== res.id) ||
-      (req.user.is_admin === false && req.user.id_user !== res.id)
+      (req.user.is_admin === true && req.user.id_user !== res.id_user ) ||
+      (req.user.is_admin === false && req.user.id_user !== res.id_user )
     )
       return res
         .status(400)
         .send("Access denied. You are an admin you can't update a user.");
     try {
       const result = await sequelize.transaction(async (t) => {
-        const { id, nom_user, postnom_user, prenom_user, password } = res;
-        const userFind = await user.findOne({ where: { id_user: id } });
+        const { id_user, nom_user, postnom_user, prenom_user, password } = res;
+        const userFind = await user.findOne({ where: { id_user} });
         if (userFind) {
           const userUpdate = await user.update(
             { nom_user, postnom_user, prenom_user, password },
             {
               where: {
-                id_user: id,
+                id_user,
               },
             }
           );

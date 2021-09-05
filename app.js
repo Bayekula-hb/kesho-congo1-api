@@ -8,8 +8,6 @@ const userRoute = require("./routes/user.route");
 const getUserMiddleware = require("./middleware/user/user.get.middleware");
 const anthropometriqueRoute = require("./routes/anthropometrique.route");
 const patientRoute = require("./routes/patient.route");
-const getPatientMiddleware = require("./middleware/patient/patient.getall.middleware");
-const deletePatient = require("./middleware/patient/patient.destroy");
 const { getAllPatient } = require("./controllers/patient.controller");
 const routeReporting = require("./routes/reporting");
 const passport = require("passport");
@@ -72,7 +70,7 @@ app.use(
 );
 
 //Route Reporting
-
-app.use("/reporting", routeReporting);
+app.use("/reporting",
+passport.authenticate("jwt", { session: false }), routeReporting);
 
 module.exports = app;

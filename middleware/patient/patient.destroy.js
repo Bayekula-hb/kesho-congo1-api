@@ -4,18 +4,18 @@ const { deletePatient } = require("../../controllers/patient.controller");
 const patientDestroyMiddleware = express();
 
 patientDestroyMiddleware.use([
-  query("id")
+  query("id_patient")
     .notEmpty()
     .withMessage("id of patient is required")
     .matches(/\d/)
     .withMessage("must contain a number")],
     (req, res, next) => {
-    let { id } = req.query 
+    let { id_patient } = req.query 
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
       }
-      res.id = id;
+      res.id_patient = id_patient;
       next();
     }
 ),

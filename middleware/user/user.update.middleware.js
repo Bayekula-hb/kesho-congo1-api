@@ -7,7 +7,7 @@ const userUpdateMiddleware = express();
 
 userUpdateMiddleware.use(
   [
-    query("id")
+    query("id_user")
       .notEmpty()
       .withMessage("Cannot be empty")
       .matches(/\d/)
@@ -34,7 +34,7 @@ userUpdateMiddleware.use(
       .withMessage("pas de chiffres"),
   ],
   (req, res, next) => {
-    let { id } = req.query;
+    let { id_user } = req.query;
     let {nom_user, postnom_user, prenom_user, password}=req.body;
 
     const errors = validationResult(req);
@@ -42,7 +42,7 @@ userUpdateMiddleware.use(
       return res.status(400).json({ errors: errors.array() });
     }
     password = bcrypt.hashSync(password, 10);
-    res.id = id;
+    res.id_user = id_user;
     res.nom_user = nom_user;
     res.postnom_user = postnom_user;
     res.prenom_user = prenom_user;
