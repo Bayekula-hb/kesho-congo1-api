@@ -55,7 +55,11 @@ app.get(
 );
 app.use("/users", passport.authenticate("jwt", { session: false }), userRoute);
 
-app.use("/anthropometrique", anthropometriqueRoute);
+app.use(
+  "/anthropometrique",
+  passport.authenticate("jwt", { session: false }),
+  anthropometriqueRoute
+);
 app.use(
   "/patient",
   passport.authenticate("jwt", { session: false }),

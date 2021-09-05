@@ -6,7 +6,17 @@ module.exports = {
       if (req.user.is_admin !== true)
         return res.status(401).send("Access denied. You are not an admin.");
 
-      const userFindAll = await user.findAll();
+      const userFindAll = await user.findAll({
+        attributes: [
+          "id_user",
+          "nom_user",
+          "postnom_user",
+          "email",
+          "sexe_user",
+          "is_admin",
+          "statut",
+        ],
+      });
       return res.status(200).send(userFindAll);
     } catch (error) {
       return res.status(400).send(error);
@@ -24,6 +34,7 @@ module.exports = {
         "email",
         "statut",
         "sexe_user",
+        "is_admin",
       ],
     });
     if (userOne) {
@@ -53,8 +64,7 @@ module.exports = {
           .status(500)
           .json({ error: `Cannot register user at the moment! : ${error}` });
       }
-    }
-    else {
+    } else {
       return res.status(400).send("Access denied. You are not an admin.");
     }
   },
@@ -71,6 +81,7 @@ module.exports = {
             where: {
               id_user: id,
             },
+            force:true
           });
           return res.status(200).json({
             message: `${userFind.dataValues.nom_user} ${userFind.dataValues.postnom_user} est supprimé avec succès`,
@@ -88,7 +99,10 @@ module.exports = {
     }
   },
   updateUser: async (req, res) => {
-    if (req.user.is_admin === true && req.user.id_user !== res.id)
+    if (
+      (req.user.is_admin === true && req.user.id_user !== res.id) ||
+      (req.user.is_admin === false && req.user.id_user !== res.id)
+    )
       return res
         .status(400)
         .send("Access denied. You are an admin you can't update a user.");

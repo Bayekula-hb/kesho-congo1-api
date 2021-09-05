@@ -6,18 +6,18 @@ const getPatientMiddleware = express();
 
 getPatientMiddleware.use(
   [
-    param("id").isEmpty().withMessage("paramètre manquant")
+    param("id_patient").isEmpty().withMessage("paramètre manquant")
     // .matches(/\d/)
     // .withMessage("paramètre non valide"),
   ],
   async (req, res, next) => {
     
-    let { id } = req.query;
+    let { id_patient } = req.query;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    res.patientId = id;
+    res.patientId = id_patient;
     next();
   }
 );

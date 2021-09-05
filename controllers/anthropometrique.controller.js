@@ -18,17 +18,23 @@ module.exports = {
           poids,
           taille,
           type_malnutrition,
-          id_patient,
           date_examen,
-          id_user,
         } = req.body;
+        const { id_patient } = req.query;
+        const { id_user } = req.user;
 
-        const findPatient = await patient.findOne({
-          where: { id: id_patient },
+        const patientFind = await patient.findOne({
+          where: { id_patient },
+          attributes: ["id"],
         });
-        const findUser = await user.findOne({ where: { id: id_user } });
+        const userFind = await user.findOne({
+          where: { id_user },
+          attributes: ["id"],
+        });
+        if (patientFind && userFind) {
+          const patientId = patientFind.id,
+            userId = userFind.id;
 
-        if (findUser && findPatient) {
           await anthropometrique.create({
             peri_cranien,
             peri_brachial,
@@ -36,12 +42,12 @@ module.exports = {
             taille,
             type_malnutrition,
             date_examen,
-            patientId: id_patient,
+            patientId,
           });
 
           await consulter_par.create({
-            patientId: id_patient,
-            userId: id_user,
+            patientId,
+            userId,
           });
           return res
             .status(200)
@@ -60,20 +66,24 @@ module.exports = {
     const { patientId } = res;
     try {
       const result = await sequelize.transaction(async (t) => {
-        const findPatient = await patient.findOne({ where: { id: patientId } });
-        
-        if (!findPatient) {
+        const patientFind = await patient.findOne({
+          where: { id_patient: patientId },
+          attributes: ["id"],
+        });
+        const id = patientFind.id;
+
+        if (!patientFind) {
           res.status(400).json({ error: "Le patient non trouvé" });
         } else {
           const anthropometriqueOnePatient =
             await anthropometrique.findAndCountAll({
-              where: { patientId },
+              where: { patientId:id },
               order: [["id", "DESC"]],
               limit: 3,
             });
 
           const consultant = await consulter_par.findAll({
-            where: { patientId },
+            where: { patientId:id },
             order: [["id", "DESC"]],
             limit: 3,
           });
@@ -81,7 +91,7 @@ module.exports = {
         }
       });
     } catch (error) {
-      res.status(400).json({error : `${error}`});
+      res.status(400).json({ error: `${error}` });
     }
   },
 };

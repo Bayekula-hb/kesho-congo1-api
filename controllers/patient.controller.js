@@ -217,9 +217,10 @@ module.exports = {
       const result = await sequelize.transaction(async (t) => {
         const { patientId } = res;
         const Patient = await patient.findOne({
-          where: { id: patientId },
+          where: { id_patient: patientId },
           attributes: [
             "id",
+            "id_patient",
             "nom_patient",
             "postnom_patient",
             "prenom_patient",
@@ -238,8 +239,9 @@ module.exports = {
           });
         } else {
           const id_famillePatient = Patient.familleId;
+          const id_patient = Patient.id;
           const Anthropometrique = await anthropometrique.findAll({
-            where: { patientId },
+            where: { patientId: id_patient },
             order: [["id", "DESC"]],
             limit: 3,
             attributes: [
@@ -256,7 +258,7 @@ module.exports = {
             attributes: ["nom_tuteur"],
           });
           const consultant = await consulter_par.findOne({
-            where: { patientId },
+            where: { patientId: id_patient },
             order: [["id", "DESC"]],
             limit: 1,
           });
@@ -483,7 +485,7 @@ module.exports = {
     try {
       const result = await sequelize.transaction(async (t) => {
         const Patients = await sequelize.query(
-          `select Pa.id_patient, nom_patient, postnom_patient, Anthr.type_malnutrition, Date_Consultation, nom_user as nom_consultant, postnom_user as postnom_consultant  from
+          `select Pa.id_patient, nom_patient, postnom_patient, Pa.sexe_patient, Anthr.type_malnutrition, Date_Consultation, nom_user as nom_consultant, postnom_user as postnom_consultant  from
           patients as Pa
           inner join (
             SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -519,9 +521,13 @@ module.exports = {
     try {
       const result = await sequelize.transaction(async (t) => {
         const { id } = res;
-        const patientFind = await patient.findOne({ where: { id } });
+        const patientFind = await patient.findOne({
+          where: { id_patient: id },
+        });
         if (patientFind) {
-          patientFind.destroy();
+          patientFind.destroy({
+            force: true,
+          });
           res.status(200).json({
             message: `Le patient  a été supprimé`,
           });
