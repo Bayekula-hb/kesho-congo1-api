@@ -4,6 +4,6 @@ const anthropometriqueRegisterMiddleware = require("../middleware/anthropometriq
 const router = require("express").Router();
 
 router.post("/", anthropometriqueRegisterMiddleware);
-router.get("/", anthropometriqueGetByIdMiddleware)
+router.get("/", anthropometriqueGetByIdMiddleware);
 
 module.exports = router;

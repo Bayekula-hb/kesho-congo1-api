@@ -8,6 +8,8 @@ const userRoute = require("./routes/user.route");
 const getUserMiddleware = require("./middleware/user/user.get.middleware");
 const anthropometriqueRoute = require("./routes/anthropometrique.route");
 const patientRoute = require("./routes/patient.route");
+const getPatientMiddleware = require("./middleware/patient/patient.getall.middleware");
+const deletePatient = require("./middleware/patient/patient.destroy");
 const { getAllPatient } = require("./controllers/patient.controller");
 const routeReporting = require("./routes/reporting");
 const passport = require("passport");
@@ -41,11 +43,7 @@ app.use(function (req, res, next) {
 });
 
 app.use("/auth", authRoute);
-app.use(
-  "/register",
-  passport.authenticate("jwt", { session: false }),
-  registerRoute
-);
+app.use("/register", registerRoute);
 app.get(
   "/user",
   passport.authenticate("jwt", { session: false }),
@@ -53,11 +51,7 @@ app.get(
 );
 app.use("/users", passport.authenticate("jwt", { session: false }), userRoute);
 
-app.use(
-  "/anthropometrique",
-  passport.authenticate("jwt", { session: false }),
-  anthropometriqueRoute
-);
+app.use("/anthropometrique", anthropometriqueRoute);
 app.use(
   "/patient",
   passport.authenticate("jwt", { session: false }),
@@ -70,7 +64,7 @@ app.use(
 );
 
 //Route Reporting
-app.use("/reporting",
-passport.authenticate("jwt", { session: false }), routeReporting);
+
+app.use("/reporting", routeReporting);
 
 module.exports = app;

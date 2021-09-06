@@ -1,10 +1,15 @@
 const { Sequelize } = require("sequelize");
 
 // Configuration de la base de donnée
-const db = new Sequelize("kesho", "root", "1234567", {
-  host: "localhost",
-  dialect: "mysql",
-});
+const db = new Sequelize(
+  "kesho",
+  "root",
+  "1234567",
+  {
+    host: "localhost",
+    dialect: "mysql",
+  }
+);
 // Cette synthaxe nous permet a executer la migration des tables automatiquement vers la base de donnée
 db.sync();
 

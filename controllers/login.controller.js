@@ -24,14 +24,15 @@ module.exports = {
           return res.status(400).json({ message: "Email not valid" });
         } else {
           const jwtToken = jwt.sign(
-            { id: userWithEmail.id, email: userWithEmail.email},
+            { id: userWithEmail.id, email: userWithEmail.email },
             process.env.JWT_SECRET
           );
           res.status(200).json({
             message: "Welcome Back!",
             token: jwtToken,
-            name: `${userWithEmail.nom_user} ${userWithEmail.postnom_user}, isAdmin :  ${userWithEmail.is_admin}`,
-            id_user : `${userWithEmail.id_user}`
+            name: `${userWithEmail.nom_user}, ${userWithEmail.postnom_user}`,
+            isAdmin: ` ${userWithEmail.is_admin}`,
+            id_user: `${userWithEmail.id_user}`,
           });
         }
       });
