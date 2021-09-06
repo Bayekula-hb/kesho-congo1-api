@@ -1,5 +1,5 @@
 const express = require("express");
-const { registerPatient } = require("../../controllers/patient.controller");
+const { addPatient } = require("../../controllers/patient.controller");
 const { body, validationResult } = require("express-validator");
 
 const patientRegisterMiddleware = express();
@@ -179,6 +179,6 @@ patientRegisterMiddleware.use(
   }
 );
 
-patientRegisterMiddleware.use("/", registerPatient)
+patientRegisterMiddleware.use("/", addPatient)
 
 module.exports = patientRegisterMiddleware;

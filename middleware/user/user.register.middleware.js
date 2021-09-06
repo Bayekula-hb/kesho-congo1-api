@@ -5,8 +5,7 @@ const { registerUser } = require("../../controllers/user.controller");
 
 const userRegisterMiddleware = express();
 
-userRegisterMiddleware.use(
-  [
+const validationMiddlewares = [
     body("email").isEmail(),
     body("nom_user").notEmpty().withMessage("Cannot be empty"),
     body("prenom_user").notEmpty().withMessage("Cannot be empty"),
@@ -21,7 +20,10 @@ userRegisterMiddleware.use(
       .withMessage("Cannot be empty")
       .matches(/\w/)
       .withMessage("pas de chiffres"),
-  ],
+  ]
+
+userRegisterMiddleware.use(
+  validationMiddlewares,
   (req, res, next) => {
     let {
       nom_user,

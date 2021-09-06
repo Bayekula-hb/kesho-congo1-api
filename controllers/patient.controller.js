@@ -11,7 +11,7 @@ const { QueryTypes } = require("sequelize");
 const { compareSync } = require("bcrypt");
 
 module.exports = {
-  registerPatient: async (req, res, next) => {
+  addPatient: async (req, res) => {
     try {
       const {
         atcd_mas,
