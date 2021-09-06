@@ -56,11 +56,7 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   patientRoute
 );
-app.use(
-  "/patients",
-  passport.authenticate("jwt", { session: false }),
-  getAllPatient
-);
+
 
 //Route Reporting
 

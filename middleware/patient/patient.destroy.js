@@ -1,6 +1,5 @@
 const express = require("express");
 const { query, validationResult } = require("express-validator");
-const { deletePatient } = require("../../controllers/patient.controller");
 const patientDestroyMiddleware = express();
 
 patientDestroyMiddleware.use([
@@ -19,7 +18,5 @@ patientDestroyMiddleware.use([
       next();
     }
 ),
-
-patientDestroyMiddleware.use("/", deletePatient);
 
 module.exports= patientDestroyMiddleware;

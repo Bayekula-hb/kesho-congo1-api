@@ -1,11 +1,10 @@
 const express = require("express");
-const { param, body, validationResult } = require("express-validator");
+const { addPatient } = require("../../controllers/patient.controller");
+const { body, validationResult } = require("express-validator");
 
-const updatePatientMiddleware = express();
+const patientValidatorAdd = express();
+
 const validationData =  [
-  param("id_patient").isEmpty().withMessage("paramètre manquant"),
-  // .matches(/\d/)
-  // .withMessage("paramètre non valide"),
   body("atcd_mas").notEmpty().withMessage("Cannot be empty"),
   body("nbre_chute").notEmpty().withMessage("Cannot be empty"),
   body("cause_dpm").notEmpty().withMessage("Cannot be empty"),
@@ -85,20 +84,101 @@ const validationData =  [
   body("age_fin_allaitement").notEmpty().withMessage("Cannot be empty"),
   body("traitement_nutri").notEmpty().withMessage("Cannot be empty"),
 ]
-
-updatePatientMiddleware.use(
-  validationData,
- 
+patientValidatorAdd.use(
+  validationData, 
   async (req, res, next) => {
-    
-    const { id_patient } = req.query;
+    // Cause malnutrition
+    const {
+      atcd_mas,
+      nbre_chute,
+      mas_fratie,
+      terme_grossesse,
+      sejour_neonat,
+      eig,
+      lieu_accouchement,
+      asphyxie_perinatal,
+      cause_dpm,
+      dpm,
+      caliendrier_vaccinal,
+      rang_fratrie,
+      taille_fratrie,
+      atcd_rougeole_fratrie,
+      vaccination_rougeole,
+      terrain_vih,
+      tbc,
+      atcd_du_tbc_dans_fratrie,
+      hospitalisation_recente,
+      diagnostique_hospitalisation,
+      cocktail_atb,
+      duree_prise_atb,
+      mas_fratrie,
+    } = req.body;
+
+    // Table Parametres Anthropometriques
+    const {
+      peri_cranien,
+      peri_brachail,
+      poids,
+      taille,
+      type_malnutrition,
+    } = req.body;
+
+    // Table Patient
+    const {
+      nom_patient,
+      postnom_patient,
+      prenom_patient,
+      sexe_patient,
+      age_patient,
+      provenance_patient,
+      mode_arrive,
+      poids_naissance,
+      fin_allaitement,
+      mois_fin_allaitement,
+      diversification_aliment,
+      telephone,
+      id_famille,
+    } = req.body;
+
+    // add table famille
+
+    const {
+      taille_famille,
+      vivre_deux_parents,
+      mere_enceinte,
+      mere_en_vie,
+      pere_en_vie,
+      profession_mere,
+      profession_chef_menage,
+      age_mere,
+      scolarite_mere,
+      contraception_mere,
+      contraception_moderne,
+      niveau_socioeconomique,
+      statut_marital,
+      nbre_femme_pere,
+      tribu,
+      religion,
+      posseder_radio_tele,
+      nbre_repas,
+      consommation_poisson,
+      atb,
+      liste_atb,
+      tbc_chez_parents,
+      tbc_chez,
+      tbc_gueris,
+      duree_traitement_tbc,
+      tbc_declarer_finie,
+      nom_tuteur,
+    } = req.body;
     const errors = validationResult(req);
+    // erreur pour voir si le champs est vide
     if (!errors.isEmpty()) {
-      return res.status(400).json({ error: errors.array() });
+      return res.status(400).json({ errors: errors.array() });
     }
-    res.id_patient = id_patient;
     next();
   }
 );
 
-module.exports = updatePatientMiddleware;
+
+module.exports = patientValidatorAdd;
