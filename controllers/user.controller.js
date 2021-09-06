@@ -11,6 +11,7 @@ module.exports = {
           "id_user",
           "nom_user",
           "postnom_user",
+          "prenom_user",
           "email",
           "sexe_user",
           "is_admin",
