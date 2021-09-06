@@ -24,7 +24,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-require("dotenv").config();
+
 require("./auth/passport");
 
 app.get("/", (req, res) => {
