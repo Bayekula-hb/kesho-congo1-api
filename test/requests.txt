@@ -99,7 +99,7 @@ Json:
       "nom_tuteur":"Eric",
       "date_naissance_tuteur":"2007-03-04",
       "image_patient":"https://www.moimoi.monimage.cd",
-      "id_user":"1"
+
 }
 
 
