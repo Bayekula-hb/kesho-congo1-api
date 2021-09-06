@@ -517,7 +517,9 @@ module.exports = {
           ) as Cons
           on Anthr.patientId = Cons.patientId 
           inner join users
-          on Cons.userId = users.id`,
+          on Cons.userId = users.id 
+          ORDER BY Pa.id DESC`
+        ,
           { type: QueryTypes.SELECT }
         );
         res.status(200).json({ Patients });

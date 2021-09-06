@@ -26,7 +26,7 @@ module.exports = {
   getUserById: async (req, res) => {
     const { id_user } = res;
     const userOne = await user.findOne({
-      where: { id_user},
+      where: { id_user },
       attributes: [
         "id_user",
         "nom_user",
@@ -75,14 +75,14 @@ module.exports = {
     try {
       const result = await sequelize.transaction(async (t) => {
         const { id_user } = res;
-        const userFind = await user.findOne({ where: { id_user} });
+        const userFind = await user.findOne({ where: { id_user } });
 
         if (userFind) {
           const userDelete = await user.destroy({
             where: {
               id_user,
             },
-            force:true
+            force: true,
           });
           return res.status(200).json({
             message: `${userFind.dataValues.nom_user} ${userFind.dataValues.postnom_user} est supprimé avec succès`,
@@ -101,8 +101,8 @@ module.exports = {
   },
   updateUser: async (req, res) => {
     if (
-      (req.user.is_admin === true && req.user.id_user !== res.id_user ) ||
-      (req.user.is_admin === false && req.user.id_user !== res.id_user )
+      (req.user.is_admin === true && req.user.id_user !== res.id_user) ||
+      (req.user.is_admin === false && req.user.id_user !== res.id_user)
     )
       return res
         .status(400)
@@ -110,7 +110,7 @@ module.exports = {
     try {
       const result = await sequelize.transaction(async (t) => {
         const { id_user, nom_user, postnom_user, prenom_user, password } = res;
-        const userFind = await user.findOne({ where: { id_user} });
+        const userFind = await user.findOne({ where: { id_user } });
         if (userFind) {
           const userUpdate = await user.update(
             { nom_user, postnom_user, prenom_user, password },
