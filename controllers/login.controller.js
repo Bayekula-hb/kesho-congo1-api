@@ -31,6 +31,7 @@ module.exports = {
             message: "Welcome Back!",
             token: jwtToken,
             name: `${userWithEmail.nom_user} ${userWithEmail.postnom_user}, isAdmin :  ${userWithEmail.is_admin}`,
+            id_user : `${userWithEmail.id_user}`
           });
         }
       });
