@@ -2,11 +2,11 @@ const { Sequelize } = require("sequelize");
 
 // Configuration de la base de donnée
 const db = new Sequelize(
-  "kesho",
-  "root",
-  "1234567",
+  "bsouruivlyra7oak70av",
+  "ugkdeyce9bmzpgij",
+  "SvRh1B1Z9eZqQrzZS59a",
   {
-    host: "localhost",
+    host: "bsouruivlyra7oak70av-mysql.services.clever-cloud.com",
     dialect: "mysql",
   }
 );
