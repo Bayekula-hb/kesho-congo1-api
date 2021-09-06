@@ -23,7 +23,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-
 require("./auth/passport");
 
 app.get("/", (req, res) => {
@@ -42,13 +41,8 @@ app.use(function (req, res, next) {
 });
 
 app.use("/auth", authRoute);
-app.use("/register", registerRoute);
-app.get(
-  "/user",
-  passport.authenticate("jwt", { session: false }),
-  getUserMiddleware
-);
-app.use("/users", passport.authenticate("jwt", { session: false }), userRoute);
+
+app.use("/user", passport.authenticate("jwt", { session: false }), userRoute);
 
 app.use("/anthropometrique", anthropometriqueRoute);
 app.use(
@@ -56,7 +50,6 @@ app.use(
   passport.authenticate("jwt", { session: false }),
   patientRoute
 );
-
 
 //Route Reporting
 

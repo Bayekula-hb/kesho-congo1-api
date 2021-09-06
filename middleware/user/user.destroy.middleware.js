@@ -23,5 +23,5 @@ userDestroyMiddleware.use(
     next();
   }
 );
-userDestroyMiddleware.use("/", deleteUser)
+
 module.exports = userDestroyMiddleware;

@@ -1,7 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const { param, validationResult } = require("express-validator");
-const { getUserById } = require("../../controllers/user.controller");
 
 const getUserMiddleware = express();
 
@@ -21,5 +20,4 @@ getUserMiddleware.use(
   }
 );
 
-getUserMiddleware.use("/", getUserById);
 module.exports = getUserMiddleware;

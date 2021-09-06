@@ -1,7 +1,6 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const { body, validationResult } = require("express-validator");
-const { registerUser } = require("../../controllers/user.controller");
 
 const userRegisterMiddleware = express();
 
@@ -52,5 +51,4 @@ userRegisterMiddleware.use(
   }
 );
 
-userRegisterMiddleware.use("/", registerUser);
 module.exports = userRegisterMiddleware;
