@@ -136,7 +136,6 @@ patientRegisterMiddleware.use(
       mois_fin_allaitement,
       diversification_aliment,
       telephone,
-      id_cause_malnutrition,
       id_famille,
     } = req.body;
 

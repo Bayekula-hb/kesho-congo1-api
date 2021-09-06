@@ -262,6 +262,14 @@ module.exports = {
             order: [["id", "DESC"]],
             limit: 1,
           });
+          const PatientAge = await sequelize.query(
+            `
+              select datediff(now(), date_naissance_patient) as ageEnMois,   datediff(now(), date_naissance_patient)/365 as ageEnAnnee
+                from patients
+                where id=${id_patient};
+            `,
+            { type: QueryTypes.SELECT }
+          );
           const date_consultation = await consultant.createdAt;
           const { userId } = await consultant;
           const name_consultant = await user.findOne({
@@ -274,6 +282,7 @@ module.exports = {
             Famille,
             name_consultant,
             date_consultation,
+            PatientAge
           });
         }
       });
