@@ -8,8 +8,7 @@ const {
   sequelize,
 } = require("../models");
 
-
-const addAnthropometrique =  async (req, res) => {
+const addAnthropometrique= async (req, res) => {
   try {
     const result = await sequelize.transaction(async (t) => {
       const {
@@ -62,7 +61,7 @@ const addAnthropometrique =  async (req, res) => {
     res.status(400).json({ error: `${error}` });
   }
 };
-const getAnthropometriqueByIdPatient = async (req, res) => {
+const getAnthropometriqueByIdPatient= async (req, res) => {
   const { patientId } = res;
   try {
     const result = await sequelize.transaction(async (t) => {
@@ -94,7 +93,8 @@ const getAnthropometriqueByIdPatient = async (req, res) => {
     res.status(400).json({ error: `${error}` });
   }
 };
+
 module.exports = {
   addAnthropometrique,
-  getAnthropometriqueByIdPatient
+  getAnthropometriqueByIdPatient,
 };
