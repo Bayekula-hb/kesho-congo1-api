@@ -9,7 +9,7 @@ const {
 } = require("../models");
 
 module.exports = {
-  registerAnthropometrique: async (req, res) => {
+  addAnthropometrique: async (req, res) => {
     try {
       const result = await sequelize.transaction(async (t) => {
         const {

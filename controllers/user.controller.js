@@ -46,7 +46,7 @@ module.exports = {
       });
     }
   },
-  registerUser: async (req, res) => {
+  addUser: async (req, res) => {
     if (req.user.is_admin == true) {
       try {
         const alreadyExistsUser = await user.findOne({

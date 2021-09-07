@@ -105,7 +105,7 @@ Json:
 
 
 POST register one user Token required :
-Route : /register/user
+Route : /user/register
 json: 
 {
       "email":"kevinarmache@gmail.com",
@@ -114,7 +114,6 @@ json:
       "postnom_user":"Wapitani",
       "prenom_user":"Kevin",
       "is_admin":"1",
-      "image_user":"www.google.com",
       "statut":"Doctor"
 }
 
