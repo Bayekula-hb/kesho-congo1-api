@@ -30,9 +30,10 @@ module.exports = {
           res.status(200).json({
             message: "Welcome Back!",
             token: jwtToken,
-            name: `${userWithEmail.nom_user}, ${userWithEmail.postnom_user}`,
+            name: `${userWithEmail.nom_user} ${userWithEmail.prenom_user}`,
             isAdmin: ` ${userWithEmail.is_admin}`,
             id_user: `${userWithEmail.id_user}`,
+            status : `${userWithEmail.statut}`
           });
         }
       });
