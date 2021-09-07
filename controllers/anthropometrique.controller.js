@@ -8,90 +8,93 @@ const {
   sequelize,
 } = require("../models");
 
-module.exports = {
-  addAnthropometrique: async (req, res) => {
-    try {
-      const result = await sequelize.transaction(async (t) => {
-        const {
+const addAnthropometrique= async (req, res) => {
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      const {
+        peri_cranien,
+        peri_brachial,
+        poids,
+        taille,
+        type_malnutrition,
+        date_examen,
+      } = req.body;
+      const { id_patient } = req.query;
+      const { id_user } = req.user;
+
+      const patientFind = await patient.findOne({
+        where: { id_patient },
+        attributes: ["id"],
+      });
+      const userFind = await user.findOne({
+        where: { id_user },
+        attributes: ["id"],
+      });
+      if (patientFind && userFind) {
+        const patientId = patientFind.id,
+          userId = userFind.id;
+
+        await anthropometrique.create({
           peri_cranien,
           peri_brachial,
           poids,
           taille,
           type_malnutrition,
           date_examen,
-        } = req.body;
-        const { id_patient } = req.query;
-        const { id_user } = req.user;
-
-        const patientFind = await patient.findOne({
-          where: { id_patient },
-          attributes: ["id"],
+          patientId,
         });
-        const userFind = await user.findOne({
-          where: { id_user },
-          attributes: ["id"],
+
+        await consulter_par.create({
+          patientId,
+          userId,
         });
-        if (patientFind && userFind) {
-          const patientId = patientFind.id,
-            userId = userFind.id;
-
-          await anthropometrique.create({
-            peri_cranien,
-            peri_brachial,
-            poids,
-            taille,
-            type_malnutrition,
-            date_examen,
-            patientId,
-          });
-
-          await consulter_par.create({
-            patientId,
-            userId,
-          });
-          return res
-            .status(200)
-            .json({ message: "Enregistrement effectuer avec succès" });
-        } else {
-          res.status(400).json({
-            error: "Le patient non trouvé ou l'utilisateur non trouvé",
-          });
-        }
+        return res
+          .status(200)
+          .json({ message: "Enregistrement effectuer avec succès" });
+      } else {
+        res.status(400).json({
+          error: "Le patient non trouvé ou l'utilisateur non trouvé",
+        });
+      }
+    });
+  } catch (error) {
+    res.status(400).json({ error: `${error}` });
+  }
+};
+const getAnthropometriqueByIdPatient= async (req, res) => {
+  const { patientId } = res;
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      const patientFind = await patient.findOne({
+        where: { id_patient: patientId },
+        attributes: ["id"],
       });
-    } catch (error) {
-      res.status(400).json({ error: `${error}` });
-    }
-  },
-  getAnthropometriqueByIdPatient: async (req, res) => {
-    const { patientId } = res;
-    try {
-      const result = await sequelize.transaction(async (t) => {
-        const patientFind = await patient.findOne({
-          where: { id_patient: patientId },
-          attributes: ["id"],
-        });
-        const id = patientFind.id;
+      const id = patientFind.id;
 
-        if (!patientFind) {
-          res.status(400).json({ error: "Le patient non trouvé" });
-        } else {
-          const anthropometriqueOnePatient =
-            await anthropometrique.findAndCountAll({
-              where: { patientId:id },
-              order: [["id", "DESC"]],
-              limit: 3,
-            });
-
-          const consultant = await consulter_par.findAll({
+      if (!patientFind) {
+        res.status(400).json({ error: "Le patient non trouvé" });
+      } else {
+        const anthropometriqueOnePatient =
+          await anthropometrique.findAndCountAll({
             where: { patientId:id },
             order: [["id", "DESC"]],
             limit: 3,
           });
-          res.status(200).json({ anthropometriqueOnePatient, consultant });
-        }
-      });
-    } catch (error) {
-      res.status(400).json({ error: `${error}` });
-    }
-  },
+
+        const consultant = await consulter_par.findAll({
+          where: { patientId:id },
+          order: [["id", "DESC"]],
+          limit: 3,
+        });
+        res.status(200).json({ anthropometriqueOnePatient, consultant });
+      }
+    });
+  } catch (error) {
+    res.status(400).json({ error: `${error}` });
+  }
+};
+
+module.exports = {
+  addAnthropometrique,
+  getAnthropometriqueByIdPatient,
 };
