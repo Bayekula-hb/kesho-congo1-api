@@ -101,12 +101,11 @@ module.exports = {
   },
   updateUser: async (req, res) => {
     if (
-      (req.user.is_admin === true && req.user.id_user !== res.id_user) ||
-      (req.user.is_admin === false && req.user.id_user !== res.id_user)
-    )
+      (req.user.id_user !== res.id_user)
+    ){
       return res
         .status(400)
-        .send("Access denied. You are an admin you can't update a user.");
+        .send("Access denied. Can't update another user.")};
     try {
       const result = await sequelize.transaction(async (t) => {
         const { id_user, nom_user, postnom_user, prenom_user, password } = res;

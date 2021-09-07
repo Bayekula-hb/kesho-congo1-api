@@ -1,6 +1,5 @@
 const express = require("express");
 const { query, param, validationResult } = require("express-validator");
-const { deleteUser } = require("../../controllers/user.controller");
 
 const userDestroyMiddleware = express();
 
