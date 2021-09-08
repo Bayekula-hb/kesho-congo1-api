@@ -400,6 +400,87 @@ module.exports = {
           ORDER BY Pa.id DESC`,
           { type: QueryTypes.SELECT }
         );
+        const moderée_nombre =  await sequelize.query(
+          `select count(Pa.id_patient) as nombre_patient_chronique from
+          patients as Pa
+          inner join ( 
+            SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+            FROM anthropometriques
+            WHERE createdAt IN (
+              SELECT MAX(createdAt)
+              FROM anthropometriques
+              GROUP BY patientId
+            )
+          ) as Anthr
+          on Anthr.patientId = Pa.id
+          inner join (
+          SELECT id, patientId, userId
+          FROM consulter_pars
+          WHERE createdAt IN (
+              SELECT MAX(createdAt)
+              FROM consulter_pars
+              GROUP BY patientId
+          )
+          ) as Cons
+          on Anthr.patientId = Cons.patientId
+          where Anthr.type_malnutrition = "moderée"
+          ORDER BY Pa.id DESC`,
+          { type: QueryTypes.SELECT }
+        );
+        const moderée_nombre_fille =  await sequelize.query(
+          `select count(Pa.id_patient) as sereve_nombre_fille from
+          patients as Pa
+          inner join ( 
+            SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+            FROM anthropometriques
+            WHERE createdAt IN (
+              SELECT MAX(createdAt)
+              FROM anthropometriques
+              GROUP BY patientId
+            )
+          ) as Anthr
+          on Anthr.patientId = Pa.id
+          inner join (
+          SELECT id, patientId, userId
+          FROM consulter_pars
+          WHERE createdAt IN (
+              SELECT MAX(createdAt)
+              FROM consulter_pars
+              GROUP BY patientId
+          )
+          ) as Cons
+          on Anthr.patientId = Cons.patientId
+          where Anthr.type_malnutrition = "moderée" and Pa.sexe_patient = "F"
+          ORDER BY Pa.id DESC`,
+          { type: QueryTypes.SELECT }
+        );
+        const moderée_nombre_garcon =  await sequelize.query(
+          `select count(Pa.id_patient) as sereve_nombre_garcon from
+          patients as Pa
+          inner join ( 
+            SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+            FROM anthropometriques
+            WHERE createdAt IN (
+              SELECT MAX(createdAt)
+              FROM anthropometriques
+              GROUP BY patientId
+            )
+          ) as Anthr
+          on Anthr.patientId = Pa.id
+          inner join (
+          SELECT id, patientId, userId
+          FROM consulter_pars
+          WHERE createdAt IN (
+              SELECT MAX(createdAt)
+              FROM consulter_pars
+              GROUP BY patientId
+          )
+          ) as Cons
+          on Anthr.patientId = Cons.patientId
+          where Anthr.type_malnutrition = "moderée" and Pa.sexe_patient = "M"
+          ORDER BY Pa.id DESC`,
+          { type: QueryTypes.SELECT }
+        );
         res.status(200).json({
           totalPatient,
           nbreGarcon,
@@ -428,6 +509,10 @@ module.exports = {
           chronique_nombre,
           chronique_nombre_fille,
           chronique_nombre_garcon,
+          moderée_nombre,
+          moderée_nombre_fille,
+          moderée_nombre_garcon,
+          
         });
       });
     } catch (err) {
