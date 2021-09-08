@@ -38,7 +38,7 @@ module.exports = {
 
         const NbreGarconAdulte = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_mois_3ans from (
+          select  count(id_patient) as NbreGarconAdulte from (
             select id_patient, sexe_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -48,7 +48,7 @@ module.exports = {
         );
         const NbreFilleAdulte = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_mois_3ans from (
+          select  count(id_patient) as NbreFilleAdulte from (
             select id_patient, sexe_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -60,7 +60,7 @@ module.exports = {
         //3 ans
         const Moins3Ans = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_mois_3ans from (
+          select  count(id_patient) as Moins3Ans from (
             select id_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -70,7 +70,7 @@ module.exports = {
         );
         const NbreFilleMoins3Ans = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_mois_3ans from (
+          select  count(id_patient) as NbreFilleMoins3Ans from (
             select id_patient, sexe_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -80,7 +80,7 @@ module.exports = {
         );
         const NbreGarconMoins3Ans = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_mois_3ans from (
+          select  count(id_patient) as NbreGarconMoins3Ans from (
             select id_patient, sexe_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -92,7 +92,7 @@ module.exports = {
         //3 à 5 ans
         const Nbre_3_5Ans = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_3_5ans from (
+          select  count(id_patient) as Nbre_3_5Ans from (
             select id_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -102,7 +102,7 @@ module.exports = {
         );
         const NbreGarcon3_5Ans = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_mois_3ans from (
+          select  count(id_patient) as NbreGarcon3_5Ans from (
             select id_patient, sexe_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -112,7 +112,7 @@ module.exports = {
         );
         const NbreFille3_5Ans = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_mois_3ans from (
+          select  count(id_patient) as NbreFille3_5Ans from (
             select id_patient, sexe_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -124,7 +124,7 @@ module.exports = {
         // 6 à 12 ans
         const Nbre_6_12Ans = await sequelize.query(
           `
-          select  count(id_patient) as nombre__enfant_5_12ans from (
+          select  count(id_patient) as Nbre_6_12Ans from (
             select id_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -134,7 +134,7 @@ module.exports = {
         );
         const NbreGarcon6_12Ans = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_mois_3ans from (
+          select  count(id_patient) as NbreGarcon6_12Ans from (
             select id_patient, sexe_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -144,7 +144,7 @@ module.exports = {
         );
         const NbreFille6_12Ans = await sequelize.query(
           `
-          select  count(id_patient) as nombre_enfant_mois_3ans from (
+          select  count(id_patient) as NbreFille6_12Ans from (
             select id_patient, sexe_patient, datediff(now(), date_naissance_patient)/365 as age
               from patients)
               as pa_age
@@ -152,14 +152,6 @@ module.exports = {
           `,
           { type: QueryTypes.SELECT }
         );
-        // const NbrePatientToday = await sequelize.query(
-        //   `
-        //   select  count(id) as nombre_patient_today from 
-        //   consulter_pars
-        //   where (createdAt >  (NOW() - INTERVAL 24 HOUR)) and (createdAt < NOW())
-        //   `,
-        //   { type: QueryTypes.SELECT }
-        // );
         const NbrePatientToday = await consulter_par.count({
           where: {
             createdAt: {
@@ -257,6 +249,8 @@ module.exports = {
             NbrePatientYesterday,
             NbreFilleYesterday,
             NbreGarconYesterday,
+            //
+            NbreMaladie,
           });
       });
     } catch (err) {
