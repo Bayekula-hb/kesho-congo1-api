@@ -425,6 +425,9 @@ module.exports = {
           sereve_nombre,
           sereve_nombre_fille,
           sereve_nombre_garcon,
+          chronique_nombre,
+          chronique_nombre_fille,
+          chronique_nombre_garcon,
         });
       });
     } catch (err) {
