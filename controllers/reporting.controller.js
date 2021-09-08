@@ -249,8 +249,6 @@ module.exports = {
             NbrePatientYesterday,
             NbreFilleYesterday,
             NbreGarconYesterday,
-            //
-            NbreMaladie,
           });
       });
     } catch (err) {
