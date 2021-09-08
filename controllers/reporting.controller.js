@@ -8,7 +8,7 @@ const {
   sequelize,
 } = require("../models");
 
-const { QueryTypes } = require("sequelize");
+const { QueryTypes , Op, where} = require("sequelize");
 module.exports = {
   getReporting: async (req, res) => {
     try {
@@ -16,13 +16,13 @@ module.exports = {
         const totalPatient = await patient.count("id");
         const nbreFille = await patient.count({
           where: {
-            sexe_patient: "F"
-          }
+            sexe_patient: "F",
+          },
         });
         const nbreGarcon = await patient.count({
           where: {
-            sexe_patient: "M"
-          }
+            sexe_patient: "M",
+          },
         });
         // Adulte
         const Adulte = await sequelize.query(
@@ -35,7 +35,7 @@ module.exports = {
           `,
           { type: QueryTypes.SELECT }
         );
-        
+
         const NbreGarconAdulte = await sequelize.query(
           `
           select  count(id_patient) as nombre_enfant_mois_3ans from (
@@ -57,7 +57,7 @@ module.exports = {
           { type: QueryTypes.SELECT }
         );
 
-        //3 ans 
+        //3 ans
         const Moins3Ans = await sequelize.query(
           `
           select  count(id_patient) as nombre_enfant_mois_3ans from (
@@ -152,12 +152,112 @@ module.exports = {
           `,
           { type: QueryTypes.SELECT }
         );
+        // const NbrePatientToday = await sequelize.query(
+        //   `
+        //   select  count(id) as nombre_patient_today from 
+        //   consulter_pars
+        //   where (createdAt >  (NOW() - INTERVAL 24 HOUR)) and (createdAt < NOW())
+        //   `,
+        //   { type: QueryTypes.SELECT }
+        // );
+        const NbrePatientToday = await consulter_par.count({
+          where: {
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000),
+            },
+          },
+        });
+        const NbreFilleToday = await consulter_par.count({
+          where: {
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000),
+            },
+          },
+          include:[ {
+            model:patient,
+            where:{
+              sexe_patient : "F"
+            }
+          }]
+        });
+        const NbreGarconToday = await consulter_par.count({
+          where: {
+            createdAt: {
+              [Op.lt]: new Date(),
+              [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000),
+            },
+          },
+          include:[ {
+            model:patient,
+            where:{
+              sexe_patient : "M"
+            }
+          }]
+        });
+        const NbrePatientYesterday = await consulter_par.count({
+          where: {
+            createdAt: {
+              [Op.gt]: new Date(new Date() - 45 * 60.482 * 60 * 1000),
+              [Op.lt]: new Date(new Date() - 21 * 60 * 60 * 1005.8),
+            },
+          },
+        });
+        const NbreGarconYesterday = await consulter_par.count({
+          where: {
+            createdAt: {
+              [Op.gt]: new Date(new Date() - 45 * 60.482 * 60 * 1000),
+              [Op.lt]: new Date(new Date() - 21 * 60 * 60 * 1005.8),
+            },
+          },
+          include:[ {
+            model:patient,
+            where:{
+              sexe_patient : "M"
+            }
+          }]
+        });
         
-        res.status(200).json({totalPatient, nbreGarcon, nbreFille,
-           Adulte, NbreGarconAdulte, NbreFilleAdulte,
-           Moins3Ans, NbreFilleMoins3Ans,NbreGarconMoins3Ans,
-           Nbre_3_5Ans, NbreGarcon3_5Ans, NbreFille3_5Ans,
-           Nbre_6_12Ans, NbreGarcon6_12Ans, NbreFille6_12Ans});
+        const NbreFilleYesterday = await consulter_par.count({
+          where: {
+            createdAt: {
+              [Op.gt]: new Date(new Date() - 45 * 60.482 * 60 * 1000),
+              [Op.lt]: new Date(new Date() - 21 * 60 * 60 * 1005.8),
+            },
+          },
+          include:[ {
+            model:patient,
+            where:{
+              sexe_patient : "F"
+            }
+          }]
+        });
+        res
+          .status(200)
+          .json({
+            totalPatient,
+            nbreGarcon,
+            nbreFille,
+            Adulte,
+            NbreGarconAdulte,
+            NbreFilleAdulte,
+            Moins3Ans,
+            NbreFilleMoins3Ans,
+            NbreGarconMoins3Ans,
+            Nbre_3_5Ans,
+            NbreGarcon3_5Ans,
+            NbreFille3_5Ans,
+            Nbre_6_12Ans,
+            NbreGarcon6_12Ans,
+            NbreFille6_12Ans,
+            NbrePatientToday,
+            NbreFilleToday,
+            NbreGarconToday,
+            NbrePatientYesterday,
+            NbreFilleYesterday,
+            NbreGarconYesterday,
+          });
       });
     } catch (err) {
       res.status(500).json({ error: `${err}` });
