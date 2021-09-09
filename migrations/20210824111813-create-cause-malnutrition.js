@@ -53,8 +53,8 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       calendrier_vaccinal: {
-        allowNull: false,
-        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        type: Sequelize.TEXT,
       },
       vaccin_non_recu: {
         allowNull: false,
@@ -109,7 +109,7 @@ module.exports = {
       },
       cocktail_atb: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.STRING,
       },
       duree_prise_atb: {
         allowNull: true,
@@ -134,8 +134,8 @@ module.exports = {
           model: "patients",
           key: "id",
         },
-        onDelete: 'CASCADE',
-        onUpdate: 'CASCADE',
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
       },
       createdAt: {
         allowNull: false,
