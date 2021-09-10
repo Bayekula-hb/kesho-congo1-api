@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
       sejour_neonat: DataTypes.BOOLEAN,
       eig: DataTypes.FLOAT,
       lieu_accouchement: DataTypes.STRING,
-      asphyxie_perinatal: DataTypes.BOOLEAN,
+      asphyxie_perinatal: DataTypes.STRING,
       dpm: DataTypes.STRING,
       cause_dpm: DataTypes.TEXT,
       calendrier_vaccinal: DataTypes.TEXT,

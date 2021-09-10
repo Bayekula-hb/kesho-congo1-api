@@ -42,7 +42,7 @@ module.exports = {
       },
       asphyxie_perinatal: {
         allowNull: false,
-        type: Sequelize.BOOLEAN,
+        type: Sequelize.STRING,
       },
       dpm: {
         allowNull: false,

@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       mere_enceinte: DataTypes.STRING,
       pere_en_vie: DataTypes.BOOLEAN,
       mere_en_vie: DataTypes.BOOLEAN,
-      age_mere: DataTypes.INTEGER,
+      age_mere: DataTypes.DATE,
       profession_mere: DataTypes.STRING,
       profession_chef_menage: DataTypes.STRING,
       scolarite_mere: DataTypes.STRING,
