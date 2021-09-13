@@ -105,7 +105,7 @@ module.exports = {
       },
       duree_produit_plante: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       cocktail_atb: {
         allowNull: false,
