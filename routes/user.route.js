@@ -4,6 +4,7 @@ const {
   addUser,
   updateUser,
   deleteUser,
+  resetPassword
 } = require("../controllers/user.controller");
 
 const userDestroyMiddleware = require("../middleware/user/user.destroy.middleware");
@@ -17,7 +18,7 @@ const router = require("express").Router();
 router.delete("/", userDestroyMiddleware, deleteUser);
 router.put("/", userUpdateMiddleware, updateUser);
 router.post("/register", userRegisterMiddleware, addUser);
-
+router.post("/reset",  resetPassword);
 router.get("/all", getAllUser);
 router.get("/", getUserMiddleware, getUserById);
 
