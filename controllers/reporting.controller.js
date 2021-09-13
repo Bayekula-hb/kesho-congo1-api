@@ -449,7 +449,7 @@ const getReporting= async (req, res) => {
         nombre_garcon_adulte,
         nombre_fille_adulte,
         
-        nombre_garcon_moins_3ans,
+        nombre_fille_moins_3ans,
         nombre_garcon_moins_3ans,
 
         nombre_garcon_3_5ans,
