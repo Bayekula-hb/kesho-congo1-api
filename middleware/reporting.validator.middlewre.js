@@ -5,9 +5,11 @@ const { body, validationResult } = require("express-validator");
 const reportingValidator = express();
 
 reportingValidator.use(
-  [body("date")
-  // .isEmpty().withMessage("La date est requise")
-  .isDate().withMessage("c'est pas une bonne date")],
+  [body("starting_date")
+  .isDate().withMessage("c'est pas une bonne date"),
+  body("ending_date")
+  .isDate().withMessage("c'est pas une bonne date"),
+],
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
