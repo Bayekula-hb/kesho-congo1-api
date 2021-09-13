@@ -605,7 +605,7 @@ const detailPatient = async (req, res) => {
             {
               model: user,
               attributes: [
-              "id",
+              "id_user",
               "nom_user",
               "postnom_user",
               "prenom_user",
@@ -618,9 +618,7 @@ const detailPatient = async (req, res) => {
           Patient,
           Anthropometrique,
           Famille,
-          consultant,
-          // date_consultation,
-          // PatientAge,
+          consultants,
         });
       }
     });

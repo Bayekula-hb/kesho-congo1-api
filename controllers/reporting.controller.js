@@ -10,44 +10,30 @@ const {
 
 const { QueryTypes, Op, where } = require("sequelize");
 const getReporting= async (req, res) => {
-  const {date} = req.body;
-  console.log("date :",date)
-  console.log("req.body : ",req.body.date)
   try {
     const result = await sequelize.transaction(async (t) => {
-      const totalPatient = await patient.count("id");
-      const nbreFille = await patient.count({
-        where: {
-          sexe_patient: "F",
-          // createdAt :{
-          //   [Op.lt]: date,
-          // }
-        },
-      });
-      const nbreGarcon = await patient.count({
-        where: {
-          sexe_patient: "M",
-        },
-      });
-
-      // Adulte
-
-      // const Adulte = await sequelize.query(
-      //   `
-      //   select count(id_patient) as nombre_adulte from (
-      //     select id_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
-      //       from patients)
-      //       as pa_age
-      //       where age > 17
-      //             and MONTH(createdAt) = MONTH(now())  
-      //       ;
-      //   `,
-      //   { type: QueryTypes.SELECT }
-      // );
-
-      const NbreGarconAdulte = await sequelize.query(
+      const nombre_garcon = await sequelize.query(
         `
-        select  count(id_patient) as NbreGarconAdulte from (
+        select count(id_patient) as nombre_garcon
+            from patients
+            where sexe_patient="M" and MONTH(createdAt) = MONTH(now())  
+            ;
+        `,
+        { type: QueryTypes.SELECT }
+      );
+      const nombre_fille = await sequelize.query(
+        `
+        select count(id_patient) as nombre_fille
+            from patients
+            where sexe_patient="F" and MONTH(createdAt) = MONTH(now())  
+            ;
+        `,
+        { type: QueryTypes.SELECT }
+      );
+
+      const nombre_garcon_adulte = await sequelize.query(
+        `
+        select  count(id_patient) as nombre_garcon_adulte from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -56,9 +42,9 @@ const getReporting= async (req, res) => {
         `,
         { type: QueryTypes.SELECT }
       );
-      const NbreFilleAdulte = await sequelize.query(
+      const nombre_fille_adulte = await sequelize.query(
         `
-        select  count(id_patient) as NbreFilleAdulte from (
+        select  count(id_patient) as nombre_fille_adulte from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -67,21 +53,9 @@ const getReporting= async (req, res) => {
         { type: QueryTypes.SELECT }
       );
 
-      //3 ans
-      // const Moins3Ans = await sequelize.query(
-      //   `
-      //   select  count(id_patient) as Moins3Ans from (
-      //     select id_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
-      //       from patients
-      //       )
-      //       as pa_age
-      //       where age <= 2 and MONTH(createdAt) = MONTH(now())  ;
-      //   `,
-      //   { type: QueryTypes.SELECT }
-      // );
-      const NbreFilleMoins3Ans = await sequelize.query(
+      const nombre_fille_moins_3ans = await sequelize.query(
         `
-        select  count(id_patient) as NbreFilleMoins3Ans from (
+        select  count(id_patient) as nombre_fille_moins_3ans from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -89,9 +63,9 @@ const getReporting= async (req, res) => {
         `,
         { type: QueryTypes.SELECT }
       );
-      const NbreGarconMoins3Ans = await sequelize.query(
+      const nombre_garcon_moins_3ans = await sequelize.query(
         `
-        select  count(id_patient) as NbreGarconMoins3Ans from (
+        select  count(id_patient) as nombre_garcon_moins_3ans from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -100,20 +74,9 @@ const getReporting= async (req, res) => {
         { type: QueryTypes.SELECT }
       );
 
-      //3 à 5 ans
-      // const Nbre_3_5Ans = await sequelize.query(
-      //   `
-      //   select  count(id_patient) as Nbre_3_5Ans from (
-      //     select id_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
-      //       from patients)
-      //       as pa_age
-      //       where age > 2 and age <= 5 and MONTH(createdAt) = MONTH(now())   ;
-      //   `,
-      //   { type: QueryTypes.SELECT }
-      // );
-      const NbreGarcon3_5Ans = await sequelize.query(
+      const nombre_garcon_3_5ans = await sequelize.query(
         `
-        select  count(id_patient) as NbreGarcon3_5Ans from (
+        select  count(id_patient) as nombre_garcon_3_5ans from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -121,9 +84,9 @@ const getReporting= async (req, res) => {
         `,
         { type: QueryTypes.SELECT }
       );
-      const NbreFille3_5Ans = await sequelize.query(
+      const nombre_fille_3_5ans = await sequelize.query(
         `
-        select  count(id_patient) as NbreFille3_5Ans from (
+        select  count(id_patient) as nombre_fille_3_5ans from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -132,20 +95,9 @@ const getReporting= async (req, res) => {
         { type: QueryTypes.SELECT }
       );
 
-      // 6 à 12 ans
-      // const Nbre_6_12Ans = await sequelize.query(
-      //   `
-      //   select  count(id_patient) as Nbre_6_12Ans from (
-      //     select id_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
-      //       from patients)
-      //       as pa_age
-      //       where age > 5 and age <= 12 and MONTH(createdAt) = MONTH(now())  ;
-      //   `,
-      //   { type: QueryTypes.SELECT }
-      // );
-      const NbreGarcon6_12Ans = await sequelize.query(
+      const nombre_garcon_6_12ans = await sequelize.query(
         `
-        select  count(id_patient) as NbreGarcon6_12Ans from (
+        select  count(id_patient) as nombre_garcon_6_12ans from (
           select id_patient, sexe_patient, createdAt,datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -153,9 +105,9 @@ const getReporting= async (req, res) => {
         `,
         { type: QueryTypes.SELECT }
       );
-      const NbreFille6_12Ans = await sequelize.query(
+      const nombre_fille_6_12ans = await sequelize.query(
         `
-        select  count(id_patient) as NbreFille6_12Ans from (
+        select  count(id_patient) as nombre_fille_6_12ans from (
           select id_patient, sexe_patient, createdAt,datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -172,7 +124,7 @@ const getReporting= async (req, res) => {
       //     },
       //   },
       // });
-      const NbreFilleToday = await consulter_par.count({
+      const nbre_fille_today = await consulter_par.count({
         where: {
           createdAt: {
             [Op.lt]: new Date(),
@@ -188,7 +140,7 @@ const getReporting= async (req, res) => {
           },
         ],
       });
-      const NbreGarconToday = await consulter_par.count({
+      const nbre_garcon_today = await consulter_par.count({
         where: {
           createdAt: {
             [Op.lt]: new Date(),
@@ -212,7 +164,7 @@ const getReporting= async (req, res) => {
       //     },
       //   },
       // });
-      const NbreGarconYesterday = await consulter_par.count({
+      const nbre_garcon_yesterday = await consulter_par.count({
         where: {
           createdAt: {
             [Op.gt]: new Date(new Date() - 45 * 60.482 * 60 * 1000),
@@ -228,7 +180,7 @@ const getReporting= async (req, res) => {
           },
         ],
       });
-      const NbreFilleYesterday = await consulter_par.count({
+      const nbre_fille_yesterday = await consulter_par.count({
         where: {
           createdAt: {
             [Op.gt]: new Date(new Date() - 45 * 60.482 * 60 * 1000),
@@ -437,7 +389,7 @@ const getReporting= async (req, res) => {
       //   { type: QueryTypes.SELECT }
       // );
       const moderee_nombre_fille =  await sequelize.query(
-        `select count(Pa.id_patient) as sereve_nombre_fille from
+        `select count(Pa.id_patient) as moderee_nombre_fille from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -464,7 +416,7 @@ const getReporting= async (req, res) => {
         { type: QueryTypes.SELECT }
       );
       const moderee_nombre_garcon =  await sequelize.query(
-        `select count(Pa.id_patient) as sereve_nombre_garcon from
+        `select count(Pa.id_patient) as moderee_nombre_garcon from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -491,37 +443,35 @@ const getReporting= async (req, res) => {
         { type: QueryTypes.SELECT }
       );
       res.status(200).json({
-        totalPatient,
-        nbreGarcon,
-        nbreFille,
-        // Adulte,
-        NbreGarconAdulte,
-        NbreFilleAdulte,
-        // Moins3Ans,
-        NbreFilleMoins3Ans,
-        NbreGarconMoins3Ans,
-        // Nbre_3_5Ans,
-        NbreGarcon3_5Ans,
-        NbreFille3_5Ans,
-        // Nbre_6_12Ans,
-        NbreGarcon6_12Ans,
-        NbreFille6_12Ans,
-        // NbrePatientToday,
-        NbreFilleToday,
-        NbreGarconToday,
-        // NbrePatientYesterday,
-        NbreFilleYesterday,
-        NbreGarconYesterday,
-        // sereve_nombre,
+        nombre_garcon,
+        nombre_fille,
+
+        nombre_garcon_adulte,
+        nombre_fille_adulte,
+        
+        nombre_garcon_moins_3ans,
+        nombre_garcon_moins_3ans,
+
+        nombre_garcon_3_5ans,
+        nombre_fille_3_5ans,
+
+        nombre_garcon_6_12ans,
+        nombre_fille_6_12ans,
+
+        nbre_fille_today,
+        nbre_garcon_today,
+
+        nbre_fille_yesterday,
+        nbre_garcon_yesterday,
+
         sereve_nombre_fille,
         sereve_nombre_garcon,
-        // chronique_nombre,
+
         chronique_nombre_fille,
         chronique_nombre_garcon,
-        // moderee_nombre,
+
         moderee_nombre_fille,
         moderee_nombre_garcon,
-        
       });
     });
   } catch (err) {
