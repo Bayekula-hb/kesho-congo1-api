@@ -1,6 +1,7 @@
 const { user, sequelize } = require("../models");
 const { compare } = require("bcrypt");
-const nodemailer = require("nodemailer")
+const nodemailer = require("nodemailer");
+const randomstring = require("randomstring");
 const getAllUser = async (req, res) => {
   try {
     if (req.user.is_admin !== true)
@@ -138,40 +139,66 @@ const updateUser = async (req, res) => {
 };
 
 const resetPassword = async (req, res) => {
-  "use strict";
-const nodemailer = require("nodemailer");
+  const { email } = req.body;
+  const userFind = await user.findOne({ where: { email } });
+  if (userFind) {
+    const from = '"Kesho Congo 👻"';
+    const to = userFind.email;
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        //mail de l'entreprise
+        user: "kevinarmachepsn@gmail.com", // ton mail
+        pass: process.env.PASSMAIL, // ton mot de passe
+      },
+    });
 
-// async..await is not allowed in global scope, must use a wrapper
-async function main() {
-  // Only needed if you don't have a real mail account for testing
-  let testAccount = await nodemailer.createTestAccount();
+    const password_generate = randomstring.generate(5);
+    if (req.user.email !== to) {
+      return res.status(400).json({
+        message: "Votre adresse email n'est pas valide",
+      });
+    } else {
+      const info = await transporter.sendMail({
+        from: from, // sender address
+        to: to, // list of receivers
+        subject: "Hello ✔", // Subject line
+        text: "Hello Jaco ?", // plain text body
+        html: `Hello ${req.user.prenom_user} voici votre nouveau mot de passe : <b>${password_generate}</b>`, // html body
+      });
+      if (info) {
+        try {
+          const result = await sequelize.transaction(async (t) => {
+            const password = password_generate;
+            if (userFind) {
+              const userUpdate = await user.update(
+                { nom_user, postnom_user, prenom_user, password },
+                {
+                  where: {
+                    id_user,
+                  },
+                }
+              );
+              return res.status(200).json({
+                message: `Mise à jour effectuée avec succès ${userUpdate}`,
+              });
+            } else {
+              return res.status(400).json({
+                message: `Le personnel ayant l'identifiant ${id} est introuvable`,
+              });
+            }
+          });
+        } catch (error) {}
+        console.log("Message sent: %s", info.messageId);
 
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: "", // ton mail
-      pass: "", // ton mot de passe
-      
-    },
-  });
-
-  // send mail with defined transport object
-  let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <foo@example.com>', // sender address
-    to: "kevinarmache@gmail.com", // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: "Hello Jaco?", // plain text body
-    html: "<b>Hello world jaco?</b>", // html body
-  });
-
-  console.log("Message sent: %s", info.messageId);
-
-  console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-}
-
-main().catch(console.error);
-}
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      }
+    }
+  } else {
+    res.status(400).json({ error: `${email} ce compte n'existe pas` });
+  }
+};
 
 module.exports = {
   getAllUser,
@@ -179,5 +206,5 @@ module.exports = {
   addUser,
   deleteUser,
   updateUser,
-  resetPassword
+  resetPassword,
 };
