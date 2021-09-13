@@ -42,7 +42,7 @@ module.exports = {
       },
       age_mere: {
         allowNull: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.DATE
       },
       profession_mere: {
         allowNull: true,

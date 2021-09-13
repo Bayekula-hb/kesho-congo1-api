@@ -14,6 +14,7 @@ patientDestroyMiddleware.use([
       if (!errors.isEmpty()) {
         return res.status(422).json({ errors: errors.array() });
       }
+      
       res.id_patient = id_patient;
       next();
     }

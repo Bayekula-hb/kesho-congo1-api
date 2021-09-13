@@ -553,6 +553,81 @@ const deletePatient = async (req, res) => {
     });
   }
 };
+const detailPatient = async (req, res) => {
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      const patient_id = res.id_patient;
+      const Patient = await patient.findOne({
+        where: { id_patient: patient_id},
+        attributes: [
+          "id",
+          "id_patient",
+          "nom_patient",
+          "postnom_patient",
+          "prenom_patient",
+          "sexe_patient",
+          "date_naissance_patient",
+          "adresse_patient",
+          "provenance_patient",
+          "mode_arrive",
+          "telephone",
+          "familleId",
+        ],
+      });
+      if (!Patient) {
+        res.status(400).json({
+          error: `Le patient ayant l'identifiant ${patient_id} est introuvable`,
+        });
+      } else {
+        const id_famillePatient = Patient.familleId;
+        const id_patient = Patient.id;
+        const Anthropometrique = await anthropometrique.findAll({
+          where: { patientId: id_patient },
+          order: [["id", "DESC"]],
+          attributes: [
+            "peri_cranien",
+            "peri_brachial",
+            "poids",
+            "taille",
+            "type_malnutrition",
+            "createdAt",
+          ],
+        }); 
+        const Famille = await famille.findOne({
+          where: { id: id_famillePatient },
+          attributes: ["nom_tuteur"],
+        });
+        const consultants = await consulter_par.findAll({
+          where: { patientId: id_patient },
+          order: [["id", "DESC"]],
+          attributes: [],
+          include: [
+            {
+              model: user,
+              attributes: [
+              "id",
+              "nom_user",
+              "postnom_user",
+              "prenom_user",
+              "sexe_user",
+            ]
+          }
+          ],
+        });
+        res.status(200).json({
+          Patient,
+          Anthropometrique,
+          Famille,
+          consultant,
+          // date_consultation,
+          // PatientAge,
+        });
+      }
+    });
+  } catch (error) {
+    res.status(400).json({ error: `${error}` });
+  }
+};
 
 module.exports = {
   addPatient,
@@ -560,4 +635,5 @@ module.exports = {
   updatePatient,
   getAllPatient,
   deletePatient,
+  detailPatient,
 };

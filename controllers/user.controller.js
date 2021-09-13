@@ -1,4 +1,5 @@
 const { user, sequelize } = require("../models");
+const { compare } = require("bcrypt");
 
 const getAllUser = async (req, res) => {
   try {
@@ -22,7 +23,7 @@ const getAllUser = async (req, res) => {
     return res.status(400).send(error);
   }
 };
-const getUserById =  async (req, res) => {
+const getUserById = async (req, res) => {
   const { id_user } = res;
   const userOne = await user.findOne({
     where: { id_user },
@@ -98,13 +99,15 @@ const deleteUser = async (req, res) => {
     });
   }
 };
-const updateUser =  async (req, res) => {
-  if (
-    (req.user.id_user !== res.id_user)
-  ){
-    return res
-      .status(400)
-      .send("Access denied. Can't update another user.")};
+const updateUser = async (req, res) => {
+  if (req.user.id_user !== res.id_user) {
+    return res.status(400).send("Access denied. Can't update another user.");
+  }
+  const verifyPassword = await compare(res.old_password, req.user.password);
+  if (!verifyPassword) {
+    return res.status(400).send("password not correct");
+  }
+
   try {
     const result = await sequelize.transaction(async (t) => {
       const { id_user, nom_user, postnom_user, prenom_user, password } = res;
@@ -138,6 +141,6 @@ module.exports = {
   getAllUser,
   getUserById,
   addUser,
-  deleteUser, 
-  updateUser
+  deleteUser,
+  updateUser,
 };
