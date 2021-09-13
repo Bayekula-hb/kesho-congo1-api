@@ -592,7 +592,7 @@ const detailPatient = async (req, res) => {
             "type_malnutrition",
             "createdAt",
           ],
-        });
+        }); 
         const Famille = await famille.findOne({
           where: { id: id_famillePatient },
           attributes: ["nom_tuteur"],
