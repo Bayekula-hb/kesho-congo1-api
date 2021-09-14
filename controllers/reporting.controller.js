@@ -541,9 +541,9 @@ const getReportingByDate = async (req, res) => {
       );
 
       // //3 ans
-      const nombre_fille_moins_3Ans = await sequelize.query(
+      const nombre_fille_moins_3ans = await sequelize.query(
         `
-        select  count(id_patient) as nombre_fille_moins_3Ans from (
+        select  count(id_patient) as nombre_fille_moins_3ans from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -558,9 +558,9 @@ const getReportingByDate = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      const nombre_garcon_moins_3Ans = await sequelize.query(
+      const nombre_garcon_moins_3ans = await sequelize.query(
         `
-        select  count(id_patient) as nombre_garcon_moins_3Ans from (
+        select  count(id_patient) as nombre_garcon_moins_3ans from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -894,8 +894,8 @@ const getReportingByDate = async (req, res) => {
         nombre_fille,
         nombre_garcon_adulte,
         nombre_fille_adulte,
-        nombre_garcon_moins_3Ans,
-        nombre_fille_moins_3Ans,
+        nombre_garcon_moins_3ans,
+        nombre_fille_moins_3ans,
         nombre_garcon_3_5ans,
         nombre_fille_3_5ans,
         nombre_garcon_6_12ans,
