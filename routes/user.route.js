@@ -20,9 +20,7 @@ const routerReset = require("express").Router();
 router.delete("/", userDestroyMiddleware, deleteUser);
 router.put("/", userUpdateMiddleware, updateUser);
 router.post("/register", userRegisterMiddleware, addUser);
-routerReset.post("/", userValidatorReset, resetPassword);
 router.get("/all", getAllUser);
 router.get("/", getUserMiddleware, getUserById);
 
 module.exports = router;
-module.exports = routerReset;
