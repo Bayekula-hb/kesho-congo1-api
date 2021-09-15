@@ -541,9 +541,9 @@ const getReportingByDate = async (req, res) => {
       );
 
       // //3 ans
-      const nombre_fille_moins_3Ans = await sequelize.query(
+      const nombre_fille_moins_3ans = await sequelize.query(
         `
-        select  count(id_patient) as nombre_fille_moins_3Ans from (
+        select  count(id_patient) as nombre_fille_moins_3ans from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -558,9 +558,9 @@ const getReportingByDate = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      const nombre_garcon_moins_3Ans = await sequelize.query(
+      const nombre_garcon_moins_3ans = await sequelize.query(
         `
-        select  count(id_patient) as nombre_garcon_moins_3Ans from (
+        select  count(id_patient) as nombre_garcon_moins_3ans from (
           select id_patient, sexe_patient, createdAt, datediff(now(), date_naissance_patient)/365 as age
             from patients)
             as pa_age
@@ -682,8 +682,8 @@ const getReportingByDate = async (req, res) => {
       });
 
       // Type de malnutrition
-      const nombre_fille_sereve = await sequelize.query(
-        `select count(Pa.id_patient) as nombre_fille_sereve from
+      const sereve_nombre_fille = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_nombre_fille from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -716,8 +716,8 @@ const getReportingByDate = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      const nombre_garcon_sereve = await sequelize.query(
-        `select count(Pa.id_patient) as nombre_garcon_sereve from
+      const sereve_nombre_garcon = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_nombre_garcon from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -751,8 +751,8 @@ const getReportingByDate = async (req, res) => {
         }
       );
 
-      const nombre_fille_chronique = await sequelize.query(
-        `select count(Pa.id_patient) as nombre_fille_chronique from
+      const chronique_nombre_fille = await sequelize.query(
+        `select count(Pa.id_patient) as chronique_nombre_fille from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -785,8 +785,8 @@ const getReportingByDate = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      const nombre_garcon_chronique = await sequelize.query(
-        `select count(Pa.id_patient) as nombre_garcon_chronique from
+      const chronique_nombre_garcon = await sequelize.query(
+        `select count(Pa.id_patient) as chronique_nombre_garcon from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -820,8 +820,8 @@ const getReportingByDate = async (req, res) => {
         }
       );
 
-      const nombre_fille_modere = await sequelize.query(
-        `select count(Pa.id_patient) as nombre_fille_modere from
+      const moderee_nombre_fille = await sequelize.query(
+        `select count(Pa.id_patient) as moderee_nombre_fille from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -854,8 +854,8 @@ const getReportingByDate = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      const nombre_garcon_modere = await sequelize.query(
-        `select count(Pa.id_patient) as nombre_garcon_modere from
+      const moderee_nombre_garcon = await sequelize.query(
+        `select count(Pa.id_patient) as moderee_nombre_garcon from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -894,20 +894,20 @@ const getReportingByDate = async (req, res) => {
         nombre_fille,
         nombre_garcon_adulte,
         nombre_fille_adulte,
-        nombre_garcon_moins_3Ans,
-        nombre_fille_moins_3Ans,
+        nombre_garcon_moins_3ans,
+        nombre_fille_moins_3ans,
         nombre_garcon_3_5ans,
         nombre_fille_3_5ans,
         nombre_garcon_6_12ans,
         nombre_fille_6_12ans,
         nombre_garcon_yesterday,
         nombre_fille_yesterday,
-        nombre_garcon_sereve,
-        nombre_fille_sereve,
-        nombre_garcon_chronique,
-        nombre_fille_chronique,
-        nombre_garcon_modere,
-        nombre_fille_modere,
+        sereve_nombre_garcon,
+        sereve_nombre_fille,
+        chronique_nombre_garcon,
+        chronique_nombre_fille,
+        moderee_nombre_garcon,
+        moderee_nombre_fille,
       });
     });
   } catch (err) {
