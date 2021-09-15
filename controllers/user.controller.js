@@ -137,7 +137,6 @@ const updateUser = async (req, res) => {
     });
   }
 };
-
 const resetPassword = async (req, res) => {
   const { email } = req.body;
   const userFind = await user.findOne({ where: { email } });
@@ -149,7 +148,7 @@ const resetPassword = async (req, res) => {
       service: "gmail",
       auth: {
         //mail de l'entreprise
-        user: "kevinarmachepsn@gmail.com", // ton mail
+        user: process.env.MAILNAME, // ton mail
         pass: process.env.PASSMAIL, // ton mot de passe
       },
     });
