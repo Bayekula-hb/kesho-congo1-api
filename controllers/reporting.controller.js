@@ -918,3 +918,4 @@ module.exports = {
   getReporting,
   getReportingByDate,
 };
+   

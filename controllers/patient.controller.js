@@ -558,7 +558,7 @@ const detailPatient = async (req, res) => {
     const result = await sequelize.transaction(async (t) => {
       const patient_id = res.id_patient;
       const Patient = await patient.findOne({
-        where: { id_patient: patient_id},
+        where: { id_patient: patient_id },
         attributes: [
           "id",
           "id_patient",
@@ -592,10 +592,6 @@ const detailPatient = async (req, res) => {
             "type_malnutrition",
             "createdAt",
           ],
-        }); 
-        const Famille = await famille.findOne({
-          where: { id: id_famillePatient },
-          attributes: ["nom_tuteur"],
         });
         const consultants = await consulter_par.findAll({
           where: { patientId: id_patient },
@@ -605,20 +601,66 @@ const detailPatient = async (req, res) => {
             {
               model: user,
               attributes: [
-              "id_user",
-              "nom_user",
-              "postnom_user",
-              "prenom_user",
-              "sexe_user",
-            ]
-          }
+                "id_user",
+                "nom_user",
+                "postnom_user",
+                "prenom_user",
+                "sexe_user",
+              ],
+            },
+            {
+              model: patient,
+              attributes: ["nom_patient", ["id_patient", "patient_id_"]],
+              include: [
+                {
+                  model: anthropometrique,
+                  attributes: [
+                    "peri_cranien",
+                    "peri_brachial",
+                    "poids",
+                    "taille",
+                    "type_malnutrition",
+                    "createdAt",
+                  ],
+                },
+              ],
+            },
           ],
         });
+        const Data = await sequelize.query(
+          `
+          SELECT consultants.nom_user, consultants.postnom_user, peri_cranien, peri_brachial, poids, taille, type_malnutrition,
+                 Anthropo.createdAt, Anthropo.patientId
+          FROM anthropometriques AS Anthropo
+          INNER JOIN patients
+          ON patients.id = Anthropo.patientId
+          INNER JOIN
+          (
+            SELECT nom_user, postnom_user
+            FROM users
+            WHERE id =(
+              SELECT userId
+              FROM consulter_pars
+              WHERE patientId = :id_patient and consulter_pars.createdAt = createdAt
+            )
+          ) AS consultants
+          WHERE patients.id = :id_patient
+          GROUP BY Anthropo.createdAt
+          ORDER BY Anthropo.createdAt DESC
+          `,
+          {
+            replacements: {
+              id_patient: id_patient,
+              plain: true,
+            },
+            type: QueryTypes.SELECT,
+          }
+        );
         res.status(200).json({
-          Patient,
-          Anthropometrique,
-          Famille,
-          consultants,
+          // Patient,
+          // Anthropometrique,
+          // consultants,
+          Data,
         });
       }
     });
