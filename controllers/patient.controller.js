@@ -657,9 +657,9 @@ const detailPatient = async (req, res) => {
           }
         );
         res.status(200).json({
-          // Patient,
-          // Anthropometrique,
-          // consultants,
+          Patient,
+          Anthropometrique,
+          consultants,
           Data,
         });
       }
