@@ -32,7 +32,6 @@ app.use(function (req, res, next) {
   Object.keys(req.headers).forEach(function (field) {
     console.log(field + ": " + req.headers[field]);
   });
-  console.dir(req.body);
 
   next();
 });
