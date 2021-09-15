@@ -165,7 +165,7 @@ const resetPassword = async (req, res) => {
           text: "Hello Jaco ?", // plain text body
           html: `Hello ${userFind.prenom_user} voici votre nouveau mot de passe : <b>${password_generate}</b>`, // html body
         });
-        console.log("info mail : ", info)
+        console.log("info mail : ", info);
         if (info) {
           try {
             const result = await sequelize.transaction(async (t) => {
@@ -175,7 +175,7 @@ const resetPassword = async (req, res) => {
                   { password },
                   {
                     where: {
-                      id_user:userFind.id_user,
+                      id_user: userFind.id_user,
                     },
                   }
                 );
@@ -209,6 +209,38 @@ const resetPassword = async (req, res) => {
     });
   }
 };
+const updateStatusUser = async (req, res) => {
+  const { id_user, statut } = res;
+  if (req.user.is_admin !== true) {
+    return res.status(400).send("Access denied. Can't update another user.");
+  }
+  const userFind = await user.findOne({ where: { id_user } });
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      if (userFind) {
+        const userUpdate = await user.update(
+          { statut },
+          {
+            where: {
+              id_user:id_user,
+            },
+          }
+        );
+        return res.status(200).json({
+          message: `Mise à jour effectuée avec succès`,
+        });
+      } else {
+        return res.status(400).json({
+          message: `Le personnel ayant l'identifiant ${id_user} est introuvable`,
+        });
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: `Impossible de mettre à jour ce personnel ${userFind.nom_user} ${userFind.postnom_user} ${Error}`,
+    });
+  }
+};
 
 module.exports = {
   getAllUser,
@@ -217,4 +249,5 @@ module.exports = {
   deleteUser,
   updateUser,
   resetPassword,
+  updateStatusUser,
 };
