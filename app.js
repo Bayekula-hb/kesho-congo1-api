@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const authRoute = require("./routes/login.route");
 const userRoute = require("./routes/user.route");
+const routerReset = require("./routes/user.route");
 const getUserMiddleware = require("./middleware/user/user.get.middleware");
 const anthropometriqueRoute = require("./routes/anthropometrique.route");
 const patientRoute = require("./routes/patient.route");
@@ -40,10 +41,14 @@ app.use(function (req, res, next) {
 });
 
 app.use("/auth", authRoute);
-
+app.use("/user/reset", routerReset);
 app.use("/user", passport.authenticate("jwt", { session: false }), userRoute);
 
-app.use("/anthropometrique", passport.authenticate("jwt", { session: false }), anthropometriqueRoute);
+app.use(
+  "/anthropometrique",
+  passport.authenticate("jwt", { session: false }),
+  anthropometriqueRoute
+);
 app.use(
   "/patient",
   passport.authenticate("jwt", { session: false }),

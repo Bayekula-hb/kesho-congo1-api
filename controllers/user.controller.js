@@ -1,6 +1,7 @@
 const { user, sequelize } = require("../models");
 const { compare } = require("bcrypt");
 const nodemailer = require("nodemailer");
+const bcrypt = require("bcrypt");
 const randomstring = require("randomstring");
 const getAllUser = async (req, res) => {
   try {
@@ -138,64 +139,74 @@ const updateUser = async (req, res) => {
   }
 };
 const resetPassword = async (req, res) => {
-  const { email } = req.body;
-  const userFind = await user.findOne({ where: { email } });
+  const { email, nom_user, prenom_user } = res;
+  const userFind = await user.findOne({
+    where: { email: email, nom_user: nom_user, prenom_user: prenom_user },
+  });
   if (userFind) {
-    const from = '"Kesho Congo 👻"';
-    const to = userFind.email;
-    // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-      service: "gmail",
-      auth: {
-        //mail de l'entreprise
-        user: process.env.MAILNAME, // ton mail
-        pass: process.env.PASSMAIL, // ton mot de passe
-      },
-    });
-
-    const password_generate = randomstring.generate(5);
-    if (req.user.email !== to) {
-      return res.status(400).json({
-        message: "Votre adresse email n'est pas valide",
+    try {
+      const result = await sequelize.transaction(async (t) => {
+        const from = process.env.MAILNAME;
+        const to = userFind.email;
+        // create reusable transporter object using the default SMTP transport
+        const transporter = nodemailer.createTransport({
+          service: "gmail",
+          auth: {
+            //mail de l'entreprise
+            user: process.env.MAILNAME, // ton mail
+            pass: process.env.PASSMAIL, // ton mot de passe
+          },
+        });
+        const password_generate = randomstring.generate(7);
+        const info = await transporter.sendMail({
+          from: from, // sender address
+          to: to, // list of receivers
+          subject: "Hello ✔", // Subject line
+          text: "Hello Jaco ?", // plain text body
+          html: `Hello ${userFind.prenom_user} voici votre nouveau mot de passe : <b>${password_generate}</b>`, // html body
+        });
+        console.log("info mail : ", info)
+        if (info) {
+          try {
+            const result = await sequelize.transaction(async (t) => {
+              const password = bcrypt.hashSync(password_generate, 10);
+              if (userFind) {
+                const userUpdate = await user.update(
+                  { password },
+                  {
+                    where: {
+                      id_user:userFind.id_user,
+                    },
+                  }
+                );
+                return res.status(200).json({
+                  message: `Mise à jour effectuée avec succès ${userUpdate.email}`,
+                  email: `${userFind.email}`,
+                });
+              } else {
+                return res.status(400).json({
+                  message: `Le personnel ayant l'identifiant ${id} est introuvable`,
+                });
+              }
+            });
+          } catch (error) {
+            return res.status(400).json({
+              error: `${error}`,
+            });
+          }
+          console.log("Message sent: %s", info.messageId);
+          console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+        }
       });
-    } else {
-      const info = await transporter.sendMail({
-        from: from, // sender address
-        to: to, // list of receivers
-        subject: "Hello ✔", // Subject line
-        text: "Hello Jaco ?", // plain text body
-        html: `Hello ${req.user.prenom_user} voici votre nouveau mot de passe : <b>${password_generate}</b>`, // html body
+    } catch (error) {
+      res.status(500).json({
+        error: ` impossible de faire une mise pour ce personnel ${nom_user} ${prenom_user} => ${error}`,
       });
-      if (info) {
-        try {
-          const result = await sequelize.transaction(async (t) => {
-            const password = password_generate;
-            if (userFind) {
-              const userUpdate = await user.update(
-                { nom_user, postnom_user, prenom_user, password },
-                {
-                  where: {
-                    id_user,
-                  },
-                }
-              );
-              return res.status(200).json({
-                message: `Mise à jour effectuée avec succès ${userUpdate}`,
-              });
-            } else {
-              return res.status(400).json({
-                message: `Le personnel ayant l'identifiant ${id} est introuvable`,
-              });
-            }
-          });
-        } catch (error) {}
-        console.log("Message sent: %s", info.messageId);
-
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-      }
     }
   } else {
-    res.status(400).json({ error: `${email} ce compte n'existe pas` });
+    res.status(400).json({
+      error: ` ${nom_user} ${prenom_user} ${email} ce compte n'existe pas`,
+    });
   }
 };
 

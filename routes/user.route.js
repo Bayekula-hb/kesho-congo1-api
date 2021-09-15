@@ -4,7 +4,7 @@ const {
   addUser,
   updateUser,
   deleteUser,
-  resetPassword
+  resetPassword,
 } = require("../controllers/user.controller");
 
 const userDestroyMiddleware = require("../middleware/user/user.destroy.middleware");
@@ -12,14 +12,17 @@ const getUserMiddleware = require("../middleware/user/user.get.middleware");
 const userRegisterMiddleware = require("../middleware/user/user.register.middleware");
 const userUpdateMiddleware = require("../middleware/user/user.update.middleware");
 const loginMiddleware = require("../middleware/login.middleware");
+const userValidatorReset = require("../middleware/user/user.validator.reset.middleware");
 
 const router = require("express").Router();
+const routerReset = require("express").Router();
 
 router.delete("/", userDestroyMiddleware, deleteUser);
 router.put("/", userUpdateMiddleware, updateUser);
 router.post("/register", userRegisterMiddleware, addUser);
-router.post("/reset",  resetPassword);
+routerReset.post("/", userValidatorReset, resetPassword);
 router.get("/all", getAllUser);
 router.get("/", getUserMiddleware, getUserById);
 
 module.exports = router;
+module.exports = routerReset;
