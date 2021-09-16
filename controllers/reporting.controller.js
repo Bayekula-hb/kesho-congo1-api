@@ -442,68 +442,37 @@ const getReporting = async (req, res, next) => {
         ORDER BY Pa.id DESC`,
         { type: QueryTypes.SELECT }
       );
-      res.nombre_fille = nombre_fille;
-      res.nombre_fille_3_5ans = nombre_fille_3_5ans;
-      res.nombre_garcon = nombre_garcon;
-      res.nombre_fille = nombre_fille;
+      res.status(200).json({
+        nombre_garcon,
+        nombre_fille,
 
-      res.nombre_garcon_adulte = nombre_garcon_adulte;
-      res.nombre_fille_adulte = nombre_fille_adulte;
+        nombre_garcon_adulte,
+        nombre_fille_adulte,
 
-      res.nombre_fille_moins_3ans = nombre_fille_moins_3ans;
-      res.nombre_garcon_moins_3ans = nombre_garcon_moins_3ans;
+        nombre_fille_moins_3ans,
+        nombre_garcon_moins_3ans,
 
-      res.nombre_garcon_3_5ans = nombre_garcon_3_5ans;
+        nombre_garcon_3_5ans,
+        nombre_fille_3_5ans,
 
-      res.nombre_garcon_6_12ans = nombre_garcon_6_12ans;
-      res.nombre_fille_6_12ans = nombre_fille_6_12ans;
+        nombre_garcon_6_12ans,
+        nombre_fille_6_12ans,
 
-      res.nbre_fille_today = nbre_fille_today;
-      res.nbre_garcon_today = nbre_garcon_today;
+        nbre_fille_today,
+        nbre_garcon_today,
 
-      res.nbre_fille_yesterday = nbre_fille_yesterday;
-      res.nbre_garcon_yesterday = nbre_garcon_yesterday;
+        nbre_fille_yesterday,
+        nbre_garcon_yesterday,
 
-      res.sereve_nombre_fille = sereve_nombre_fille;
-      res.sereve_nombre_garcon = sereve_nombre_garcon;
+        sereve_nombre_fille,
+        sereve_nombre_garcon,
 
-      res.chronique_nombre_fille = chronique_nombre_fille;
-      res.chronique_nombre_garcon = chronique_nombre_garcon;
+        chronique_nombre_fille,
+        chronique_nombre_garcon,
 
-      res.moderee_nombre_fille = moderee_nombre_fille;
-      res.moderee_nombre_garcon = moderee_nombre_garcon;
-
-      // res.status(200).json({
-      //   nombre_garcon,
-      //   nombre_fille,
-
-      //   nombre_garcon_adulte,
-      //   nombre_fille_adulte,
-
-      //   nombre_fille_moins_3ans,
-      //   nombre_garcon_moins_3ans,
-
-      //   nombre_garcon_3_5ans,
-      //   nombre_fille_3_5ans,
-
-      //   nombre_garcon_6_12ans,
-      //   nombre_fille_6_12ans,
-
-      //   nbre_fille_today,
-      //   nbre_garcon_today,
-
-      //   nbre_fille_yesterday,
-      //   nbre_garcon_yesterday,
-
-      //   sereve_nombre_fille,
-      //   sereve_nombre_garcon,
-
-      //   chronique_nombre_fille,
-      //   chronique_nombre_garcon,
-
-      //   moderee_nombre_fille,
-      //   moderee_nombre_garcon,
-      // });
+        moderee_nombre_fille,
+        moderee_nombre_garcon,
+      });
     });
     next();
   } catch (err) {
@@ -961,37 +930,6 @@ const month_year = [
   "December",
 ];
 const reportingYear = async (req, res) => {
-  const {
-    nombre_garcon,
-    nombre_fille,
-
-    nombre_garcon_adulte,
-    nombre_fille_adulte,
-
-    nombre_fille_moins_3ans,
-    nombre_garcon_moins_3ans,
-
-    nombre_garcon_3_5ans,
-    nombre_fille_3_5ans,
-
-    nombre_garcon_6_12ans,
-    nombre_fille_6_12ans,
-
-    nbre_fille_today,
-    nbre_garcon_today,
-
-    nbre_fille_yesterday,
-    nbre_garcon_yesterday,
-
-    sereve_nombre_fille,
-    sereve_nombre_garcon,
-
-    chronique_nombre_fille,
-    chronique_nombre_garcon,
-
-    moderee_nombre_fille,
-    moderee_nombre_garcon,
-  } = res;
   try {
     const result = await sequelize.transaction(async (t) => {
       const month_current = new Date().getMonth();
@@ -1120,35 +1058,6 @@ const reportingYear = async (req, res) => {
         );
       }
       res.status(200).json({
-        nombre_garcon,
-        nombre_fille,
-
-        nombre_garcon_adulte,
-        nombre_fille_adulte,
-
-        nombre_fille_moins_3ans,
-        nombre_garcon_moins_3ans,
-
-        nombre_garcon_3_5ans,
-        nombre_fille_3_5ans,
-
-        nombre_garcon_6_12ans,
-        nombre_fille_6_12ans,
-
-        nbre_fille_today,
-        nbre_garcon_today,
-
-        nbre_fille_yesterday,
-        nbre_garcon_yesterday,
-
-        sereve_nombre_fille,
-        sereve_nombre_garcon,
-
-        chronique_nombre_fille,
-        chronique_nombre_garcon,
-
-        moderee_nombre_fille,
-        moderee_nombre_garcon,
         rapport_patient_year,
         rapport_mac_year,
         rapport_mas_year,
