@@ -620,6 +620,52 @@ const detailPatient = async (req, res) => {
     res.status(400).json({ error: `${error}` });
   }
 };
+const searchPatient = async (req, res) => {
+  const {nom_patient} = res;
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      const Patients = await sequelize.query(
+        `select Pa.id_patient, nom_patient, postnom_patient, date_format(date_naissance_patient, "%x/%m/%v") as date_naissance, prenom_patient, Pa.sexe_patient, Anthr.type_malnutrition, date_format(Date_Consultation, "%x/%m/%v") as date_Consultation, nom_user as nom_consultant, postnom_user as postnom_consultant  from
+        patients as Pa
+        inner join ( 
+          SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+          FROM anthropometriques
+          WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM anthropometriques
+            GROUP BY patientId
+          )
+        ) as Anthr
+        on Anthr.patientId = Pa.id
+        inner join (
+        SELECT id, patientId, userId
+        FROM consulter_pars
+        WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM consulter_pars
+            GROUP BY patientId
+        )
+        ) as Cons
+        on Anthr.patientId = Cons.patientId 
+        inner join users
+        on Cons.userId = users.id 
+        WHERE Pa.nom_patient = :nom_patientParam OR Pa.postnom_patient = :nom_patientParam
+        ORDER BY Pa.id DESC`,
+        {
+          
+          replacements: {
+            nom_patientParam: nom_patient,
+            plain: true,
+          },
+          type: QueryTypes.SELECT 
+        }
+      );
+      res.status(200).json({ Patients });
+    });
+  } catch (error) {
+    res.status(500).json({ error: `${error}` });
+  }
+};
 
 module.exports = {
   addPatient,
@@ -628,4 +674,5 @@ module.exports = {
   getAllPatient,
   deletePatient,
   detailPatient,
+  searchPatient,
 };
