@@ -9,7 +9,7 @@ const {
 } = require("../models");
 
 const { QueryTypes, Op, where } = require("sequelize");
-const getReporting = async (req, res) => {
+const getReporting = async (req, res, next) => {
   try {
     const result = await sequelize.transaction(async (t) => {
       const nombre_garcon = await sequelize.query(
@@ -442,38 +442,70 @@ const getReporting = async (req, res) => {
         ORDER BY Pa.id DESC`,
         { type: QueryTypes.SELECT }
       );
-      res.status(200).json({
-        nombre_garcon,
-        nombre_fille,
+      res.nombre_fille = nombre_fille;
+      res.nombre_fille_3_5ans = nombre_fille_3_5ans;
+      res.nombre_garcon = nombre_garcon;
+      res.nombre_fille = nombre_fille;
 
-        nombre_garcon_adulte,
-        nombre_fille_adulte,
+      res.nombre_garcon_adulte = nombre_garcon_adulte;
+      res.nombre_fille_adulte = nombre_fille_adulte;
 
-        nombre_fille_moins_3ans,
-        nombre_garcon_moins_3ans,
+      res.nombre_fille_moins_3ans = nombre_fille_moins_3ans;
+      res.nombre_garcon_moins_3ans = nombre_garcon_moins_3ans;
 
-        nombre_garcon_3_5ans,
-        nombre_fille_3_5ans,
+      res.nombre_garcon_3_5ans = nombre_garcon_3_5ans;
 
-        nombre_garcon_6_12ans,
-        nombre_fille_6_12ans,
+      res.nombre_garcon_6_12ans = nombre_garcon_6_12ans;
+      res.nombre_fille_6_12ans = nombre_fille_6_12ans;
 
-        nbre_fille_today,
-        nbre_garcon_today,
+      res.nbre_fille_today = nbre_fille_today;
+      res.nbre_garcon_today = nbre_garcon_today;
 
-        nbre_fille_yesterday,
-        nbre_garcon_yesterday,
+      res.nbre_fille_yesterday = nbre_fille_yesterday;
+      res.nbre_garcon_yesterday = nbre_garcon_yesterday;
 
-        sereve_nombre_fille,
-        sereve_nombre_garcon,
+      res.sereve_nombre_fille = sereve_nombre_fille;
+      res.sereve_nombre_garcon = sereve_nombre_garcon;
 
-        chronique_nombre_fille,
-        chronique_nombre_garcon,
+      res.chronique_nombre_fille = chronique_nombre_fille;
+      res.chronique_nombre_garcon = chronique_nombre_garcon;
 
-        moderee_nombre_fille,
-        moderee_nombre_garcon,
-      });
+      res.moderee_nombre_fille = moderee_nombre_fille;
+      res.moderee_nombre_garcon = moderee_nombre_garcon;
+
+      // res.status(200).json({
+      //   nombre_garcon,
+      //   nombre_fille,
+
+      //   nombre_garcon_adulte,
+      //   nombre_fille_adulte,
+
+      //   nombre_fille_moins_3ans,
+      //   nombre_garcon_moins_3ans,
+
+      //   nombre_garcon_3_5ans,
+      //   nombre_fille_3_5ans,
+
+      //   nombre_garcon_6_12ans,
+      //   nombre_fille_6_12ans,
+
+      //   nbre_fille_today,
+      //   nbre_garcon_today,
+
+      //   nbre_fille_yesterday,
+      //   nbre_garcon_yesterday,
+
+      //   sereve_nombre_fille,
+      //   sereve_nombre_garcon,
+
+      //   chronique_nombre_fille,
+      //   chronique_nombre_garcon,
+
+      //   moderee_nombre_fille,
+      //   moderee_nombre_garcon,
+      // });
     });
+    next();
   } catch (err) {
     res.status(500).json({ error: `${err}` });
   }
@@ -914,8 +946,221 @@ const getReportingByDate = async (req, res) => {
     res.status(500).json({ error: `${err}` });
   }
 };
+const month_year = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const reportingYear = async (req, res) => {
+  const {
+    nombre_garcon,
+    nombre_fille,
+
+    nombre_garcon_adulte,
+    nombre_fille_adulte,
+
+    nombre_fille_moins_3ans,
+    nombre_garcon_moins_3ans,
+
+    nombre_garcon_3_5ans,
+    nombre_fille_3_5ans,
+
+    nombre_garcon_6_12ans,
+    nombre_fille_6_12ans,
+
+    nbre_fille_today,
+    nbre_garcon_today,
+
+    nbre_fille_yesterday,
+    nbre_garcon_yesterday,
+
+    sereve_nombre_fille,
+    sereve_nombre_garcon,
+
+    chronique_nombre_fille,
+    chronique_nombre_garcon,
+
+    moderee_nombre_fille,
+    moderee_nombre_garcon,
+  } = res;
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      const month_current = new Date().getMonth();
+
+      const rapport_patient_year = [],
+        rapport_mac_year = [],
+        rapport_mam_year = [],
+        rapport_mas_year = [];
+      for (let i = 0; i <= month_current; i++) {
+        rapport_patient_year.push(
+          await sequelize.query(
+            'SELECT COUNT("id") as nombre_patient FROM patients WHERE monthname(createdAt) = :monthParam',
+            {
+              replacements: {
+                monthParam: month_year[i],
+                plain: true,
+              },
+              type: QueryTypes.SELECT,
+            }
+          )
+        );
+        rapport_mam_year.push(
+          await sequelize.query(
+            `select count(Pa.id_patient) as moderee_nombre from
+                  patients as Pa
+                  inner join ( 
+                    SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+                    FROM anthropometriques
+                    WHERE createdAt IN (
+                      SELECT MAX(createdAt)
+                      FROM anthropometriques
+                      GROUP BY patientId
+                    )
+                  ) as Anthr
+                  on Anthr.patientId = Pa.id
+                  inner join (
+                  SELECT id, patientId, userId
+                  FROM consulter_pars
+                  WHERE createdAt IN (
+                      SELECT MAX(createdAt)
+                      FROM consulter_pars
+                      GROUP BY patientId
+                  )
+                  ) as Cons
+                  on Anthr.patientId = Cons.patientId
+                  where Anthr.type_malnutrition = "MAM" AND  monthname(Pa.createdAt) = :monthParam
+                  ORDER BY Pa.id DESC`,
+            {
+              replacements: {
+                monthParam: month_year[i],
+                plain: true,
+              },
+              type: QueryTypes.SELECT,
+            }
+          )
+        );
+        rapport_mac_year.push(
+          await sequelize.query(
+            `select count(Pa.id_patient) as chronique_nombre from
+                  patients as Pa
+                  inner join ( 
+                    SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+                    FROM anthropometriques
+                    WHERE createdAt IN (
+                      SELECT MAX(createdAt)
+                      FROM anthropometriques
+                      GROUP BY patientId
+                    )
+                  ) as Anthr
+                  on Anthr.patientId = Pa.id
+                  inner join (
+                  SELECT id, patientId, userId
+                  FROM consulter_pars
+                  WHERE createdAt IN (
+                      SELECT MAX(createdAt)
+                      FROM consulter_pars
+                      GROUP BY patientId
+                  )
+                  ) as Cons
+                  on Anthr.patientId = Cons.patientId
+                  where Anthr.type_malnutrition = "MAC" AND monthname(Pa.createdAt) = :monthParam
+                  ORDER BY Pa.id DESC`,
+            {
+              replacements: {
+                monthParam: month_year[i],
+                plain: true,
+              },
+              type: QueryTypes.SELECT,
+            }
+          )
+        );
+        rapport_mas_year.push(
+          await sequelize.query(
+            `select count(Pa.id_patient) as sereve_nombre from
+                  patients as Pa
+                  inner join ( 
+                    SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+                    FROM anthropometriques
+                    WHERE createdAt IN (
+                      SELECT MAX(createdAt)
+                      FROM anthropometriques
+                      GROUP BY patientId
+                    )
+                  ) as Anthr
+                  on Anthr.patientId = Pa.id
+                  inner join (
+                  SELECT id, patientId, userId
+                  FROM consulter_pars
+                  WHERE createdAt IN (
+                      SELECT MAX(createdAt)
+                      FROM consulter_pars
+                      GROUP BY patientId
+                  )
+                  ) as Cons
+                  on Anthr.patientId = Cons.patientId
+                  where Anthr.type_malnutrition = "MAS" AND monthname(Pa.createdAt) = :monthParam 
+                  ORDER BY Pa.id DESC`,
+            {
+              replacements: {
+                monthParam: month_year[i],
+                plain: true,
+              },
+              type: QueryTypes.SELECT,
+            }
+          )
+        );
+      }
+      res.status(200).json({
+        nombre_garcon,
+        nombre_fille,
+
+        nombre_garcon_adulte,
+        nombre_fille_adulte,
+
+        nombre_fille_moins_3ans,
+        nombre_garcon_moins_3ans,
+
+        nombre_garcon_3_5ans,
+        nombre_fille_3_5ans,
+
+        nombre_garcon_6_12ans,
+        nombre_fille_6_12ans,
+
+        nbre_fille_today,
+        nbre_garcon_today,
+
+        nbre_fille_yesterday,
+        nbre_garcon_yesterday,
+
+        sereve_nombre_fille,
+        sereve_nombre_garcon,
+
+        chronique_nombre_fille,
+        chronique_nombre_garcon,
+
+        moderee_nombre_fille,
+        moderee_nombre_garcon,
+        rapport_patient_year,
+        rapport_mac_year,
+        rapport_mas_year,
+        rapport_mam_year,
+      });
+    });
+  } catch (err) {
+    res.status(500).json({ error: `${err}` });
+  }
+};
 module.exports = {
   getReporting,
   getReportingByDate,
+  reportingYear,
 };
-   
