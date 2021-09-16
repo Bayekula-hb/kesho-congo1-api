@@ -621,7 +621,7 @@ const detailPatient = async (req, res) => {
   }
 };
 const searchPatient = async (req, res) => {
-  const {nom_patient} = res;
+  const { nom_patient } = res;
   try {
     const result = await sequelize.transaction(async (t) => {
       const Patients = await sequelize.query(
@@ -649,18 +649,23 @@ const searchPatient = async (req, res) => {
         on Anthr.patientId = Cons.patientId 
         inner join users
         on Cons.userId = users.id 
-        WHERE Pa.nom_patient = :nom_patientParam OR Pa.postnom_patient = :nom_patientParam
+        WHERE Pa.nom_patient like :nom_patientParam OR Pa.postnom_patient like :nom_patientParam
         ORDER BY Pa.id DESC`,
         {
-          
           replacements: {
-            nom_patientParam: nom_patient,
+            nom_patientParam: "%"+nom_patient+"%",
             plain: true,
           },
-          type: QueryTypes.SELECT 
+          type: QueryTypes.SELECT,
         }
       );
-      res.status(200).json({ Patients });
+      if (Patients.length != 0) {
+        res.status(200).json(Patients);
+      } else {
+        res.status(400).json({
+          message: `Le patient ${nom_patient} est introuvable`,
+        });
+      }
     });
   } catch (error) {
     res.status(500).json({ error: `${error}` });
