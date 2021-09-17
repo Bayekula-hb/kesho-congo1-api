@@ -57,7 +57,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       contraception_mere: {
-        allowNull: true,
+        allowNull: false,
         type: Sequelize.BOOLEAN
       },
       type_contraception: {
