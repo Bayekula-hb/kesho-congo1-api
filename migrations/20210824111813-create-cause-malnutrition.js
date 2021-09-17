@@ -113,7 +113,7 @@ module.exports = {
       },
       duree_prise_atb: {
         allowNull: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       traitement_nutri: {
         allowNull: true,
