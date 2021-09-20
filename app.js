@@ -11,7 +11,7 @@ const routeReporting = require("./routes/reporting");
 const passport = require("passport");
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "https://kesho-congo-1-web-l72kijbun-keshocongo1.vercel.app/", "*"],
+  origin: ["http://localhost:3000", "https://kesho-congo-1-web-l72kijbun-keshocongo1.vercel.app/"],
   credentials: true,
   optionSuccessStatus: 200,
 };
