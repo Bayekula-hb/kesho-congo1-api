@@ -11,7 +11,7 @@ const routeReporting = require("./routes/reporting");
 const passport = require("passport");
 
 const corsOptions = {
-  origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "https://kesho-congo-1-web-jx6l0whqu-keshocongo1.vercel.app"],
   credentials: true,
   optionSuccessStatus: 200,
 };
@@ -19,8 +19,8 @@ const corsOptions1 = {
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   preflightContinue: false,
-  optionsSuccessStatus: 200
-}
+  optionsSuccessStatus: 200,
+};
 // app.use(cors(corsOptions));
 app.use(cors(corsOptions));
 app.use(express.json());
