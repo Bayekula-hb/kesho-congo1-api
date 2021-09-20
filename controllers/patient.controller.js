@@ -492,6 +492,7 @@ const getAllPatient = async (req, res) => {
   }
   try {
     const result = await sequelize.transaction(async (t) => {
+      const nombre_patient = await patient.count();
       const Patients = await sequelize.query(
         `select Pa.id_patient, nom_patient, postnom_patient, date_format(date_naissance_patient, "%x/%m/%v") as date_naissance, prenom_patient, Pa.sexe_patient, Anthr.type_malnutrition, date_format(Date_Consultation, "%x/%m/%v") as date_Consultation, nom_user as nom_consultant, postnom_user as postnom_consultant  from
         patients as Pa
@@ -527,7 +528,7 @@ const getAllPatient = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      res.status(200).json({ Patients });
+      res.status(200).json({ Patients, nombre_patient });
     });
   } catch (error) {
     res.status(500).json({ error: `${error}` });
