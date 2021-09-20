@@ -16,10 +16,10 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 const corsOptions1 = {
-  "origin": "*",
-  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
-  "preflightContinue": false,
-  "optionsSuccessStatus": 204
+  origin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  preflightContinue: false,
+  optionsSuccessStatus: 200
 }
 // app.use(cors(corsOptions));
 app.use(cors(corsOptions1));
