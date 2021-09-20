@@ -11,13 +11,18 @@ const routeReporting = require("./routes/reporting");
 const passport = require("passport");
 
 const corsOptions = {
-  origin: "*",
+  origin: "http://localhost:3000",
   credentials: true,
   optionSuccessStatus: 200,
 };
-
+const corsOptions1 = {
+  "origin": "*",
+  "methods": "GET,HEAD,PUT,PATCH,POST,DELETE",
+  "preflightContinue": false,
+  "optionsSuccessStatus": 204
+}
 app.use(cors(corsOptions));
-// app.use(cors());
+app.use(cors(corsOptions1));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
