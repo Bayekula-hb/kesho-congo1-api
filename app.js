@@ -21,7 +21,7 @@ const corsOptions1 = {
   "preflightContinue": false,
   "optionsSuccessStatus": 204
 }
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 app.use(cors(corsOptions1));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
