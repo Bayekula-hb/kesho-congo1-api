@@ -493,6 +493,11 @@ const getAllPatient = async (req, res) => {
     limit_end = parseInt(limit_end);
     limit_start = parseInt(limit_start);
   }
+  if(limit_start > limit_end){
+    const temp = limit_start;
+    limit_start = limit_end;
+    limit_end = temp
+  }
   try {
     const result = await sequelize.transaction(async (t) => {
       const nombre_patient = await patient.count();
