@@ -165,7 +165,6 @@ const resetPassword = async (req, res) => {
           text: "Hello Jaco ?", // plain text body
           html: `Hello ${userFind.prenom_user} voici votre nouveau mot de passe : <b>${password_generate}</b>`, // html body
         });
-        console.log("info mail : ", info);
         if (info) {
           try {
             const result = await sequelize.transaction(async (t) => {
@@ -194,8 +193,6 @@ const resetPassword = async (req, res) => {
               error: `${error}`,
             });
           }
-          console.log("Message sent: %s", info.messageId);
-          console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
         }
       });
     } catch (error) {

@@ -527,7 +527,7 @@ const getAllPatient = async (req, res) => {
         inner join users
         on Cons.userId = users.id
         ORDER BY Pa.id DESC
-        LIMIT :limitParamStart,:limitParamEnd`,
+        `,
         {
           replacements: {
             limitParamStart: limit_start,
@@ -537,6 +537,7 @@ const getAllPatient = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
+      //LIMIT :limitParamStart,:limitParamEnd
       res.status(200).json({ Patients, nombre_patient });
     });
   } catch (error) {
