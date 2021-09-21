@@ -16,20 +16,20 @@ const corsOptions = {
   optionSuccessStatus: 200,
 };
 const corsOptions1 = {
-  origin: "*",
+  origin: false,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  preflightContinue: true,
+  preflightContinue: false,
   optionsSuccessStatus: 200,
 };
 // app.use(cors(corsOptions));
-// app.use(cors(corsOptions1));
+app.use(cors(corsOptions1));
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-  next();
-});
+// app.use((req, res, next) => {
+//   res.setHeader('Access-Control-Allow-Origin', '*');
+//   res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content, Accept, Content-Type, Authorization');
+//   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+//   next();
+// });
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
