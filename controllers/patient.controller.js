@@ -482,13 +482,16 @@ const updatePatient = async (req, res) => {
   }
 };
 const getAllPatient = async (req, res) => {
-  let { limit } = res;
+  let { limit_start, limit_end } = res;
   const reg = /^\d+$/;
-  const testRegex = reg.test(limit);
-  if (!testRegex) {
-    limit = 30;
+  const testRegexEnd = reg.test(limit_end);
+  const testRegexStart = reg.test(limit_start)
+  if (!testRegexStart && !testRegexEnd) {
+    limit_end = 30;
+    limit_start = 1;
   } else {
-    limit = parseInt(limit);
+    limit_end = parseInt(limit_end);
+    limit_start = parseInt(limit_start);
   }
   try {
     const result = await sequelize.transaction(async (t) => {
@@ -519,10 +522,11 @@ const getAllPatient = async (req, res) => {
         inner join users
         on Cons.userId = users.id
         ORDER BY Pa.id DESC
-        LIMIT :limitParam`,
+        LIMIT :limitParamStart,:limitParamEnd`,
         {
           replacements: {
-            limitParam: limit,
+            limitParamStart: limit_start,
+            limitParamEnd : limit_end,
             plain: true,
           },
           type: QueryTypes.SELECT,

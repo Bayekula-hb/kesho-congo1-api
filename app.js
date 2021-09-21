@@ -18,11 +18,11 @@ const corsOptions = {
 const corsOptions1 = {
   origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  preflightContinue: false,
+  preflightContinue: true,
   optionsSuccessStatus: 200,
 };
 // app.use(cors(corsOptions));
-app.use(cors(corsOptions));
+app.use(cors(corsOptions1));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
