@@ -116,14 +116,6 @@ const getReporting = async (req, res, next) => {
         { type: QueryTypes.SELECT }
       );
 
-      // const NbrePatientToday = await consulter_par.count({
-      //   where: {
-      //     createdAt: {
-      //       [Op.lt]: new Date(),
-      //       [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000),
-      //     },
-      //   },
-      // });
       const nbre_fille_today = await consulter_par.count({
         where: {
           createdAt: {
@@ -156,14 +148,6 @@ const getReporting = async (req, res, next) => {
           },
         ],
       });
-      // const NbrePatientYesterday = await consulter_par.count({
-      //   where: {
-      //     createdAt: {
-      //       [Op.gt]: new Date(new Date() - 45 * 60.482 * 60 * 1000),
-      //       [Op.lt]: new Date(new Date() - 21 * 60 * 60 * 1005.8),
-      //     },
-      //   },
-      // });
       const nbre_garcon_yesterday = await consulter_par.count({
         where: {
           createdAt: {
@@ -197,36 +181,8 @@ const getReporting = async (req, res, next) => {
         ],
       });
 
-      // Type de malnutrition
-      // const sereve_nombre =  await sequelize.query(
-      //   `select count(Pa.id_patient) as nombre_patient_chronique, createdAt from
-      //   patients as Pa
-      //   inner join (
-      //     SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
-      //     FROM anthropometriques
-      //     WHERE createdAt IN (
-      //       SELECT MAX(createdAt)
-      //       FROM anthropometriques
-      //       GROUP BY patientId
-      //     )
-      //   ) as Anthr
-      //   on Anthr.patientId = Pa.id
-      //   inner join (
-      //   SELECT id, patientId, userId
-      //   FROM consulter_pars
-      //   WHERE createdAt IN (
-      //       SELECT MAX(createdAt)
-      //       FROM consulter_pars
-      //       GROUP BY patientId
-      //   )
-      //   ) as Cons
-      //   on Anthr.patientId = Cons.patientId
-      //   where Anthr.type_malnutrition = "severe" and MONTH(Pa.createdAt) = MONTH(now())
-      //   ORDER BY Pa.id DESC`,
-      //   { type: QueryTypes.SELECT }
-      // );
-      const sereve_nombre_fille = await sequelize.query(
-        `select count(Pa.id_patient) as sereve_nombre_fille from
+      const sereve_marasme_nombre_fille = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_marasme_nombre_fille from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -248,12 +204,12 @@ const getReporting = async (req, res, next) => {
         )
         ) as Cons
         on Anthr.patientId = Cons.patientId
-        where Anthr.type_malnutrition = "MAS" and Pa.sexe_patient = "F" and MONTH(Pa.createdAt) = MONTH(now())  
+        where Anthr.type_malnutrition = "MAS-M" and Pa.sexe_patient = "F" and MONTH(Pa.createdAt) = MONTH(now())  
         ORDER BY Pa.id DESC`,
         { type: QueryTypes.SELECT }
       );
-      const sereve_nombre_garcon = await sequelize.query(
-        `select count(Pa.id_patient) as sereve_nombre_garcon from
+      const sereve_marasme_nombre_garcon = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_marasme_nombre_garcon from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -275,38 +231,66 @@ const getReporting = async (req, res, next) => {
         )
         ) as Cons
         on Anthr.patientId = Cons.patientId
-        where Anthr.type_malnutrition = "MAS" and Pa.sexe_patient = "M" and MONTH(Pa.createdAt) = MONTH(now())  
+        where Anthr.type_malnutrition = "MAS-M" and Pa.sexe_patient = "M" and MONTH(Pa.createdAt) = MONTH(now())  
         ORDER BY Pa.id DESC`,
         { type: QueryTypes.SELECT }
       );
 
-      // const chronique_nombre =  await sequelize.query(
-      //   `select count(Pa.id_patient) as nombre_patient_chronique, createdAt from
-      //   patients as Pa
-      //   inner join (
-      //     SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
-      //     FROM anthropometriques
-      //     WHERE createdAt IN (
-      //       SELECT MAX(createdAt)
-      //       FROM anthropometriques
-      //       GROUP BY patientId
-      //     )
-      //   ) as Anthr
-      //   on Anthr.patientId = Pa.id
-      //   inner join (
-      //   SELECT id, patientId, userId
-      //   FROM consulter_pars
-      //   WHERE createdAt IN (
-      //       SELECT MAX(createdAt)
-      //       FROM consulter_pars
-      //       GROUP BY patientId
-      //   )
-      //   ) as Cons
-      //   on Anthr.patientId = Cons.patientId
-      //   where Anthr.type_malnutrition = "chronique" and MONTH(Pa.createdAt) = MONTH(now())
-      //   ORDER BY Pa.id DESC`,
-      //   { type: QueryTypes.SELECT }
-      // );
+      const sereve_kwashiorkor_nombre_fille = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_kwashiorkor_nombre_fille from
+        patients as Pa
+        inner join ( 
+          SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+          FROM anthropometriques
+          WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM anthropometriques
+            GROUP BY patientId
+          )
+        ) as Anthr
+        on Anthr.patientId = Pa.id
+        inner join (
+        SELECT id, patientId, userId
+        FROM consulter_pars
+        WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM consulter_pars
+            GROUP BY patientId
+        )
+        ) as Cons
+        on Anthr.patientId = Cons.patientId
+        where Anthr.type_malnutrition = "MAS-K" and Pa.sexe_patient = "F" and MONTH(Pa.createdAt) = MONTH(now())  
+        ORDER BY Pa.id DESC`,
+        { type: QueryTypes.SELECT }
+      );
+      const sereve_kwashiorkor_nombre_garcon = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_kwashiorkor_nombre_garcon from
+        patients as Pa
+        inner join ( 
+          SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+          FROM anthropometriques
+          WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM anthropometriques
+            GROUP BY patientId
+          )
+        ) as Anthr
+        on Anthr.patientId = Pa.id
+        inner join (
+        SELECT id, patientId, userId
+        FROM consulter_pars
+        WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM consulter_pars
+            GROUP BY patientId
+        )
+        ) as Cons
+        on Anthr.patientId = Cons.patientId
+        where Anthr.type_malnutrition = "MAS-K" and Pa.sexe_patient = "M" and MONTH(Pa.createdAt) = MONTH(now())  
+        ORDER BY Pa.id DESC`,
+        { type: QueryTypes.SELECT }
+      );
+
       const chronique_nombre_fille = await sequelize.query(
         `select count(Pa.id_patient) as chronique_nombre_fille from
         patients as Pa
@@ -361,33 +345,7 @@ const getReporting = async (req, res, next) => {
         ORDER BY Pa.id DESC`,
         { type: QueryTypes.SELECT }
       );
-      // const moderee_nombre =  await sequelize.query(
-      //   `select count(Pa.id_patient) as nombre_patient_moderee, createdAt from
-      //   patients as Pa
-      //   inner join (
-      //     SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
-      //     FROM anthropometriques
-      //     WHERE createdAt IN (
-      //       SELECT MAX(createdAt)
-      //       FROM anthropometriques
-      //       GROUP BY patientId
-      //     )
-      //   ) as Anthr
-      //   on Anthr.patientId = Pa.id
-      //   inner join (
-      //   SELECT id, patientId, userId
-      //   FROM consulter_pars
-      //   WHERE createdAt IN (
-      //       SELECT MAX(createdAt)
-      //       FROM consulter_pars
-      //       GROUP BY patientId
-      //   )
-      //   ) as Cons
-      //   on Anthr.patientId = Cons.patientId
-      //   where Anthr.type_malnutrition = "moderée" and MONTH(Pa.createdAt) = MONTH(now())
-      //   ORDER BY Pa.id DESC`,
-      //   { type: QueryTypes.SELECT }
-      // );
+
       const moderee_nombre_fille = await sequelize.query(
         `select count(Pa.id_patient) as moderee_nombre_fille from
         patients as Pa
@@ -442,6 +400,19 @@ const getReporting = async (req, res, next) => {
         ORDER BY Pa.id DESC`,
         { type: QueryTypes.SELECT }
       );
+
+      const nombre_fille_transferer = await patient.count({
+        where: {
+          transferer_unt: true,
+          sexe_patient: "F",
+        },
+      });
+      const nombre_garcon_transferer = await patient.count({
+        where: {
+          transferer_unt: true,
+          sexe_patient: "M",
+        },
+      });
       res.status(200).json({
         nombre_garcon,
         nombre_fille,
@@ -464,17 +435,22 @@ const getReporting = async (req, res, next) => {
         nbre_fille_yesterday,
         nbre_garcon_yesterday,
 
-        sereve_nombre_fille,
-        sereve_nombre_garcon,
+        sereve_marasme_nombre_fille,
+        sereve_marasme_nombre_garcon,
+
+        sereve_kwashiorkor_nombre_fille,
+        sereve_kwashiorkor_nombre_garcon,
 
         chronique_nombre_fille,
         chronique_nombre_garcon,
 
         moderee_nombre_fille,
         moderee_nombre_garcon,
+
+        nombre_fille_transferer,
+        nombre_garcon_transferer,
       });
     });
-    next();
   } catch (err) {
     res.status(500).json({ error: `${err}` });
   }
@@ -683,8 +659,8 @@ const getReportingByDate = async (req, res) => {
       });
 
       // Type de malnutrition
-      const sereve_nombre_fille = await sequelize.query(
-        `select count(Pa.id_patient) as sereve_nombre_fille from
+      const sereve_marasme_nombre_fille = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_marasme_nombre_fille from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -706,7 +682,7 @@ const getReportingByDate = async (req, res) => {
         )
         ) as Cons
         on Anthr.patientId = Cons.patientId
-        where Anthr.type_malnutrition = "MAS" AND Pa.sexe_patient = "F" AND Pa.createdAt BETWEEN (:starting_date) AND (:ending_date)
+        where Anthr.type_malnutrition = "MAS-M" AND Pa.sexe_patient = "F" AND Pa.createdAt BETWEEN (:starting_date) AND (:ending_date)
         ORDER BY Pa.id DESC`,
         {
           replacements: {
@@ -717,8 +693,8 @@ const getReportingByDate = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      const sereve_nombre_garcon = await sequelize.query(
-        `select count(Pa.id_patient) as sereve_nombre_garcon from
+      const sereve_marasme_nombre_garcon = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_marasme_nombre_garcon from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -740,7 +716,76 @@ const getReportingByDate = async (req, res) => {
         )
         ) as Cons
         on Anthr.patientId = Cons.patientId
-        where Anthr.type_malnutrition = "MAS" AND Pa.sexe_patient = "M" AND Pa.createdAt BETWEEN (:starting_date) AND (:ending_date)
+        where Anthr.type_malnutrition = "MAS-M" AND Pa.sexe_patient = "M" AND Pa.createdAt BETWEEN (:starting_date) AND (:ending_date)
+        ORDER BY Pa.id DESC`,
+        {
+          replacements: {
+            starting_date: starting_date,
+            ending_date: ending_date,
+            plain: true,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
+
+      const sereve_kwashiorkor_nombre_fille = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_kwashiorkor_nombre_fille from
+        patients as Pa
+        inner join ( 
+          SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+          FROM anthropometriques
+          WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM anthropometriques
+            GROUP BY patientId
+          )
+        ) as Anthr
+        on Anthr.patientId = Pa.id
+        inner join (
+        SELECT id, patientId, userId
+        FROM consulter_pars
+        WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM consulter_pars
+            GROUP BY patientId
+        )
+        ) as Cons
+        on Anthr.patientId = Cons.patientId
+        where Anthr.type_malnutrition = "MAS-K" AND Pa.sexe_patient = "F" AND Pa.createdAt BETWEEN (:starting_date) AND (:ending_date)
+        ORDER BY Pa.id DESC`,
+        {
+          replacements: {
+            starting_date: starting_date,
+            ending_date: ending_date,
+            plain: true,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
+      const sereve_kwashiorkor_nombre_garcon = await sequelize.query(
+        `select count(Pa.id_patient) as sereve_kwashiorkor_nombre_garcon from
+        patients as Pa
+        inner join ( 
+          SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
+          FROM anthropometriques
+          WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM anthropometriques
+            GROUP BY patientId
+          )
+        ) as Anthr
+        on Anthr.patientId = Pa.id
+        inner join (
+        SELECT id, patientId, userId
+        FROM consulter_pars
+        WHERE createdAt IN (
+            SELECT MAX(createdAt)
+            FROM consulter_pars
+            GROUP BY patientId
+        )
+        ) as Cons
+        on Anthr.patientId = Cons.patientId
+        where Anthr.type_malnutrition = "MAS-K" AND Pa.sexe_patient = "M" AND Pa.createdAt BETWEEN (:starting_date) AND (:ending_date)
         ORDER BY Pa.id DESC`,
         {
           replacements: {
@@ -889,6 +934,34 @@ const getReportingByDate = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
+      const nombre_fille_transferer = await patient.count({
+        where :{
+          transferer_unt : true,
+          sexe_patient : "F",
+          createdAt : {
+            [Op.between] : [starting_date,ending_date]
+          }
+        },
+        replacements: {
+          starting_date: starting_date,
+          ending_date: ending_date,
+          plain: true,
+        },
+      })
+      const nombre_garcon_transferer = await patient.count({
+        where :{
+          transferer_unt : true,
+          sexe_patient : "M",
+          createdAt : {
+            [Op.between] : [starting_date,ending_date]
+          }
+        },
+        replacements: {
+          starting_date: starting_date,
+          ending_date: ending_date,
+          plain: true,
+        },
+      })
 
       res.status(200).json({
         nombre_garcon,
@@ -903,12 +976,19 @@ const getReportingByDate = async (req, res) => {
         nombre_fille_6_12ans,
         nombre_garcon_yesterday,
         nombre_fille_yesterday,
-        sereve_nombre_garcon,
-        sereve_nombre_fille,
+        sereve_marasme_nombre_garcon,
+        sereve_marasme_nombre_fille,
+
+        sereve_kwashiorkor_nombre_garcon,
+        sereve_kwashiorkor_nombre_fille,
+
         chronique_nombre_garcon,
         chronique_nombre_fille,
         moderee_nombre_garcon,
         moderee_nombre_fille,
+
+        nombre_fille_transferer,
+        nombre_garcon_transferer,
       });
     });
   } catch (err) {
@@ -1045,7 +1125,7 @@ const reportingYear = async (req, res) => {
                   )
                   ) as Cons
                   on Anthr.patientId = Cons.patientId
-                  where Anthr.type_malnutrition = "MAS" AND monthname(Pa.createdAt) = :monthParam 
+                  where Anthr.type_malnutrition = "MAS-K" OR Anthr.type_malnutrition = "MAS-M" OR AND monthname(Pa.createdAt) = :monthParam 
                   ORDER BY Pa.id DESC`,
             {
               replacements: {

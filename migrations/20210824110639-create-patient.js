@@ -62,6 +62,14 @@ module.exports = {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
+      transferer_unt: {
+        allowNull: true,
+        type: Sequelize.BOOLEAN,
+      },
+      declarer_gueri: {
+        allowNull: true,
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
