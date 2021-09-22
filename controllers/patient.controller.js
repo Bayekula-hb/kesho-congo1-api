@@ -677,13 +677,7 @@ const searchPatient = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      if (Patients.length != 0) {
-        res.status(200).json(Patients);
-      } else {
-        res.status(204).json({
-          message: `Le patient ${nom_patient} est introuvable`,
-        });
-      }
+      res.status(200).json(Patients);
     });
   } catch (error) {
     res.status(500).json({ error: `${error}` });
