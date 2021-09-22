@@ -11,7 +11,7 @@ const router = require("express").Router();
 router.get("/", getPatientMiddleware, getPatient);
 router.get("/all",getAllPatientValidator, getAllPatient);
 router.get("/detail", patientDestroyMiddleware, detailPatient)
-router.delete("/", patientDestroyMiddleware, deletePatient);
+// router.delete("/", patientDestroyMiddleware, deletePatient);
 router.put("/", updatePatientMiddleware, updatePatient);
 router.post("/", patientValidatorAdd ,addPatient);
 router.post("/search", searchPatientValidator, searchPatient);

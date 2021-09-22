@@ -84,7 +84,6 @@ const deleteUser = async (req, res) => {
           where: {
             id_user,
           },
-          force: true,
         });
         return res.status(200).json({
           message: `${userFind.dataValues.nom_user} ${userFind.dataValues.postnom_user} est supprimé avec succès`,

@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         models.patient,
         { through: "consulter_par" },
         {
-          onDelete: "CASCADE",
+          // onDelete: "CASCADE",
           onUpdate: "CASCADE",
         }
       );

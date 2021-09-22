@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
         models.user,
         { through: "consulter_par" },
         {
-          onDelete: "CASCADE",
+          // onDelete: "CASCADE",
           onUpdate: "CASCADE",
         }
       );

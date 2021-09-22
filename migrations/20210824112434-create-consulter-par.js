@@ -19,7 +19,7 @@ module.exports = {
           model: "users",
           key: "id",
         },
-        onDelete: 'CASCADE',
+        // onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
       patientId: {
@@ -29,7 +29,7 @@ module.exports = {
           model: "patients",
           key: "id",
         },
-        onDelete: 'CASCADE',
+        // onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       },
       createdAt: {
