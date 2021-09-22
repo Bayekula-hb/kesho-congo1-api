@@ -447,8 +447,8 @@ const getReporting = async (req, res, next) => {
         moderee_nombre_fille,
         moderee_nombre_garcon,
 
-        nombre_fille_transferer,
-        nombre_garcon_transferer,
+        // nombre_fille_transferer,
+        // nombre_garcon_transferer,
       });
     });
   } catch (err) {
@@ -987,8 +987,8 @@ const getReportingByDate = async (req, res) => {
         moderee_nombre_garcon,
         moderee_nombre_fille,
 
-        nombre_fille_transferer,
-        nombre_garcon_transferer,
+        // nombre_fille_transferer,
+        // nombre_garcon_transferer,
       });
     });
   } catch (err) {
