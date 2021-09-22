@@ -55,7 +55,7 @@ const validationData =  [
   body("contraception_moderne").matches(/[A-Za-z]{8,}/).withMessage("la taille inférieur à 4"),
   body("niveau_socioeconomique").notEmpty().withMessage("Cannot be empty").matches(/[A-Za-z]{4,}/).withMessage("la taille inférieur à 4"),
   body("statut_marital").notEmpty().withMessage("Cannot be empty"),
-  body("nbre_femme_pere").notEmpty().withMessage("Cannot be empty").matches(/\d{1,3}/).withMessage("pas de lettres"),
+  body("nbre_femme_pere").notEmpty().withMessage("Cannot be empty").matches(/\d{1,3}$/).withMessage("pas de lettres"),
   body("tribu").notEmpty().withMessage("Cannot be empty"),
   body("religion").notEmpty().withMessage("Cannot be empty"),
   body("posseder_radio_tele").notEmpty().withMessage("Cannot be empty").isBoolean().withMessage("c'est un champ boolean"),
