@@ -493,14 +493,12 @@ const getAllPatient = async (req, res) => {
     limit_end = parseInt(limit_end);
     limit_start = parseInt(limit_start);
   }
-  // if(limit_start > limit_end){
-  //   const temp = limit_start;
-  //   limit_start = limit_end;
-  //   limit_end = temp
-  // }
+  const nombre_patient = await patient.count();
+  if(limit_start > nombre_patient-1 ){
+    limit_start = nombre_patient-1;
+  }
   try {
     const result = await sequelize.transaction(async (t) => {
-      const nombre_patient = await patient.count();
       const Patients = await sequelize.query(
         `select Pa.id_patient, nom_patient, postnom_patient, date_format(date_naissance_patient, "%x/%m/%v") as date_naissance, prenom_patient, Pa.sexe_patient, Anthr.type_malnutrition, date_format(Date_Consultation, "%x/%m/%v") as date_Consultation, nom_user as nom_consultant, postnom_user as postnom_consultant  from
         patients as Pa
