@@ -14,7 +14,9 @@ const validationData = [
   body("lieu_accouchement").notEmpty().withMessage("Cannot be empty"),
   body("asphyxie_perinatal").notEmpty().withMessage("Cannot be empty"),
   body("dpm").notEmpty().withMessage("Cannot be empty"),
-  body("produit_plante").notEmpty().withMessage("Cannot be empty"),
+  body("produit_plante").notEmpty().withMessage("Cannot be empty")
+  .isBoolean()
+  .withMessage("c'est un champ boolean"),
   body("rang_fratrie").notEmpty().withMessage("Cannot be empty"),
   body("taille_fratrie").notEmpty().withMessage("Cannot be empty"),
   body("atcd_rougeole_fratrie").notEmpty().withMessage("Cannot be empty"),
@@ -173,8 +175,8 @@ const validationData = [
   body("nom_tuteur")
     .notEmpty()
     .withMessage("Cannot be empty")
-    .matches(/[A-Za-z]{4,}/)
-    .withMessage("la taille inférieur à 4"),
+    .matches(/\w{2,}/)
+    .withMessage("la taille inférieur à 2"),
   body("taille_menage")
     .notEmpty()
     .withMessage("Cannot be empty")
@@ -192,10 +194,8 @@ const validationData = [
     .matches(/[A-Za-z]{3,}/)
     .withMessage("la taille inférieur à 4"),
   body("duree_produit_plante")
-    .notEmpty()
-    .withMessage("Cannot be empty")
-    .matches(/\d{1,7}/)
-    .withMessage("pas de lettres"),
+    .matches(/\w{2,}/)
+    .withMessage("la taille supérieur à 1"),
   body("date_naissance_patient")
     .notEmpty()
     .withMessage("Cannot be empty")
