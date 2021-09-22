@@ -69,17 +69,17 @@ const validationData = [
   body("nom_patient")
     .notEmpty()
     .withMessage("Cannot be empty")
-    .matches(/[A-Za-z]{4,}/)
+    .matches(/[A-Za-z]{2,}/)
     .withMessage("la taille inférieur à 4"),
   body("postnom_patient")
     .notEmpty()
     .withMessage("Cannot be empty")
-    .matches(/[A-Za-z]{4,}/)
+    .matches(/[A-Za-z]{2,}/)
     .withMessage("la taille inférieur à 4 et pas de chiffres"),
   body("prenom_patient")
     .notEmpty()
     .withMessage("Cannot be empty")
-    .matches(/[A-Za-z]{4,}/)
+    .matches(/[A-Za-z]{2,}/)
     .withMessage("la taille inférieur à 4 et pas de chiffres"),
   body("sexe_patient")
     .notEmpty()
@@ -214,6 +214,7 @@ const validationData = [
   body("age_fin_allaitement").notEmpty().withMessage("Cannot be empty"),
   body("traitement_nutri").notEmpty().withMessage("Cannot be empty"),
   body("cocktail_atb").isBoolean().withMessage("c'est un champ boolean"),
+  body("transferer_unt").notEmpty().withMessage("Cannot be empty").isBoolean().withMessage("c'est un champ boolean"),
 ];
 patientValidatorAdd.use(validationData, async (req, res, next) => {
   // Cause malnutrition
