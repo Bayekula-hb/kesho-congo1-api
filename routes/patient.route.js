@@ -1,4 +1,4 @@
-const { getAllPatient, addPatient, getPatient, deletePatient, updatePatient, detailPatient, searchPatient } = require("../controllers/patient.controller");
+const { getAllPatient, addPatient, getPatient, deletePatient, updatePatient, detailPatient, searchPatient, exportPatient } = require("../controllers/patient.controller");
 const patientDestroyMiddleware = require("../middleware/patient/patient.destroy");
 const getPatientMiddleware = require("../middleware/patient/patient.get.middleware");
 const updatePatientMiddleware = require("../middleware/patient/patient.update.middleware");
@@ -10,6 +10,7 @@ const router = require("express").Router();
 
 router.get("/", getPatientMiddleware, getPatient);
 router.get("/all",getAllPatientValidator, getAllPatient);
+router.get("/export", exportPatient);
 router.get("/detail", patientDestroyMiddleware, detailPatient)
 // router.delete("/", patientDestroyMiddleware, deletePatient);
 router.put("/", updatePatientMiddleware, updatePatient);
