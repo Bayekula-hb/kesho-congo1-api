@@ -139,9 +139,9 @@ const updateUser = async (req, res) => {
   }
 };
 const resetPassword = async (req, res) => {
-  const { email, nom_user, prenom_user } = res;
+  const { email} = res;
   const userFind = await user.findOne({
-    where: { email: email, nom_user: nom_user, prenom_user: prenom_user },
+    where: { email: email},
   });
   if (userFind) {
     try {
@@ -163,7 +163,7 @@ const resetPassword = async (req, res) => {
           to: to, // list of receivers
           subject: "Hello ✔", // Subject line
           text: "Hello Jaco ?", // plain text body
-          html: `Hello ${userFind.prenom_user} voici votre nouveau mot de passe : <b>${password_generate}</b>`, // html body
+          html: `Hello ${userFind.nom_user} ${userFind.prenom_user} voici votre nouveau mot de passe : <b>${password_generate}</b>`, // html body
         });
         if (info) {
           try {
@@ -179,7 +179,7 @@ const resetPassword = async (req, res) => {
                   }
                 );
                 return res.status(200).json({
-                  message: `Mise à jour effectuée avec succès ${userUpdate.email}`,
+                  message: `Mise à jour effectuée avec succès`,
                   email: `${userFind.email}`,
                 });
               } else {
