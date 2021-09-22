@@ -680,7 +680,7 @@ const searchPatient = async (req, res) => {
       if (Patients.length != 0) {
         res.status(200).json(Patients);
       } else {
-        res.status(400).json({
+        res.status(204).json({
           message: `Le patient ${nom_patient} est introuvable`,
         });
       }
