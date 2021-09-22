@@ -146,10 +146,10 @@ const validationData = [
     .withMessage("Cannot be empty")
     .matches(/[A-Za-z]{3,}/)
     .withMessage("la taille inférieur à 4"),
-  body("statut_marital").notEmpty().withMessage("Cannot be empty"),
+  body("statut_marital")
+  .matches(/[A-Za-z]{4,}/)
+  .withMessage("la taille inférieur à 4"),
   body("nbre_femme_pere")
-    .notEmpty()
-    .withMessage("Cannot be empty")
     .matches(/\d{1,3}$/)
     .withMessage("pas de lettres"),
   body("tribu").notEmpty().withMessage("Cannot be empty"),
