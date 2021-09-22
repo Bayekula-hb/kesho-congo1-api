@@ -401,18 +401,18 @@ const getReporting = async (req, res, next) => {
         { type: QueryTypes.SELECT }
       );
 
-      const nombre_fille_transferer = await patient.count({
-        where: {
-          transferer_unt: true,
-          sexe_patient: "F",
-        },
-      });
-      const nombre_garcon_transferer = await patient.count({
-        where: {
-          transferer_unt: true,
-          sexe_patient: "M",
-        },
-      });
+      // const nombre_fille_transferer = await patient.count({
+      //   where: {
+      //     transferer_unt: true,
+      //     sexe_patient: "F",
+      //   },
+      // });
+      // const nombre_garcon_transferer = await patient.count({
+      //   where: {
+      //     transferer_unt: true,
+      //     sexe_patient: "M",
+      //   },
+      // });
       res.status(200).json({
         nombre_garcon,
         nombre_fille,
@@ -934,34 +934,34 @@ const getReportingByDate = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      const nombre_fille_transferer = await patient.count({
-        where :{
-          transferer_unt : true,
-          sexe_patient : "F",
-          createdAt : {
-            [Op.between] : [starting_date,ending_date]
-          }
-        },
-        replacements: {
-          starting_date: starting_date,
-          ending_date: ending_date,
-          plain: true,
-        },
-      })
-      const nombre_garcon_transferer = await patient.count({
-        where :{
-          transferer_unt : true,
-          sexe_patient : "M",
-          createdAt : {
-            [Op.between] : [starting_date,ending_date]
-          }
-        },
-        replacements: {
-          starting_date: starting_date,
-          ending_date: ending_date,
-          plain: true,
-        },
-      })
+      // const nombre_fille_transferer = await patient.count({
+      //   where :{
+      //     transferer_unt : true,
+      //     sexe_patient : "F",
+      //     createdAt : {
+      //       [Op.between] : [starting_date,ending_date]
+      //     }
+      //   },
+      //   replacements: {
+      //     starting_date: starting_date,
+      //     ending_date: ending_date,
+      //     plain: true,
+      //   },
+      // })
+      // const nombre_garcon_transferer = await patient.count({
+      //   where :{
+      //     transferer_unt : true,
+      //     sexe_patient : "M",
+      //     createdAt : {
+      //       [Op.between] : [starting_date,ending_date]
+      //     }
+      //   },
+      //   replacements: {
+      //     starting_date: starting_date,
+      //     ending_date: ending_date,
+      //     plain: true,
+      //   },
+      // })
 
       res.status(200).json({
         nombre_garcon,
