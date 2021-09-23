@@ -38,7 +38,8 @@ userRegisterMiddleware.use(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
+    const password_brut = password;
+    
     res.password = bcrypt.hashSync(password, 10);
     res.email = email;
     res.nom_user = nom_user;
@@ -47,6 +48,7 @@ userRegisterMiddleware.use(
     res.is_admin = is_admin;
     res.sexe_user = sexe_user;
     res.statut = statut;
+    res.password_brut = password_brut;
     next();
   }
 );

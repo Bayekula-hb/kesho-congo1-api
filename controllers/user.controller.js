@@ -50,23 +50,54 @@ const getUserById = async (req, res) => {
 };
 const addUser = async (req, res) => {
   if (req.user.is_admin == true) {
-    try {
-      const alreadyExistsUser = await user.findOne({
-        where: { email: req.body.email },
-      });
-      if (!alreadyExistsUser) {
-        const userCreate = await user.create(res);
-        return res.status(200).json({ message: "Thanks for registering" });
-      } else {
+    const result = await sequelize.transaction(async (t) => {
+      try {
+        const alreadyExistsUser = await user.findOne({
+          where: { email: req.body.email },
+        });
+        if (!alreadyExistsUser) {
+          const userCreate = await user.create(res);
+          const from = process.env.MAILNAME;
+          const to = userCreate.email;
+          // create reusable transporter object using the default SMTP transport
+          const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              //mail de l'entreprise
+              user: process.env.MAILNAME, // ton mail
+              pass: process.env.PASSMAIL, // ton mot de passe
+            },
+          });
+          const info = await transporter.sendMail({
+            from: from, // sender address
+            to: to, // list of receivers
+            subject: "KESHO CONGO 😃", // Subject line
+            text: "Hello Jaco ?", // plain text body
+            html: `Hello ${userCreate.nom_user} ${userCreate.prenom_user} <br/>
+          Voici tes identifiants 
+           <ul>
+              <li>
+                Email : ${userCreate.email}
+              </li>
+              <li>
+                Password : <b>${res.password_brut}</b>
+              </li>
+           </ul>`, // html body
+          });
+          if (info) {
+            return res.status(200).json({ message: "Thanks for registering" });
+          }
+        } else {
+          return res
+            .status(400)
+            .json({ message: "User with email already exists!" });
+        }
+      } catch (error) {
         return res
-          .status(400)
-          .json({ message: "User with email already exists!" });
+          .status(500)
+          .json({ error: `Cannot register user at the moment! : ${error}` });
       }
-    } catch (error) {
-      return res
-        .status(500)
-        .json({ error: `Cannot register user at the moment! : ${error}` });
-    }
+    });
   } else {
     return res.status(400).send("Access denied. You are not an admin.");
   }
@@ -138,9 +169,9 @@ const updateUser = async (req, res) => {
   }
 };
 const resetPassword = async (req, res) => {
-  const { email} = res;
+  const { email } = res;
   const userFind = await user.findOne({
-    where: { email: email},
+    where: { email: email },
   });
   if (userFind) {
     try {
@@ -218,7 +249,7 @@ const updateStatusUser = async (req, res) => {
           { statut },
           {
             where: {
-              id_user:id_user,
+              id_user: id_user,
             },
           }
         );
