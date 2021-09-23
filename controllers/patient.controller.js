@@ -154,6 +154,14 @@ const addPatient = async (req, res) => {
       });
       const patientId = newPatient.id;
 
+      await anthropometrique.create({
+        peri_cranien,
+        peri_brachial,
+        poids,
+        taille,
+        type_malnutrition,
+        patientId,
+      });
       //Cause_malnutrition
       await cause_malnutrition.create({
         atcd_mas,
@@ -187,15 +195,6 @@ const addPatient = async (req, res) => {
         constitution_aliment,
         age_fin_allaitement,
         allaitement_6mois,
-      });
-
-      await anthropometrique.create({
-        peri_cranien,
-        peri_brachial,
-        poids,
-        taille,
-        type_malnutrition,
-        patientId,
       });
 
       await consulter_par.create({
