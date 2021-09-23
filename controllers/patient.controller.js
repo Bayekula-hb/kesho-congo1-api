@@ -162,6 +162,11 @@ const addPatient = async (req, res) => {
         type_malnutrition,
         patientId,
       });
+      await consulter_par.create({
+        patientId,
+        userId,
+      });
+
       //Cause_malnutrition
       await cause_malnutrition.create({
         atcd_mas,
@@ -196,11 +201,6 @@ const addPatient = async (req, res) => {
         age_fin_allaitement,
         allaitement_6mois,
       });
-
-      await consulter_par.create({
-        patientId,
-        userId,
-      });
       return res
         .status(200)
         .json({ message: "Enregistrement effectuer avec succès" });
@@ -225,6 +225,7 @@ const getPatient = async (req, res) => {
           "date_naissance_patient",
           "adresse_patient",
           "provenance_patient",
+          "transferer_unt",
           "mode_arrive",
           "telephone",
           "familleId",
@@ -487,8 +488,11 @@ const getAllPatient = async (req, res) => {
   let { limit_start, limit_end } = res;
   const reg = /^\d+$/;
   const testRegexEnd = reg.test(limit_end);
-  const testRegexStart = reg.test(limit_start)
-  if ((!testRegexStart && !testRegexEnd) || (limit_start == 0 && limit_end == 1)) {
+  const testRegexStart = reg.test(limit_start);
+  if (
+    (!testRegexStart && !testRegexEnd) ||
+    (limit_start == 0 && limit_end == 1)
+  ) {
     limit_end = 30;
     limit_start = 0;
   } else {
@@ -502,7 +506,7 @@ const getAllPatient = async (req, res) => {
   try {
     const result = await sequelize.transaction(async (t) => {
       const Patients = await sequelize.query(
-        `select Pa.id_patient, nom_patient, postnom_patient, date_format(date_naissance_patient, "%x/%m/%v") as date_naissance, prenom_patient, Pa.sexe_patient, Anthr.type_malnutrition, date_format(Date_Consultation, "%x/%m/%v") as date_Consultation, nom_user as nom_consultant, postnom_user as postnom_consultant  from
+        `select Pa.id_patient, nom_patient, postnom_patient, date_format(date_naissance_patient, "%x/%m/%v") as date_naissance, prenom_patient, Pa.sexe_patient, Anthr.type_malnutrition, date_format(Date_Consultation, "%x/%m/%v") as date_Consultation, Pa.transferer_unt, nom_user as nom_consultant, postnom_user as postnom_consultant  from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
@@ -532,14 +536,14 @@ const getAllPatient = async (req, res) => {
         {
           replacements: {
             limitParamStart: limit_start,
-            limitParamEnd : limit_end,
+            limitParamEnd: limit_end,
             plain: true,
           },
           type: QueryTypes.SELECT,
         }
       );
       //LIMIT :limitParamStart,:limitParamEnd
-      res.status(200).json({nombre_patient , Patients });
+      res.status(200).json({ nombre_patient, Patients });
     });
   } catch (error) {
     res.status(500).json({ error: `${error}` });
@@ -724,6 +728,38 @@ const exportPatient = async (req, res) => {
     res.status(500).json({ error: `${error}` });
   }
 };
+const transfertPatient = async (req, res) => {
+  try {
+    const result = await sequelize.transaction(async (t) => {
+      const { id_patient } = res;
+      const patientFind = await patient.findOne({
+        where: { id_patient },
+      });
+      if (patientFind) {
+        await patient.update(
+          {
+            transferer_unt: true,
+          },
+          {
+            where: {
+              id_patient,
+            },
+          }
+        );
+        res.status(200).json({
+          message: `Le patient transféré à UNT avec succès`,
+        });
+      }
+      res.status(400).json({
+        error: `Le patient ayant l'identifiant ${id_patient} est introuvable`,
+      });
+    });
+  } catch (error) {
+    res.status(400).json({
+      error: `${error}`,
+    });
+  }
+};
 
 module.exports = {
   addPatient,
@@ -734,4 +770,5 @@ module.exports = {
   detailPatient,
   searchPatient,
   exportPatient,
+  transfertPatient,
 };
