@@ -32,11 +32,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING
       },
-      date_examen: {
-        allowNull: false,
-        type: Sequelize.DATEONLY,
-        defaultValue : Sequelize.NOW,
-      },
       patientId: {
         allowNull: false,
         type: Sequelize.INTEGER,

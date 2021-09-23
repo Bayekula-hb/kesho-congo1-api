@@ -28,7 +28,6 @@ module.exports = (sequelize, DataTypes) => {
     poids: DataTypes.FLOAT,
     taille: DataTypes.FLOAT,
     type_malnutrition: DataTypes.STRING,
-    date_examen: DataTypes.DATEONLY,
     patientId: DataTypes.INTEGER
   }, {
     sequelize,

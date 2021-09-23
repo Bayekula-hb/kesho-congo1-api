@@ -44,7 +44,7 @@ const validationData = [
     .withMessage("Cannot be empty"),
   body("duree_prise_atb")
   .matches(/\w{1,}/)
-  .withMessage("la taille inférieur à 4"),
+  .withMessage("la taille inférieur à 1"),
   body("peri_cranien").notEmpty().withMessage("Cannot be empty"),
   body("peri_brachial").notEmpty().withMessage("Cannot be empty"),
   body("poids")
@@ -61,7 +61,7 @@ const validationData = [
     .notEmpty()
     .withMessage("Cannot be empty")
     .matches(/[A-Za-z]{3,4}/)
-    .withMessage("la taille inférieur à 4"),
+    .withMessage("la taille inférieur à 3"),
   body("type_statut_marital")
     .notEmpty()
     .withMessage("Cannot be empty")
@@ -76,7 +76,7 @@ const validationData = [
     .notEmpty()
     .withMessage("Cannot be empty")
     .matches(/[A-Za-z]{2,}/)
-    .withMessage("la taille inférieur à 4"),
+    .withMessage("la taille inférieur à 2"),
   body("postnom_patient")
     .notEmpty()
     .withMessage("Cannot be empty")
