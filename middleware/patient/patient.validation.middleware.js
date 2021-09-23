@@ -42,7 +42,9 @@ const validationData = [
   body("diagnostique_hospitalisation")
     .notEmpty()
     .withMessage("Cannot be empty"),
-  body("duree_prise_atb").notEmpty().withMessage("Cannot be empty"),
+  body("duree_prise_atb")
+  .matches(/\w{1,}/)
+  .withMessage("la taille inférieur à 4"),
   body("peri_cranien").notEmpty().withMessage("Cannot be empty"),
   body("peri_brachial").notEmpty().withMessage("Cannot be empty"),
   body("poids")
@@ -201,8 +203,6 @@ const validationData = [
     .withMessage("c'est un champ boolean"),
   body("calendrier_vaccinal").notEmpty().withMessage("Cannot be empty"),
   body("vaccin_non_recu")
-    .notEmpty()
-    .withMessage("Cannot be empty")
     .matches(/[A-Za-z]{3,}/)
     .withMessage("la taille inférieur à 4"),
   body("duree_produit_plante")
