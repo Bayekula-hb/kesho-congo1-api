@@ -14,9 +14,11 @@ const validationData = [
   body("lieu_accouchement").notEmpty().withMessage("Cannot be empty"),
   body("asphyxie_perinatal").notEmpty().withMessage("Cannot be empty"),
   body("dpm").notEmpty().withMessage("Cannot be empty"),
-  body("produit_plante").notEmpty().withMessage("Cannot be empty")
-  .isBoolean()
-  .withMessage("c'est un champ boolean"),
+  body("produit_plante")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .isBoolean()
+    .withMessage("c'est un champ boolean"),
   body("rang_fratrie").notEmpty().withMessage("Cannot be empty"),
   body("taille_fratrie").notEmpty().withMessage("Cannot be empty"),
   body("atcd_rougeole_fratrie").notEmpty().withMessage("Cannot be empty"),
@@ -94,6 +96,16 @@ const validationData = [
     .withMessage("Cannot be empty")
     .matches(/\d{1,3}/)
     .withMessage("pas de lettres"),
+  body("transferer_unt")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .isBoolean()
+    .withMessage("c'est un champ boolean"),
+  body("declarer_gueri")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .isBoolean()
+    .withMessage("c'est un champ boolean"),
   body("diversification_aliment").notEmpty().withMessage("Cannot be empty"),
   body("telephone")
     .notEmpty()
@@ -147,8 +159,8 @@ const validationData = [
     .matches(/[A-Za-z]{3,}/)
     .withMessage("la taille inférieur à 4"),
   body("statut_marital")
-  .matches(/[A-Za-z]{4,}/)
-  .withMessage("la taille inférieur à 4"),
+    .matches(/[A-Za-z]{4,}/)
+    .withMessage("la taille inférieur à 4"),
   body("nbre_femme_pere")
     .matches(/\d{1,3}$/)
     .withMessage("pas de lettres"),
@@ -214,7 +226,11 @@ const validationData = [
   body("age_fin_allaitement").notEmpty().withMessage("Cannot be empty"),
   body("traitement_nutri").notEmpty().withMessage("Cannot be empty"),
   body("cocktail_atb").isBoolean().withMessage("c'est un champ boolean"),
-  body("transferer_unt").notEmpty().withMessage("Cannot be empty").isBoolean().withMessage("c'est un champ boolean"),
+  body("transferer_unt")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .isBoolean()
+    .withMessage("c'est un champ boolean"),
 ];
 patientValidatorAdd.use(validationData, async (req, res, next) => {
   // Cause malnutrition

@@ -88,7 +88,8 @@ const addPatient = async (req, res) => {
         vaccin_non_recu,
         produit_plante,
         duree_produit_plante,
-        id_user,
+        transferer_unt,
+        declarer_gueri,
         image_patient,
         traitement_nutri,
         constitution_aliment,
@@ -148,6 +149,8 @@ const addPatient = async (req, res) => {
         telephone,
         familleId: id_famille,
         date_naissance_patient,
+        transferer_unt,
+        declarer_gueri,
       });
       const patientId = newPatient.id;
 
