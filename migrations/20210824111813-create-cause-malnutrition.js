@@ -81,6 +81,7 @@ module.exports = {
         type: Sequelize.BOOLEAN,
       },
       allaitement_6mois: {
+        allowNull: false,
         type: Sequelize.BOOLEAN,
       },
       age_fin_allaitement: {
@@ -109,7 +110,7 @@ module.exports = {
       },
       cocktail_atb: {
         allowNull: false,
-        type: Sequelize.STRING,
+        type: Sequelize.BOOLEAN,
       },
       duree_prise_atb: {
         allowNull: true,

@@ -47,7 +47,7 @@ module.exports = (sequelize, DataTypes) => {
       diagnostique_hospitalisation: DataTypes.TEXT,
       produit_plante: DataTypes.BOOLEAN,
       duree_produit_plante: DataTypes.STRING,
-      cocktail_atb: DataTypes.STRING,
+      cocktail_atb: DataTypes.BOOLEAN,
       duree_prise_atb: DataTypes.STRING,
       traitement_nutri: DataTypes.STRING,
       diversification_aliment: DataTypes.INTEGER,
