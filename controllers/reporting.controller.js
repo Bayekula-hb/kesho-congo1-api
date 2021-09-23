@@ -1125,7 +1125,7 @@ const reportingYear = async (req, res) => {
                   )
                   ) as Cons
                   on Anthr.patientId = Cons.patientId
-                  where Anthr.type_malnutrition = "MAS-K" OR Anthr.type_malnutrition = "MAS-M" OR AND monthname(Pa.createdAt) = :monthParam 
+                  where (Anthr.type_malnutrition = "MAS-K" OR Anthr.type_malnutrition = "MAS-M") AND monthname(Pa.createdAt) = :monthParam 
                   ORDER BY Pa.id DESC`,
             {
               replacements: {
