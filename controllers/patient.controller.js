@@ -497,9 +497,9 @@ const getAllPatient = async (req, res) => {
     limit_start = parseInt(limit_start);
   }
   const nombre_patient = await patient.count();
-  if(limit_start > nombre_patient-1 ){
-    limit_start = nombre_patient-1;
-  }
+  // if(limit_start > nombre_patient ){
+  //   limit_start = nombre_patient;
+  // }
   try {
     const result = await sequelize.transaction(async (t) => {
       const Patients = await sequelize.query(
