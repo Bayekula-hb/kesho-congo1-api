@@ -273,6 +273,7 @@ const getPatient = async (req, res) => {
         const name_consultant = await user.findOne({
           where: { id: userId },
           attributes: ["nom_user", "postnom_user", "prenom_user"],
+          paranoid: false,
         });
         res.status(200).json({
           Patient,
@@ -618,6 +619,7 @@ const detailPatient = async (req, res) => {
         });
         const consultants = await consulter_par.findAll({
           where: { patientId: id_patient },
+          paranoid: false,
           order: [["id", "DESC"]],
           attributes: [],
           include: [
@@ -630,6 +632,7 @@ const detailPatient = async (req, res) => {
                 "prenom_user",
                 "sexe_user",
               ],
+              paranoid: false,
             },
           ],
         });
