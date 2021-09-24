@@ -226,6 +226,7 @@ const getPatient = async (req, res) => {
           "adresse_patient",
           "provenance_patient",
           "transferer_unt",
+          "declarer_gueri",
           "mode_arrive",
           "telephone",
           "familleId",
@@ -507,7 +508,7 @@ const getAllPatient = async (req, res) => {
   try {
     const result = await sequelize.transaction(async (t) => {
       const Patients = await sequelize.query(
-        `select Pa.id_patient, nom_patient, postnom_patient, date_format(date_naissance_patient, "%x/%m/%v") as date_naissance, prenom_patient, Pa.sexe_patient, Anthr.type_malnutrition, date_format(Date_Consultation, "%x/%m/%v") as date_Consultation, Pa.transferer_unt, nom_user as nom_consultant, postnom_user as postnom_consultant  from
+        `select Pa.id_patient, nom_patient, postnom_patient, date_format(date_naissance_patient, "%x/%m/%v") as date_naissance, prenom_patient, Pa.sexe_patient, Anthr.type_malnutrition, date_format(Date_Consultation, "%x/%m/%v") as date_Consultation, Pa.transferer_unt,  Pa.declarer_gueri, nom_user as nom_consultant, postnom_user as postnom_consultant  from
         patients as Pa
         inner join ( 
           SELECT id, patientId, type_malnutrition, createdAt as Date_Consultation
