@@ -7,18 +7,31 @@ const patientValidatorAdd = express();
 const validationData = [
   body("atcd_mas").notEmpty().withMessage("Cannot be empty"),
   body("nbre_chute").notEmpty().withMessage("Cannot be empty"),
-  body("cause_dpm").notEmpty().withMessage("Cannot be empty"),
   body("terme_grossesse").notEmpty().withMessage("Cannot be empty"),
-  body("sejour_neonat").notEmpty().withMessage("Cannot be empty"),
+  body("sejour_neonat")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .isBoolean()
+    .withMessage("c'est un champ boolean"),
   body("eig").notEmpty().withMessage("Cannot be empty"),
   body("lieu_accouchement").notEmpty().withMessage("Cannot be empty"),
   body("asphyxie_perinatal").notEmpty().withMessage("Cannot be empty"),
-  body("dpm").notEmpty().withMessage("Cannot be empty"),
+  body("dpm")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .matches(/\w{6,7}/)
+    .withMessage("la taille inférieur à 3"),
+  body("cause_dpm")
+    .matches(/\w{4,}/)
+    .withMessage("la taille inférieur à 3"),
   body("produit_plante")
     .notEmpty()
     .withMessage("Cannot be empty")
     .isBoolean()
     .withMessage("c'est un champ boolean"),
+  body("duree_produit_plante")
+    .matches(/\w{2,}/)
+    .withMessage("la taille supérieur à 1"),
   body("rang_fratrie").notEmpty().withMessage("Cannot be empty"),
   body("taille_fratrie").notEmpty().withMessage("Cannot be empty"),
   body("atcd_rougeole_fratrie").notEmpty().withMessage("Cannot be empty"),
@@ -42,9 +55,6 @@ const validationData = [
   body("diagnostique_hospitalisation")
     .notEmpty()
     .withMessage("Cannot be empty"),
-  body("duree_prise_atb")
-  .matches(/\w{1,}/)
-  .withMessage("la taille inférieur à 1"),
   body("peri_cranien").notEmpty().withMessage("Cannot be empty"),
   body("peri_brachial").notEmpty().withMessage("Cannot be empty"),
   body("poids")
@@ -205,9 +215,6 @@ const validationData = [
   body("vaccin_non_recu")
     .matches(/[A-Za-z]{3,}/)
     .withMessage("la taille inférieur à 4"),
-  body("duree_produit_plante")
-    .matches(/\w{2,}/)
-    .withMessage("la taille supérieur à 1"),
   body("date_naissance_patient")
     .notEmpty()
     .withMessage("Cannot be empty")
@@ -226,6 +233,9 @@ const validationData = [
   body("age_fin_allaitement").notEmpty().withMessage("Cannot be empty"),
   body("traitement_nutri").notEmpty().withMessage("Cannot be empty"),
   body("cocktail_atb").isBoolean().withMessage("c'est un champ boolean"),
+  body("duree_prise_atb")
+    .matches(/\w{1,}/)
+    .withMessage("la taille inférieur à 1"),
   body("transferer_unt")
     .notEmpty()
     .withMessage("Cannot be empty")
