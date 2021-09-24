@@ -47,7 +47,7 @@ const addAnthropometrique = async (req, res) => {
         if (patientFind.transferer_unt) {
           await patient.update(
             {
-              transferer_unt: !transferer_unt,
+              transferer_unt: !patientFind.transferer_unt,
             },
             {
               where: {
