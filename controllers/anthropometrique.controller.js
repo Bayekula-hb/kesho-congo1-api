@@ -8,7 +8,7 @@ const {
   sequelize,
 } = require("../models");
 
-const addAnthropometrique= async (req, res) => {
+const addAnthropometrique = async (req, res) => {
   try {
     const result = await sequelize.transaction(async (t) => {
       const {
@@ -43,7 +43,18 @@ const addAnthropometrique= async (req, res) => {
           date_examen,
           patientId,
         });
-
+        if (patientFind.transferer_unt) {
+          await patient.update(
+            {
+              transferer_unt: !transferer_unt,
+            },
+            {
+              where: {
+                id_patient,
+              },
+            }
+          );
+        }
         await consulter_par.create({
           patientId,
           userId,
@@ -61,7 +72,7 @@ const addAnthropometrique= async (req, res) => {
     res.status(400).json({ error: `${error}` });
   }
 };
-const getAnthropometriqueByIdPatient= async (req, res) => {
+const getAnthropometriqueByIdPatient = async (req, res) => {
   const { patientId } = res;
   try {
     const result = await sequelize.transaction(async (t) => {
@@ -76,13 +87,13 @@ const getAnthropometriqueByIdPatient= async (req, res) => {
       } else {
         const anthropometriqueOnePatient =
           await anthropometrique.findAndCountAll({
-            where: { patientId:id },
+            where: { patientId: id },
             order: [["id", "DESC"]],
             limit: 3,
           });
 
         const consultant = await consulter_par.findAll({
-          where: { patientId:id },
+          where: { patientId: id },
           order: [["id", "DESC"]],
           limit: 3,
         });
