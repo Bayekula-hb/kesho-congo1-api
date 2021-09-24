@@ -24,7 +24,7 @@ const addAnthropometrique = async (req, res) => {
 
       const patientFind = await patient.findOne({
         where: { id_patient },
-        attributes: ["id"],
+        attributes: ["id", "id_patient", "transferer_unt"],
       });
       const userFind = await user.findOne({
         where: { id_user },
@@ -43,6 +43,7 @@ const addAnthropometrique = async (req, res) => {
           date_examen,
           patientId,
         });
+
         if (patientFind.transferer_unt) {
           await patient.update(
             {
@@ -55,6 +56,7 @@ const addAnthropometrique = async (req, res) => {
             }
           );
         }
+
         await consulter_par.create({
           patientId,
           userId,

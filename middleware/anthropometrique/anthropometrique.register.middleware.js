@@ -4,13 +4,37 @@ const { body, query, validationResult } = require("express-validator");
 
 const anthropometriqueRegisterMiddleware = express();
 const validationData = [
-  query("id_patient").notEmpty().withMessage("Cannot be empty"),
-  body("peri_cranien").notEmpty().withMessage("Cannot be empty"),
-  body("peri_brachial").notEmpty().withMessage("Cannot be empty"),
-  body("poids").notEmpty().withMessage("Cannot be empty"),
-  body("taille").notEmpty().withMessage("Cannot be empty"),
+  query("id_patient")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .matches(/\w{8,}/)
+    .withMessage("le nombre de caractère inférieur à 8"),
+  body("peri_cranien")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .matches(/\d{1,}/)
+    .withMessage("pas de lettres"),
+  body("peri_brachial")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .matches(/\d{1,}/)
+    .withMessage("pas de lettres"),
+  // body("declarer_gueri")
+  //   .isEmpty()
+  //   .withMessage("Empty")
+  //   .isBoolean()
+  //   .withMessage("c'est un champ boolean"),
+  body("poids")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .matches(/\d{1,}/)
+    .withMessage("pas de lettres"),
+  body("taille")
+    .notEmpty()
+    .withMessage("Cannot be empty")
+    .matches(/\d{2,4}/)
+    .withMessage("pas de lettres"),
   body("type_malnutrition").notEmpty().withMessage("Cannot be empty"),
-  body("date_examen").notEmpty().withMessage("Cannot be empty"),
 ];
 
 anthropometriqueRegisterMiddleware.use(
