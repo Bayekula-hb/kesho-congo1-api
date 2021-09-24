@@ -401,18 +401,24 @@ const getReporting = async (req, res, next) => {
         { type: QueryTypes.SELECT }
       );
 
-      // const nombre_fille_transferer = await patient.count({
-      //   where: {
-      //     transferer_unt: true,
-      //     sexe_patient: "F",
-      //   },
-      // });
-      // const nombre_garcon_transferer = await patient.count({
-      //   where: {
-      //     transferer_unt: true,
-      //     sexe_patient: "M",
-      //   },
-      // });
+      const nombre_fille_transferer = await sequelize.query(
+        `select count(*) as nombre_fille_transferer
+        from patients
+        where transferer_unt = true AND sexe_patient = "F" AND  MONTH(updatedAt) = MONTH(now()) 
+        `,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      const nombre_garcon_transferer = await sequelize.query(
+        `select count(*) as nombre_garcon_transferer
+        from patients
+        where transferer_unt = true AND sexe_patient = "M" AND  MONTH(updatedAt) = MONTH(now()) 
+        `,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
       res.status(200).json({
         nombre_garcon,
         nombre_fille,
@@ -447,8 +453,8 @@ const getReporting = async (req, res, next) => {
         moderee_nombre_fille,
         moderee_nombre_garcon,
 
-        // nombre_fille_transferer,
-        // nombre_garcon_transferer,
+        nombre_fille_transferer,
+        nombre_garcon_transferer,
       });
     });
   } catch (err) {
@@ -934,34 +940,34 @@ const getReportingByDate = async (req, res) => {
           type: QueryTypes.SELECT,
         }
       );
-      // const nombre_fille_transferer = await patient.count({
-      //   where :{
-      //     transferer_unt : true,
-      //     sexe_patient : "F",
-      //     createdAt : {
-      //       [Op.between] : [starting_date,ending_date]
-      //     }
-      //   },
-      //   replacements: {
-      //     starting_date: starting_date,
-      //     ending_date: ending_date,
-      //     plain: true,
-      //   },
-      // })
-      // const nombre_garcon_transferer = await patient.count({
-      //   where :{
-      //     transferer_unt : true,
-      //     sexe_patient : "M",
-      //     createdAt : {
-      //       [Op.between] : [starting_date,ending_date]
-      //     }
-      //   },
-      //   replacements: {
-      //     starting_date: starting_date,
-      //     ending_date: ending_date,
-      //     plain: true,
-      //   },
-      // })
+      const nombre_fille_transferer = await sequelize.query(
+        `select count(*) as nombre_fille_transferer
+        from patients
+        where transferer_unt = true AND sexe_patient = "F" AND updatedAt BETWEEN :starting_date AND :ending_date
+        `,
+        {
+          replacements: {
+            starting_date: starting_date,
+            ending_date: ending_date,
+            plain: true,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
+      const nombre_garcon_transferer = await sequelize.query(
+        `select count(*) as nombre_garcon_transferer
+        from patients
+        where transferer_unt = true AND sexe_patient = "M" AND updatedAt BETWEEN :starting_date AND :ending_date
+        `,
+        {
+          replacements: {
+            starting_date: starting_date,
+            ending_date: ending_date,
+            plain: true,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
 
       res.status(200).json({
         nombre_garcon,
@@ -987,8 +993,8 @@ const getReportingByDate = async (req, res) => {
         moderee_nombre_garcon,
         moderee_nombre_fille,
 
-        // nombre_fille_transferer,
-        // nombre_garcon_transferer,
+        nombre_fille_transferer,
+        nombre_garcon_transferer,
       });
     });
   } catch (err) {
