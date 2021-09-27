@@ -18,7 +18,6 @@ const addAnthropometrique = async (req, res) => {
         taille,
         type_malnutrition,
         date_examen,
-        declarer_gueri,
       } = req.body;
       const { id_patient } = req.query;
       const { id_user } = req.user;
