@@ -1077,11 +1077,24 @@ const reportingYear = async (req, res) => {
       const rapport_patient_year = [],
         rapport_mac_year = [],
         rapport_mam_year = [],
-        rapport_mas_year = [];
+        rapport_mas_year = [],
+        rapport_gueri_year = [];
       for (let i = 0; i <= month_current; i++) {
         rapport_patient_year.push(
           await sequelize.query(
             'SELECT COUNT("id") as nombre_patient FROM patients WHERE monthname(createdAt) = :monthParam',
+            {
+              replacements: {
+                monthParam: month_year[i],
+                plain: true,
+              },
+              type: QueryTypes.SELECT,
+            }
+          )
+        );
+        rapport_gueri_year.push(
+          await sequelize.query(
+            'SELECT COUNT("id") as nombre_patient FROM patients WHERE monthname(createdAt) = :monthParam AND declarer_gueri=true',
             {
               replacements: {
                 monthParam: month_year[i],
@@ -1202,6 +1215,7 @@ const reportingYear = async (req, res) => {
         rapport_mac_year,
         rapport_mas_year,
         rapport_mam_year,
+        rapport_gueri_year,
       });
     });
   } catch (err) {
