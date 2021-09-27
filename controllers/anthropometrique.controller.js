@@ -57,16 +57,18 @@ const addAnthropometrique = async (req, res) => {
             }
           );
         }
-        await patient.update(
-          {
-            declarer_gueri,
-          },
-          {
-            where: {
-              id_patient,
+        if (type_malnutrition.toUpperCase() === "GUERI") {
+          await patient.update(
+            {
+              declarer_gueri:true,
             },
-          }
-        );
+            {
+              where: {
+                id_patient,
+              },
+            }
+          );
+        }
         await consulter_par.create({
           patientId,
           userId,

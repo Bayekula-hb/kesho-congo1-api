@@ -419,6 +419,26 @@ const getReporting = async (req, res, next) => {
           type: QueryTypes.SELECT,
         }
       );
+
+      const nombre_fille_gueri = await sequelize.query(
+        `select count(*) as nombre_fille_gueri
+        from patients
+        where declarer_gueri = true AND sexe_patient = "F" AND  MONTH(updatedAt) = MONTH(now()) 
+        `,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+      const nombre_garcon_gueri = await sequelize.query(
+        `select count(*) as nombre_garcon_gueri
+        from patients
+        where declarer_gueri = true AND sexe_patient = "M" AND  MONTH(updatedAt) = MONTH(now()) 
+        `,
+        {
+          type: QueryTypes.SELECT,
+        }
+      );
+
       res.status(200).json({
         nombre_garcon,
         nombre_fille,
@@ -455,6 +475,9 @@ const getReporting = async (req, res, next) => {
 
         nombre_fille_transferer,
         nombre_garcon_transferer,
+
+        nombre_fille_gueri,
+        nombre_garcon_gueri
       });
     });
   } catch (err) {
@@ -969,6 +992,34 @@ const getReportingByDate = async (req, res) => {
         }
       );
 
+      const nombre_fille_gueri = await sequelize.query(
+        `select count(*) as nombre_fille_gueri
+        from patients
+        where declarer_gueri = true AND sexe_patient = "F" AND updatedAt BETWEEN :starting_date AND :ending_date
+        `,
+        {
+          replacements: {
+            starting_date: starting_date,
+            ending_date: ending_date,
+            plain: true,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
+      const nombre_garcon_gueri = await sequelize.query(
+        `select count(*) as nombre_garcon_gueri
+        from patients
+        where declarer_gueri = true AND sexe_patient = "M" AND updatedAt BETWEEN :starting_date AND :ending_date
+        `,
+        {
+          replacements: {
+            starting_date: starting_date,
+            ending_date: ending_date,
+            plain: true,
+          },
+          type: QueryTypes.SELECT,
+        }
+      );
       res.status(200).json({
         nombre_garcon,
         nombre_fille,
@@ -995,6 +1046,9 @@ const getReportingByDate = async (req, res) => {
 
         nombre_fille_transferer,
         nombre_garcon_transferer,
+
+        nombre_fille_gueri,
+        nombre_garcon_gueri,
       });
     });
   } catch (err) {
