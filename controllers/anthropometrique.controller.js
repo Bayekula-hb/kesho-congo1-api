@@ -56,7 +56,7 @@ const addAnthropometrique = async (req, res) => {
             }
           );
         }
-        if (type_malnutrition.toUpperCase() === "GUERI") {
+        if (type_malnutrition.toUpperCase() === "GUÉRI") {
           await patient.update(
             {
               declarer_gueri:true,
