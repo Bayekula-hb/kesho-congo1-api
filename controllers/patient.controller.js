@@ -676,7 +676,7 @@ const searchPatient = async (req, res) => {
         on Anthr.patientId = Cons.patientId 
         inner join users
         on Cons.userId = users.id 
-        WHERE Pa.nom_patient like :nom_patientParam OR Pa.postnom_patient like :nom_patientParam
+        WHERE Pa.nom_patient like :nom_patientParam OR Pa.postnom_patient like :nom_patientParam OR Pa.prenom_patient like :nom_patientParam
         ORDER BY Pa.id DESC`,
         {
           replacements: {
