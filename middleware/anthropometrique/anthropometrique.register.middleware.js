@@ -19,11 +19,11 @@ const validationData = [
     .withMessage("Cannot be empty")
     .matches(/\d{1,}/)
     .withMessage("pas de lettres"),
-  body("declarer_gueri")
-    .notEmpty()
-    .withMessage("Cannot be empty")
-    .isBoolean()
-    .withMessage("c'est un champ boolean"),
+  // body("declarer_gueri")
+  //   .notEmpty()
+  //   .withMessage("Cannot be empty")
+  //   .isBoolean()
+  //   .withMessage("c'est un champ boolean"),
   body("poids")
     .notEmpty()
     .withMessage("Cannot be empty")
